@@ -1,8 +1,6 @@
 {
   "name": "blue-ocean-server",
-  "private": true,
   "version": "0.1.0",
-  "type": "module",
   "scripts": {
     "start": "node index.js",
     "server-dev": "nodemon index.js",

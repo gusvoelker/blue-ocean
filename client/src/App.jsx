@@ -26,7 +26,7 @@ export default class App extends React.Component {
       .catch((error) => console.log(error));
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.getResults();
   }
 
