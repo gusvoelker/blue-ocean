@@ -2,6 +2,7 @@ import React from 'react'
 
 export default class ClassComponent extends React.Component {
 
+  // PROPS:
   // props.myProp - Name of the component, provided from App.jsx
   constructor(props) {
     super(props);
