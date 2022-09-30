@@ -2,11 +2,11 @@ require('dotenv').config();
 const { Pool } = require('pg');
 
 const pool = new Pool({
-  host: process.env.RV_PG_HOST, // Postgres ip address[s] or domain name[s]
-  port: process.env.RV_PG_PORT, // Postgres server port[s]
-  database: process.env.RV_PG_DB, // Name of database to connect to
-  user: process.env.RV_PG_USER, // Username of database user
-  password: process.env.RV_PG_PW // Password of database user
+  host: process.env.PG_HOST, // Postgres ip address[s] or domain name[s]
+  port: process.env.PG_PORT, // Postgres server port[s]
+  database: process.env.PG_DB, // Name of database to connect to
+  user: process.env.PG_USER, // Username of database user
+  password: process.env.PG_PW // Password of database user
 });
 
 // the pool will emit an error on behalf of any idle clients
@@ -16,7 +16,7 @@ pool.on('error', (err, client) => {
   process.exit(-1);
 });
 
-console.log('Connected to PostgreSQL pool');
+console.log('Connected to PostgreSQL pool @ host ', process.env.PG_HOST);
 
 module.exports.poolQuery = (query) => {
   return pool
