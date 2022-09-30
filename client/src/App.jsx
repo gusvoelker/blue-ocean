@@ -1,11 +1,9 @@
-import './App.css'
-
 import React from 'react'
 import axios from 'axios';
 
-import { serverURL } from './config.js';
-import ClassComponent from './components/ClassComponent.jsx';
-import FuncComponent from './components/FuncComponent.jsx';
+import { serverURL } from './config.example.js';
+import NavBar from './components/NavBar/NavBar.jsx';
+
 
 export default class App extends React.Component {
 
@@ -33,12 +31,7 @@ export default class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <ClassComponent
-          myProp={'class(y) component'}
-        />
-        <FuncComponent
-          myProp={'FUNctional component'}
-        />
+        <NavBar/>
       </div>
     );
   }
