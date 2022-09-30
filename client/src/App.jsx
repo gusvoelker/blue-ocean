@@ -3,6 +3,8 @@ import axios from 'axios';
 
 import { serverURL } from './config.example.js';
 import NavBar from './components/NavBar/NavBar.jsx';
+import Profile from './components/Profile.jsx';
+import Messages from './components/Messages.jsx';
 
 
 export default class App extends React.Component {
@@ -32,6 +34,8 @@ export default class App extends React.Component {
     return (
       <div className="App">
         <NavBar/>
+        <Profile />
+        {/* <Messages /> */}
       </div>
     );
   }
