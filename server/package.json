@@ -1,0 +1,24 @@
+{
+  "name": "blue-ocean-server",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "server-dev": "nodemon index.js",
+    "db-dev": "nodemon db/db.js",
+    "db-test-queries": "nodemon db/testQueries.js"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "pg": "^8.8.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20",
+    "supertest": "^6.2.4"
+  }
+}
