@@ -3,6 +3,7 @@ import './App.css'
 import React from 'react'
 import axios from 'axios';
 
+import { serverURL } from './config.js';
 import ClassComponent from './components/ClassComponent.jsx';
 import FuncComponent from './components/FuncComponent.jsx';
 
@@ -17,7 +18,7 @@ export default class App extends React.Component {
   }
 
   getResults() {
-    return axios.get('/example')
+    return axios.get(`${serverURL}/example`)
       .then((response) => {
         let results = response.data;
         this.setState({results});
@@ -25,7 +26,7 @@ export default class App extends React.Component {
       .catch((error) => console.log(error));
   }
 
-  onComponentMount() {
+  componentDidMount(){
     this.getResults();
   }
 
