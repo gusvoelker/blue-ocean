@@ -14,7 +14,7 @@ export default function Profile (props) {
   const [name, setname] = useState('Anthony');
   const [email, setEmail] = useState('hello@gmail.com');
   const [password, setPassword] = useState('');
-  const [friends, setFriends] = useState(['Adam', 'Bob', 'Charlie', 'Daniel', 'Emily', 'Florenza']);
+  const [friends, setFriends] = useState(['Adam', 'Bob', 'Charlie', 'Daniel', 'Emily', 'Florenza', 'Emily', 'Florenza']);
   const [role, setRole] = useState('Student')
   const [profilePicture, setProfilePicture] = useState('https://i.postimg.cc/gkDMWvVY/photo-1615497001839-b0a0eac3274c.jpg');
   const [profileBackground, setProfileBackground] = useState('https://i.postimg.cc/hGpk2kjq/denis-istomin-sunset-120317-night-long.jpg');

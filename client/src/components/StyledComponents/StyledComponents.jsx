@@ -107,7 +107,17 @@ const ProfileFriendsList = styled.div`
     border-radius: 15px;
     height: 250px;
     overflow: auto;
-  };
+    &::-webkit-scrollbar {
+    width: 0px;
+    }
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #9e9e9e;
+      border-radius: 4px;
+    }
+    };
   div{
     padding:10px;
   };
