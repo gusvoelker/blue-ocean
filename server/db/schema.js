@@ -4,10 +4,10 @@ const query = require('./db.js').poolQuery;
 const tables = [
   {
     // Table example #1
-    name: 'topics',
+    name: 'users',
     fields: [
       ['id SERIAL PRIMARY KEY'],
-      ['subject TEXT'],
+      ['username VARCHAR(60)']
     ],
     indexes: []
   },
@@ -15,14 +15,13 @@ const tables = [
     // Table example #2
     name: 'tweets',
     fields: [
-      ['user_id SERIAL PRIMARY KEY'],
-      ['topic_id INTEGER'],
+      ['id SERIAL PRIMARY KEY'],
+      ['user_id INTEGER'],
       ['tweet VARCHAR(280)'],
-      ['date BIGINT'],
       ['likes INTEGER DEFAULT 0'],
-      ['CONSTRAINT fk_topic_id FOREIGN KEY(topic_id) REFERENCES topics(id)']
+      ['CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES users(id)']
     ],
-    indexes: ['topic_id']
+    indexes: ['user_id']
   }
 ];
 
