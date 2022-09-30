@@ -6,8 +6,8 @@ const tables = [
     // Table example #1
     name: 'users',
     fields: [
-      ['id SERIAL PRIMARY KEY'],
-      ['username VARCHAR(60)']
+      'id SERIAL PRIMARY KEY',
+      'username VARCHAR(60)'
     ],
     indexes: []
   },
@@ -15,11 +15,11 @@ const tables = [
     // Table example #2
     name: 'tweets',
     fields: [
-      ['id SERIAL PRIMARY KEY'],
-      ['user_id INTEGER'],
-      ['tweet VARCHAR(280)'],
-      ['likes INTEGER DEFAULT 0'],
-      ['CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES users(id)']
+      'id SERIAL PRIMARY KEY',
+      'user_id INTEGER',
+      'tweet VARCHAR(280)',
+      'likes INTEGER DEFAULT 0',
+      'CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES users(id)'
     ],
     indexes: ['user_id']
   }
@@ -33,22 +33,26 @@ const tables = [
 module.exports.setupTables = async () => {
   for (table of tables) {
     let fieldsParsed = '';
+    let indexPromises = [];
     for (let i = 0; i < table.fields.length; i++) {
       fieldsParsed += table.fields[i];
       if (i < table.fields.length - 1) {
         fieldsParsed += ', ';
       }
     }
-    console.log(`CREATE TABLE IF NOT EXISTS ${table.name} (${fieldsParsed});`);
+    console.log(`CREATE TABLE IF NOT EXISTS ${table.name} (${fieldsParsed});`); // DEBUG
     await query(`
       CREATE TABLE IF NOT EXISTS ${table.name} (${fieldsParsed})
     `);
     for (let index of table.indexes) {
-      await query(`
-        CREATE INDEX ${table.name}_${index}_idx ON ${table.name} (${index})
-      `);
+      indexPromises.push(
+        query(`
+          CREATE INDEX ${table.name}_${index}_idx ON ${table.name} (${index})
+        `)
+      );
     }
   }
+  return Promise.all(indexPromises);
 };
 
 // Drops all tables with public schema, re-creates public schema
