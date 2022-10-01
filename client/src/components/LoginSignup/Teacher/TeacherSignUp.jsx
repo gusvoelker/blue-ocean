@@ -57,6 +57,7 @@ export default function TeacherSignUp () {
             <StyledTextInput placeholder='enter password here' name='password' onChange={handleChange}></StyledTextInput>
           </StyledLabel>
         </StyledRightAlignedForms>
+
           <StyledSubmitInput value='SUBMIT'></StyledSubmitInput>
       </StyledLoginSignUpForm>
     </StyledloginSignUpBox>

@@ -19,6 +19,7 @@ export default function App () {
   return (
     <StyledLogPage>
       <NavBar/>
+
       <TeacherSignUp/>
     </StyledLogPage>
   );

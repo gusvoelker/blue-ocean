@@ -3,19 +3,26 @@ import styled from 'styled-components';
 import {
   StyledNavBar,
   StyledNavBarIcon,
-  StyledNavBarLinks
+  StyledNavBarLinks,
+  StyledSelectInput
 } from '../StyledComponents/StyledComponents.jsx'
+import './googleTranslate.css'
 
-export default function NavBar () {
+export default function NavBar() {
+
+
   return (
-    <StyledNavBar>
+    <StyledNavBar id='translate'>
       <StyledNavBarIcon>
         Rosettasto Né
       </StyledNavBarIcon>
+
+      <div id='translate2' ></div>
       <StyledNavBarLinks>
-        <p>Language</p>
         <p>Profile</p>
       </StyledNavBarLinks>
+
+
     </StyledNavBar>
   )
 }
