@@ -4,6 +4,7 @@ import {
   FriendsModalContainer,
   FriendsModalContent,
   LightGreyButton,
+  StyledButton,
 } from './StyledComponents/StyledComponents.jsx';
 
 export default function AddFriendModal (props) {
@@ -18,7 +19,7 @@ export default function AddFriendModal (props) {
           ADD FRIEND
         </h4>
         <input type="text"></input>
-        <LightGreyButton onClick={props.onClose}>Close</LightGreyButton>
+        <StyledButton onClick={props.onClose}>Close</StyledButton>
       </FriendsModalContent>
     </FriendsModalContainer>
   )

@@ -14,7 +14,7 @@ export default function NavBar() {
   return (
     <StyledNavBar id='translate'>
       <StyledNavBarIcon>
-        Rosettasto Né
+        Not Rosetta Stone
       </StyledNavBarIcon>
 
       <div id='translate2' ></div>

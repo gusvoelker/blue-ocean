@@ -20,13 +20,25 @@ import TeacherLogin from './components/LoginSignup/Teacher/TeacherLogin.jsx'
 import TeacherInfo from './components/LoginSignup/Teacher/TeacherInfo.jsx'
 import About from './components/LoginSignup/About.jsx'
 
+
+// order:
+  // About
+  // Role,
+  // EntryForm
+  // TeacherSignUp
+  // TeacherLogin
+  // TeacherInfo
+  // Profile
+  // Messages
+
+
 export default function App () {
   const [darkTheme, setDarkTheme] = useState(true);
   return (
     <div>
       <StyledLogPage>
         <NavBar/>
-        <TeacherProfile/>
+        <Profile/>
       </StyledLogPage>
     </div>
   );

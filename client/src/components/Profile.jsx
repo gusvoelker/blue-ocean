@@ -54,6 +54,7 @@ export default function Profile(props) {
   const onFriendClick = (e) => {
     setShow(true);
     setCurrentFriend(e.target.id);
+    console.log('clicking on friend')
   }
 
   const onAddFriendClick = () => {
@@ -67,11 +68,6 @@ export default function Profile(props) {
         <ProfileBackground src={profileBackground}></ProfileBackground>
         {/* <AddPicture src='https://i.postimg.cc/65z5t7jr/3465604-200.png'></AddPicture> */}
         <ProfileAccountInfo>
-          <h3><strong>ACCOUNT INFO</strong></h3>
-          <div><strong>{role}</strong></div>
-          <div>Name: {name}</div>
-          <div>Email: {email}</div>
-          <div>Password: ***********</div>
           <h3><strong><u>Account Info</u></strong></h3>
           <h4><strong>{role}</strong></h4>
           <table>
@@ -101,26 +97,25 @@ export default function Profile(props) {
           <p>
             {friends.map(friend => {
             return (
-              <StyledFriend>
+              <StyledFriend  id={friend} onClick={onFriendClick}>
                 <div style={{fontWeight: 'bold'}}>{friend}</div>
                 <StyledFriendIcons>
-                  <img src='https://pnggrid.com/wp-content/uploads/2021/12/Office-Phone-Icon-PNG-Transparent-Background.png' alt='phone icon for starting a call with friend'/>
                   <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png'/>
                 </StyledFriendIcons>
               </StyledFriend>
             )
           })}
           </p>
-          <StyledButton style={{marginTop: '0rem'}}>ADD FRIEND</StyledButton>
+          <StyledButton style={{marginTop: '0rem'}} onClick={onAddFriendClick}>ADD FRIEND</StyledButton>
 
-          <div id={friend} onClick={onFriendClick}>{friend}</div>
-
-
-          <LightGreyButton onClick={onAddFriendClick}>Add Friend +</LightGreyButton>
-      </ProfileFriendsList>
-    </ProfileContainer>
-    <FriendsModal onClose={() => setShow(false)} show={show} friend={currentFriend} />
-    <AddFriendModal onClose={() => setAddShow(false)} show={addShow} />
-    </div >
+            {/* //return (<div id={friend} onClick={onFriendClick}>{friend}</div>)
+          //})}
+          //</p>
+          //<LightGreyButton onClick={onAddFriendClick}>Add Friend +</LightGreyButton> */}
+        </ProfileFriendsList>
+      </ProfileContainer>
+      <FriendsModal onClose={() => setShow(false)} show={show} friend={currentFriend} />
+      <AddFriendModal onClose={() => setAddShow(false)} show={addShow} />
+    </div>
   )
 }
