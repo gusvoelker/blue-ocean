@@ -1,5 +1,17 @@
 const query = require('../db/db.js').poolQuery;
 
+module.exports.getAccountInfo = (accountId) => {
+  return query(`
+    SELECT
+      email,
+      first_name,
+      last_name,
+      is_teacher
+    FROM accounts
+      WHERE account_id=${accountId}
+  `);
+};
+
 // account.email
 // account.passwordHash
 // account.passwordSalt

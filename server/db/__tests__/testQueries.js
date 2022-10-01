@@ -4,7 +4,7 @@ const languageModel = require('../../models/languageModel.js');
 
 // Will eventually replace this with jest testing in queries.test.js, but for now...
 
-// ACCOUNTS
+// ACCOUNTS //
 
 // CREATE ACCOUNTS
 (async () => {
@@ -30,7 +30,17 @@ const languageModel = require('../../models/languageModel.js');
   console.log(result);
 });
 
-// LANGUAGES
+// GET ACCOUNTS INFO
+(async () => {
+  let teacherAccountId = 1;
+  let userAccountId = 2;
+  let result = await accountModel.getAccountInfo(teacherAccountId);
+  console.log(result.rows);
+  result = await accountModel.getAccountInfo(userAccountId);
+  console.log(result.rows);
+});
+
+// LANGUAGES //
 
 // INSERT LANGUAGE
 (async () => {
@@ -46,6 +56,7 @@ const languageModel = require('../../models/languageModel.js');
 });
 
 // INSERT TAUGHT, KNOWN, DESIRED LANGUAGES
+// Should throw an error if language or taughtLevel is invalid
 (async () => {
   let teacherId = 3;
   let userId = 4;
@@ -63,10 +74,10 @@ const languageModel = require('../../models/languageModel.js');
 (async () => {
   let teacherId = 1;
   let userId = 2;
-  let result = await languageModel.getTaughtLanguages(teacherId);
+  let result = await languageModel.getTaughtLanguagesByTeacherId(teacherId);
   console.log(result);
-  result = await languageModel.getKnownLanguages(userId);
+  result = await languageModel.getKnownLanguagesByUserId(userId);
   console.log(result);
-  result = await languageModel.getDesiredLanguages(userId);
+  result = await languageModel.getDesiredLanguagesByUserId(userId);
   console.log(result);
 });

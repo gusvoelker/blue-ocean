@@ -2,6 +2,68 @@ const express = require('express');
 const router = express.Router();
 const model = require('../models/languageModel.js');
 
+// GET REQUESTS //
+
+// Get all languages available
+router.get('/language', (req, res, next) => {
+  model.getAllLanguages()
+    .then((result) => {
+      let languages = result.rows;
+      res.status(200).send(languages);
+    })
+    .catch((error) => res.status(404).send(error));
+});
+
+// Get taught languages for a given accountId (must be a teacher)
+router.get('/language/taught', (req, res, next) => {
+  if (!req.query.accountId) {
+    res.sendStatus(404);
+    return;
+  }
+  model.getTaughtLanguagesByTeacherId(req.query.accountId)
+    .then((result) => {
+      let languages = result.rows;
+      languages.length > 0 ?
+        res.status(200).send(languages) :
+        res.sendStatus(404)
+    })
+    .catch((error) => res.status(404).send(error));
+});
+
+// Get known languages for a given accountId (must be a user)
+router.get('/language/known', (req, res, next) => {
+  if (!req.query.accountId) {
+    res.sendStatus(404);
+    return;
+  }
+  model.getKnownLanguagesByUserId(req.query.accountId)
+    .then((result) => {
+      let languages = result.rows;
+      languages.length > 0 ?
+        res.status(200).send(languages) :
+        res.sendStatus(404)
+    })
+    .catch((error) => res.status(404).send(error));
+});
+
+// Get desired languages for a given accountId (must be a user)
+router.get('/language/desired', (req, res, next) => {
+  if (!req.query.accountId) {
+    res.sendStatus(404);
+    return;
+  }
+  model.getDesiredLanguagesByUserId(req.query.accountId)
+    .then((result) => {
+      let languages = result.rows;
+      languages.length > 0 ?
+        res.status(200).send(languages) :
+        res.sendStatus(404)
+    })
+    .catch((error) => res.status(404).send(error));
+});
+
+// POST REQUESTS //
+
 // TODO: Must validate that request is coming from teacher account
 router.post('/language/taught', (req, res, next) => {
   // TODO: Get teacherId by searching db sessions table with request cookie hash (session)

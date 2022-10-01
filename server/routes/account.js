@@ -2,9 +2,25 @@ const express = require('express');
 const router = express.Router();
 const model = require('../models/accountModel.js');
 
+// GET REQUESTS //
+
 router.get('/account', (req, res, next) => {
-  res.sendStatus(200);
+  console.log(req.query.accountId);
+  if (!req.query.accountId) {
+    res.sendStatus(404);
+    return;
+  }
+  model.getAccountInfo(req.query.accountId)
+    .then((result) => {
+      let accountInfo = result.rows[0];
+      accountInfo ?
+        res.status(200).send(accountInfo) :
+        res.sendStatus(404)
+    })
+    .catch((error) => res.status(404).send(error));
 });
+
+// POST REQUESTS //
 
 // req.body.email - String
 // req.body.firstName - String
