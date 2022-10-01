@@ -50,8 +50,8 @@ const StyledNavBarLinks = styled.h2`
 const ProfileContainer = styled.div`
   position: absolute;
   top: 15%;
-  width: 80vw;
-  right: 10%;
+  width: 70vw;
+  right: 14%;
   height: 800px;
 `
 const ProfilePicture = styled.img`
@@ -62,10 +62,27 @@ const ProfilePicture = styled.img`
   height: 285px;
   width: 285px;
   object-fit: cover;
+  visibility: visible;
+  /* &:hover {
+    visibility: hidden;
+  } */
+`
+const AddPicture = styled.img`
+  position: absolute;
+  top: 7%;
+  left: -10%;
+  border-radius: 50%;
+  height: 285px;
+  width: 285px;
+  object-fit: cover;
+  visibility: hidden;
+  &:hover {
+    visibility: visible;
+  }
 `
 const ProfileBackground = styled.img`
   top: 0%;
-  width: 80vw;
+  width: 68vw;
   height: 300px;
   border-radius: 15px;
   object-fit: cover;
@@ -78,25 +95,40 @@ const ProfileAccountInfo = styled.div`
   border-radius: 15px;
   background-color: #d3d3d3;
   left: 0%;
-  text-align: center;
-  justify-content: center;
+  text-align: left;
+  justify-content: space-evenly;
   padding: 10px;
   h3{
+    text-align: center;
     padding: 25px;
     font-size: 20px;
   };
-  div{
-    padding:10px;
+  h4{
+    text-align: center;
   };
+  div{
+    padding: 10px;
+  };
+  table{
+    width: 100%;
+  };
+  td{
+    padding: 10px;
+    height: 40px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 0;
+  }
 `
 const ProfileFriendsList = styled.div`
   position: absolute;
   bottom: 0%;
-  width: 25vw;
+  width: 20vw;
   height: 450px;
   border-radius: 15px;
   background-color: #a9a9a9;
-  left: 30.25%;
+  left: 33.25%;
   padding: 10px;
   text-align: center;
   justify-content: center;
@@ -122,8 +154,14 @@ const ProfileFriendsList = styled.div`
     }
     };
   div{
-    padding:10px;
+    padding: 10px;
+    &:hover {
+      color: white;
+    }
   };
+  button {
+    width: 19vw;
+  }
 `
 const ProfileChatContainer = styled(ProfileFriendsList)`
   left: 66.5%;
@@ -363,7 +401,7 @@ const StyledLogPage = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #f5f5f5;
+  color: #383838;
 `
 
 const StyledLabel = styled.label`
@@ -382,6 +420,45 @@ const StyledRightAlignedForms = styled.div`
   gap: 1rem;
 `
 
+const FriendsModalContainer = styled.div`
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const FriendsModalContent = styled.div`
+  width: 500px;
+  height: 200px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  justify-content: center;
+  h4 {
+    font-size: 20px;
+  }
+  div {
+    padding: 10px;
+  }
+  input{
+    position: relative;
+    width: 350px;
+    border-radius: 10px;
+    border: 1px solid black;
+    height: 40px;
+    font-size: 20px;
+    background-color: white;
+    &:focus {
+      border: none;
+    };
+  }
+`
 
 export {
   StyledNavBar,
@@ -410,5 +487,8 @@ export {
   StyledButton,
   StyledTextEmail,
   StyledRightAlignedForms,
-  StyledRadioInput
+  StyledRadioInput,
+  AddPicture,
+  FriendsModalContainer,
+  FriendsModalContent,
 }
