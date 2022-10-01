@@ -1,7 +1,7 @@
 const query = require('../db.js').poolQuery;
 const accountModel = require('../../models/accountModel.js');
 const languageModel = require('../../models/languageModel.js');
-const accountChatModel = require('../../models/accountChatModel.js');
+const chatModel = require('../../models/chatModel.js');
 
 // Will eventually replace this with jest testing in queries.test.js, but for now...
 

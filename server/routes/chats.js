@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const model = require('../models/accountChatModel.js');
+const model = require('../models/chatModel.js');
 
 // GET REQUESTS //
 
