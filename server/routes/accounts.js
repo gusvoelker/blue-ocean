@@ -10,7 +10,7 @@ router.get('/accounts', (req, res, next) => {
     res.sendStatus(404);
     return;
   }
-  model.getAccountInfo(req.query.accountId)
+  model.getPublicAccountInfo(req.query.accountId)
     .then((result) => {
       let accountInfo = result.rows[0];
       accountInfo ?
@@ -42,7 +42,6 @@ router.post('/accounts/signup', (req, res, next) => {
   let account = {
     email: req.body.email,
     passwordHash, // TODO: Generate pw hash from req.body.password
-    passwordSalt, // TODO: Generate pw salt from req.body.password
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     isTeacher: req.body.teacher
@@ -56,19 +55,18 @@ router.post('/accounts/signup', (req, res, next) => {
 
 // req.body.email - String
 // req.body.password - String
-router.post('/accounts/login', (req, res, next) => {
+// router.post('/accounts/login', (req, res, next) => {
 
   // TODO: This isn't right, don't pay close attention to this when you return to it
-  let account = {
-    email: req.body.email,
-    passwordHash, // TODO: Generate pw hash from req.body.password
-    passwordSalt // TODO: Generate pw salt from req.body.password
-  }
-  model.getAccount(account)
-    .then((accountId) => {
-      res.status(201).send(accountId);
-    })
-    .catch((error) => res.status(400).send(error));
-});
+  // let account = {
+  //   email: req.body.email,
+  //   passwordHash // TODO: Generate pw hash from req.body.password
+  // }
+  // model.getAccount(account)
+  //   .then((accountId) => {
+  //     res.status(201).send(accountId);
+  //   })
+  //   .catch((error) => res.status(400).send(error));
+// });
 
 module.exports = router;
