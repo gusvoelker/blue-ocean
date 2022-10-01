@@ -16,7 +16,7 @@ pool.on('error', (err, client) => {
   process.exit(-1);
 });
 
-console.log('Connected to PostgreSQL pool @ host ', process.env.PG_HOST);
+console.log('Connected to PostgreSQL pool @ host', process.env.PG_HOST);
 
 module.exports.poolQuery = (query) => {
   return pool
