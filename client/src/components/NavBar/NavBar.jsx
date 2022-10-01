@@ -10,7 +10,7 @@ export default function NavBar () {
   return (
     <StyledNavBar>
       <StyledNavBarIcon>
-        Rosettasto Né
+        Not Rosetta Stone
       </StyledNavBarIcon>
       <StyledNavBarLinks>
         <p>Language</p>

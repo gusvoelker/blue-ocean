@@ -102,7 +102,7 @@ const AddPicture = styled.img`
 `
 const ProfileBackground = styled.img`
   top: 0%;
-  width: 68vw;
+  width: 70vw;
   height: 300px;
   border-radius: 15px;
   object-fit: cover;
@@ -131,6 +131,7 @@ const ProfileAccountInfo = styled.div`
     color: #f5f5f5;
     border-bottom: 2px solid #f5f5f5;
     transition: 0.3s;
+    margin-top: -0.2rem;
   };
   h4{
     text-align: center;
@@ -143,7 +144,7 @@ const ProfileAccountInfo = styled.div`
     width: 100%;
   };
   td{
-    padding: 10px;
+    padding: 7px;
     height: 40px;
     overflow: hidden;
     white-space: nowrap;
@@ -154,7 +155,7 @@ const ProfileAccountInfo = styled.div`
 const ProfileFriendsList = styled.div`
   position: absolute;
   bottom: 0%;
-  width: 50vw;
+  width: 43.5vw;
   height: 450px;
   border-radius: 15px;
   left:36.25%;
@@ -204,7 +205,7 @@ const ProfileFriendsList = styled.div`
   div{
     padding: 10px;
     &:hover {
-      color: white;
+      color: #383838;
     }
   };
   button {
@@ -619,6 +620,7 @@ const StyledImage = styled.img`
   border: 1px solid #f5f5f5;
   border-radius: 20px;
   box-shadow: 5px 5px 5px #383838;
+`
 
 const FriendsModalContainer = styled.div`
   position: fixed;
@@ -700,7 +702,7 @@ export {
   StyledWriteMessage,
   StyledFriendSearch,
   LightTheme,
-  DarkTheme
+  DarkTheme,
   AddPicture,
   FriendsModalContainer,
   FriendsModalContent,
