@@ -5,6 +5,7 @@ import { serverURL } from './config.example.js';
 import NavBar from './components/NavBar/NavBar.jsx';
 import Profile from './components/Profile.jsx';
 import Messages from './components/Messages.jsx';
+import FriendsModal from './components/FriendsModal.jsx';
 import { StyledLogPage } from './components/StyledComponents/StyledComponents.jsx'
 import EntryForm from './components/LoginSignup/EntryForm.jsx';
 import Role from './components/LoginSignup/Role.jsx'
@@ -19,7 +20,9 @@ export default function App () {
   return (
     <StyledLogPage>
       <NavBar/>
-      <TeacherSignUp/>
+      {/* <TeacherSignUp/> */}
+      <Profile />
+      {/* <FriendsModal /> */}
     </StyledLogPage>
   );
 }
