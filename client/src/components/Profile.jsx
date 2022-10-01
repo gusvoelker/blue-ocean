@@ -12,14 +12,14 @@ import {
   StyledFriend,
   StyledFriendIcons,
   StyledFriendSearchSpan,
-  StyledFriendSearch
-} from './StyledComponents/StyledComponents.jsx'
+  StyledFriendSearch,
   AddPicture,
-} from './StyledComponents/StyledComponents.jsx';
+} from './StyledComponents/StyledComponents.jsx'
+
 import FriendsModal from './FriendsModal.jsx';
 import AddFriendModal from './AddFriendModal.jsx';
 
-export default function Profile (props) {
+export default function Profile(props) {
   const [name, setname] = useState('Anthony');
   const [email, setEmail] = useState('hello@gmail.com');
   const [password, setPassword] = useState('');
@@ -67,11 +67,11 @@ export default function Profile (props) {
         <ProfileBackground src={profileBackground}></ProfileBackground>
         {/* <AddPicture src='https://i.postimg.cc/65z5t7jr/3465604-200.png'></AddPicture> */}
         <ProfileAccountInfo>
-          //<h3><strong>ACCOUNT INFO</strong></h3>
-          //<div><strong>{role}</strong></div>
-          //<div>Name: {name}</div>
-          //<div>Email: {email}</div>
-          //<div>Password: ***********</div>
+          <h3><strong>ACCOUNT INFO</strong></h3>
+          <div><strong>{role}</strong></div>
+          <div>Name: {name}</div>
+          <div>Email: {email}</div>
+          <div>Password: ***********</div>
           <h3><strong><u>Account Info</u></strong></h3>
           <h4><strong>{role}</strong></h4>
           <table>
@@ -113,14 +113,14 @@ export default function Profile (props) {
           </p>
           <StyledButton style={{marginTop: '0rem'}}>ADD FRIEND</StyledButton>
 
-            //return (<div id={friend} onClick={onFriendClick}>{friend}</div>)
-          //})}
-          //</p>
-          //<LightGreyButton onClick={onAddFriendClick}>Add Friend +</LightGreyButton>
-        </ProfileFriendsList>
-      </ProfileContainer>
-      <FriendsModal onClose={() => setShow(false)} show={show} friend={currentFriend} />
-      <AddFriendModal onClose={() => setAddShow(false)} show={addShow} />
-    </div>
+          <div id={friend} onClick={onFriendClick}>{friend}</div>
+
+
+          <LightGreyButton onClick={onAddFriendClick}>Add Friend +</LightGreyButton>
+      </ProfileFriendsList>
+    </ProfileContainer>
+    <FriendsModal onClose={() => setShow(false)} show={show} friend={currentFriend} />
+    <AddFriendModal onClose={() => setAddShow(false)} show={addShow} />
+    </div >
   )
 }

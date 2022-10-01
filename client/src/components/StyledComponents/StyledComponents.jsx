@@ -619,6 +619,7 @@ const StyledImage = styled.img`
   border: 1px solid #f5f5f5;
   border-radius: 20px;
   box-shadow: 5px 5px 5px #383838;
+  `
 
 const FriendsModalContainer = styled.div`
   position: fixed;
@@ -700,7 +701,7 @@ export {
   StyledWriteMessage,
   StyledFriendSearch,
   LightTheme,
-  DarkTheme
+  DarkTheme,
   AddPicture,
   FriendsModalContainer,
   FriendsModalContent,
