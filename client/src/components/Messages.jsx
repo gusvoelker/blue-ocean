@@ -7,12 +7,18 @@ import {
   MessagesTextContainer,
   MyMessage,
   TheirMessage,
-  MessagesTopContainer
+  MessagesTopContainer,
+  StyledButton,
+  ProfileFriendsList,
+  MessageFriends,
+  MessageProfilePic,
+  StyledWriteMessage,
+  StyledSubmitInput
 }
 from './StyledComponents/StyledComponents.jsx';
 
 export default function Messages () {
-  const friends = ['Adam', 'Bob', 'Charlie', 'Daniel', 'Emily', 'Florenza'];
+  const friends = ['Adam', 'Bob', 'Charlie', 'Daniel', 'Emily', 'Florenza', 'Adam', 'Bob', 'Charlie', 'Daniel', 'Emily', 'Florenza', 'Adam', 'Bob', 'Charlie', 'Daniel', 'Emily', 'Florenza'];
   const [profilePicture, setProfilePicture] = useState('https://i.postimg.cc/gkDMWvVY/photo-1615497001839-b0a0eac3274c.jpg');
   const [currentFriend, setCurrentFriend] = useState('Adam');
   const [friendsPicture, setFriendsPicture] = useState('https://i.postimg.cc/Kv8V2zHT/catbehavior-HERO-1024x576.jpg')
@@ -21,9 +27,18 @@ export default function Messages () {
     <div>
       <MessagesConvoContainer>
         <p>Messages</p>
-        {friends.map(friend => {
-          return (<LightGreyButton>{friend}</LightGreyButton>)
-        })}
+        <MessageFriends>
+          {friends.map(friend => {
+            return (
+              <React.Fragment>
+                <StyledButton>
+                  {friend}
+                  <MessageProfilePic src={profilePicture}></MessageProfilePic>
+                </StyledButton>
+              </React.Fragment>
+            )
+          })}
+        </MessageFriends>
       </MessagesConvoContainer>
       <MessagesChatContainer>
         <MessagesTextContainer>
@@ -44,7 +59,11 @@ export default function Messages () {
           <img src={friendsPicture}></img>
           {currentFriend}
         </MessagesTopContainer>
-        <input type="text"></input>
+        <StyledWriteMessage>
+          <textarea placeholder='write your message'>
+          </textarea>
+          <StyledSubmitInput style={{width: '10rem', border: '1px solid #383838'}} value='Send'/>
+        </StyledWriteMessage>
       </MessagesChatContainer>
     </div>
   )

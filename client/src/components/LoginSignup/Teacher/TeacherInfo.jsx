@@ -11,7 +11,9 @@ import {
   StyledRightAlignedForms,
   StyledSubmitInput,
   StyledSelectInput,
-  StyledRadioInput
+  StyledRadioInput,
+  StyledPageRow,
+  StyledImage
 } from '../../StyledComponents/StyledComponents.jsx'
 
 export default function TeacherInfo () {
@@ -41,7 +43,9 @@ export default function TeacherInfo () {
   };
 
   return (
-    <StyledloginSignUpBox style={{height: '50rem', width: '50rem', marginTop: '10rem', marginBottom: '5rem'}}>
+    <StyledPageRow style={{marginTop: '4rem', marginBottom: '4rem'}}>
+      <StyledImage style={{marginRight: '-8rem', marginTop: '-40rem'}} src="https://images.unsplash.com/photo-1557409518-691ebcd96038?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" />
+    <StyledloginSignUpBox style={{height: '50rem', width: '50rem', marginTop: '10rem', marginBottom: '5rem', marginLeft: '-8rem'}}>
       <StyledLoginSignUpForm>
         <h1>
         Tell us a little about yourself
@@ -95,7 +99,9 @@ export default function TeacherInfo () {
         <StyledRightAlignedForms>
         </StyledRightAlignedForms>
         <StyledSubmitInput value='SUBMIT'></StyledSubmitInput>
+        <StyledSubmitInput value='SKIP'></StyledSubmitInput>
       </StyledLoginSignUpForm>
     </StyledloginSignUpBox>
+    </StyledPageRow>
   )
 }
