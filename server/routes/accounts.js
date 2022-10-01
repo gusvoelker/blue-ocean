@@ -4,7 +4,7 @@ const model = require('../models/accountModel.js');
 
 // GET REQUESTS //
 
-router.get('/account', (req, res, next) => {
+router.get('/accounts', (req, res, next) => {
   console.log(req.query.accountId);
   if (!req.query.accountId) {
     res.sendStatus(404);
@@ -28,7 +28,7 @@ router.get('/account', (req, res, next) => {
 // req.body.password - String
 // req.body.teacher - Boolean
 // TODO: Generate a session, provide it in response
-router.post('/account/signup', (req, res, next) => {
+router.post('/accounts/signup', (req, res, next) => {
   if (typeof req.body.teacher !== 'boolean') {
     res.status(400).send('Invalid request body property');
     return;
@@ -56,7 +56,7 @@ router.post('/account/signup', (req, res, next) => {
 
 // req.body.email - String
 // req.body.password - String
-router.post('/account/login', (req, res, next) => {
+router.post('/accounts/login', (req, res, next) => {
 
   // TODO: This isn't right, don't pay close attention to this when you return to it
   let account = {

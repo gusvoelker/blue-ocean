@@ -5,17 +5,19 @@ const model = require('../models/languageModel.js');
 // GET REQUESTS //
 
 // Get all languages available
-router.get('/language', (req, res, next) => {
+router.get('/languages', (req, res, next) => {
   model.getAllLanguages()
     .then((result) => {
       let languages = result.rows;
-      res.status(200).send(languages);
+      languages.length > 0 ?
+        res.status(200).send(languages) :
+        res.sendStatus(404)
     })
     .catch((error) => res.status(404).send(error));
 });
 
 // Get taught languages for a given accountId (must be a teacher)
-router.get('/language/taught', (req, res, next) => {
+router.get('/languages/taught', (req, res, next) => {
   if (!req.query.accountId) {
     res.sendStatus(404);
     return;
@@ -31,7 +33,7 @@ router.get('/language/taught', (req, res, next) => {
 });
 
 // Get known languages for a given accountId (must be a user)
-router.get('/language/known', (req, res, next) => {
+router.get('/languages/known', (req, res, next) => {
   if (!req.query.accountId) {
     res.sendStatus(404);
     return;
@@ -47,7 +49,7 @@ router.get('/language/known', (req, res, next) => {
 });
 
 // Get desired languages for a given accountId (must be a user)
-router.get('/language/desired', (req, res, next) => {
+router.get('/languages/desired', (req, res, next) => {
   if (!req.query.accountId) {
     res.sendStatus(404);
     return;
@@ -65,7 +67,7 @@ router.get('/language/desired', (req, res, next) => {
 // POST REQUESTS //
 
 // TODO: Must validate that request is coming from teacher account
-router.post('/language/taught', (req, res, next) => {
+router.post('/languages/taught', (req, res, next) => {
   // TODO: Get teacherId by searching db sessions table with request cookie hash (session)
   // TODO: Figure out how to insert many rather than just one at a time
   model.insertTaughtLanguage(teacherId, req.body.taughtLevel, req.body.language)
@@ -77,7 +79,7 @@ router.post('/language/taught', (req, res, next) => {
 
 // TODO: See above
 // TODO: Must validate that request is coming from user (non-teacher) account
-router.post('/language/known', (req, res, next) => {
+router.post('/languages/known', (req, res, next) => {
   model.insertKnownLanguage(userId, req.body.language)
     .then((result) => {
       res.sendStatus(201);
@@ -86,7 +88,7 @@ router.post('/language/known', (req, res, next) => {
 });
 
 // TODO: See above
-router.post('/language/desired', (req, res, next) => {
+router.post('/languages/desired', (req, res, next) => {
   model.insertDesiredLanguage(userId, req.body.language)
     .then((result) => {
       res.sendStatus(201);

@@ -1,6 +1,7 @@
 const query = require('../db.js').poolQuery;
 const accountModel = require('../../models/accountModel.js');
 const languageModel = require('../../models/languageModel.js');
+const accountChatModel = require('../../models/accountChatModel.js');
 
 // Will eventually replace this with jest testing in queries.test.js, but for now...
 
@@ -80,4 +81,19 @@ const languageModel = require('../../models/languageModel.js');
   console.log(result);
   result = await languageModel.getDesiredLanguagesByUserId(userId);
   console.log(result);
+});
+
+// accountChat tests
+(async () => {
+  let accountId = 1;
+  let participantTwoId = 3;
+  let message = 'hello there';
+  let roomId = await accountChatModel.createRoom(accountId, participantTwoId);
+  console.log(roomId);
+  let result = await accountChatModel.postMessage(roomId, accountId, message);
+  console.log(result);
+  result = await accountChatModel.getRoomsByAccountId(accountId);
+  console.log(result.rows);
+  result = await accountChatModel.getMessagesByRoomId(roomId, accountId);
+  console.log(result.rows);
 });
