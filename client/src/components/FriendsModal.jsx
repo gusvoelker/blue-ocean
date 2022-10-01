@@ -4,6 +4,7 @@ import {
   FriendsModalContainer,
   FriendsModalContent,
   LightGreyButton,
+  StyledButton
 } from './StyledComponents/StyledComponents.jsx';
 
 export default function FriendsModal (props) {
@@ -20,7 +21,7 @@ export default function FriendsModal (props) {
         <div>
           Random Content
         </div>
-        <LightGreyButton onClick={props.onClose}>Close</LightGreyButton>
+        <StyledButton onClick={props.onClose}>Close</StyledButton>
       </FriendsModalContent>
     </FriendsModalContainer>
   )
