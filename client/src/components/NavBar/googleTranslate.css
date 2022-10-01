@@ -18,6 +18,7 @@
   width: 25%;
   position: flex;
   justify-content: end;
+  z-index: 1;
 
 
 }
