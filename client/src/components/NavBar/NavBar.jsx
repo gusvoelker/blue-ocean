@@ -20,6 +20,7 @@ export default function NavBar() {
       <div id='translate2' ></div>
       <StyledNavBarLinks>
         <p>Profile</p>
+        <p>Chat</p>
       </StyledNavBarLinks>
 
 

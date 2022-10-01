@@ -1,10 +1,26 @@
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 
 // complementary color of our blue - 	#383838
 // triadic colors 	#8F386A, #6A8F38
 
+const LightTheme = createGlobalStyle`
+  body {
+    color: #386A8F;
+    background-color: #f5f5f5;
+    transition: 0.3s;
+  }
+`
+
+const DarkTheme = createGlobalStyle`
+  body {
+    color: #f5f5f5;
+    background-color: #386A8F;
+    transition: 0.3s;
+  }
+`
+
 const StyledNavBar = styled.div`
-  background-image: url("https://images.unsplash.com/photo-1595364237783-18144c05cd79?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80");
+  background-color: #386A8F;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -22,9 +38,10 @@ const StyledNavBarIcon = styled.h1`
   justify-content: center;
   align-items: center;
   font-size: 5rem;
-  color: #f5f5f5;
   margin: 1rem;
-  font-family: 'Dancing Script', cursive;
+  text-shadow: 2px 2px #383838;
+  font-family: 'Dancing Script', cursive;;
+  color: #f5f5f5;
 `
 
 const StyledNavBarLinks = styled.h2`
@@ -33,16 +50,17 @@ const StyledNavBarLinks = styled.h2`
   gap: 3rem;
   padding: 1rem;
   font-size: 2rem;
-  color: #f5f5f5;
   position: absolute;
   right: 0;
   margin-right: 3rem;
   cursor: pointer;
   transition: 0.3s;
   p{
+    text-shadow: 2px 2px #383838;
     transition: 0.3s;
+    color: #f5f5f5;
     &:hover {
-      color: #e7afd0;
+      text-shadow: 4px 4px 4px #383838;
     }
   }
 `
@@ -50,11 +68,26 @@ const StyledNavBarLinks = styled.h2`
 const ProfileContainer = styled.div`
   position: absolute;
   top: 15%;
-  width: 80vw;
-  right: 10%;
+  width: 70vw;
+  right: 14%;
   height: 800px;
+
 `
 const ProfilePicture = styled.img`
+  position: absolute;
+  top: 7%;
+  left: -4%;
+  border-radius: 50%;
+  height: 285px;
+  width: 285px;
+  object-fit: cover;
+  border: 1px solid #f5f5f5;
+  visibility: visible;
+  /* &:hover {
+    visibility: hidden;
+  } */
+`
+const AddPicture = styled.img`
   position: absolute;
   top: 7%;
   left: -10%;
@@ -62,13 +95,18 @@ const ProfilePicture = styled.img`
   height: 285px;
   width: 285px;
   object-fit: cover;
+  visibility: hidden;
+  &:hover {
+    visibility: visible;
+  }
 `
 const ProfileBackground = styled.img`
   top: 0%;
-  width: 80vw;
+  width: 68vw;
   height: 300px;
   border-radius: 15px;
   object-fit: cover;
+  border: 1px solid #f5f5f5;
 `
 const ProfileAccountInfo = styled.div`
   position: absolute;
@@ -76,40 +114,75 @@ const ProfileAccountInfo = styled.div`
   width: 20vw;
   height: 400px;
   border-radius: 15px;
-  background-color: #d3d3d3;
   left: 0%;
-  text-align: center;
-  justify-content: center;
+  text-align: left;
+  justify-content: space-evenly;
   padding: 10px;
+  background-color: #38698fef;
+  color: #f5f5f5;
+  box-shadow: 5px 5px 5px #383838;
+  border: 1px solid #386A8F;
+  transition: 0.3s;
+  border: 1px solid #f5f5f5;
   h3{
+    text-align: center;
     padding: 25px;
-    font-size: 20px;
+    font-size: 2rem;
+    color: #f5f5f5;
+    border-bottom: 2px solid #f5f5f5;
+    transition: 0.3s;
+  };
+  h4{
+    text-align: center;
   };
   div{
     padding:10px;
+    color: #f5f5f5;
   };
+  table{
+    width: 100%;
+  };
+  td{
+    padding: 10px;
+    height: 40px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 0;
+  }
 `
 const ProfileFriendsList = styled.div`
   position: absolute;
   bottom: 0%;
-  width: 25vw;
+  width: 50vw;
   height: 450px;
   border-radius: 15px;
-  background-color: #a9a9a9;
-  left: 30.25%;
+  left:36.25%;
   padding: 10px;
   text-align: center;
-  justify-content: center;
+  justify-content: space-between;
+  background-color: #38698fe8;
+  color: #f5f5f5;
+  box-shadow: 5px 5px 5px #383838;
+  border: 1px solid #f5f5f5;
   h3{
-    padding: 20px;
-    font-size: 20px;
+    padding: 15px;
+    font-size: 2rem;
+    transition: 0.3s;
   };
   p{
+    font-size: 1.1rem;
+    display: flex;
+    flex-direction: column;
     padding: 5px;
-    background-color: #d3d3d3;
+    gap: 1rem;
+    background-color: #383838c8;
+    color: #f5f5f5;
     border-radius: 15px;
-    height: 250px;
+    height: 18rem;
     overflow: auto;
+    box-shadow: 2px 2px 5px #383838;
+    border: 1px solid #386A8F;
     &::-webkit-scrollbar {
     width: 0px;
     }
@@ -120,12 +193,90 @@ const ProfileFriendsList = styled.div`
       background: #9e9e9e;
       border-radius: 4px;
     }
+    img {
+      width: 1.5rem;
+      height: 1.5rem;
+      background-color: #f5f5f5;
+      border-radius: 50px;
+      padding: 2px;
+    }
     };
   div{
-    padding:10px;
+    padding: 10px;
+    &:hover {
+      color: white;
+    }
   };
+  button {
+    width: 19vw;
+  }
 `
+
+const StyledFriend = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #f5f5f5;
+  transition: 0.3s;
+  border-radius: 10px;
+  &:hover {
+    background-color: #f5f5f5;
+    color: #383838;
+  }
+`
+
+const StyledFriendIcons = styled.span`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;
+  img {
+    transition: 0.3s;
+    cursor: pointer;
+    border: 1px solid #383838;
+    &:hover {
+      box-shadow: 2px 2px 5px #383838;
+    }
+  }
+`
+
+const StyledFriendSearchSpan = styled.span`
+  display: flex;
+  height: 3rem;
+  margin-bottom: -1rem;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid #f5f5f5;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+`
+const StyledFriendSearch = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f5f5f5;
+  height: 1.5rem;
+  width: 15rem;
+  font-size: 1rem;
+  padding: .5rem;
+  border-radius: 50px;
+  border: 2px solid #383838;
+  color: #383838;
+  input {
+    border: none;
+    background-color: #f5f5f5;
+  }
+`
+
 const ProfileChatContainer = styled(ProfileFriendsList)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   left: 66.5%;
 `
 const MessagesConvoContainer = styled.div`
@@ -134,17 +285,23 @@ const MessagesConvoContainer = styled.div`
   width: 20vw;
   left: 10%;
   height: 775px;
-  background-color: #d3d3d3;
+  background-color: #38698fe8;
+  border: 1px solid #f5f5f5;
   border-radius: 15px;
   text-align: center;
   padding: 25px;
   p{
-    font-size:25px;
+    font-size: 2rem;
     padding: 15px;
+    color: #f5f5f5;
+    border-bottom: 1px solid #f5f5f5;
   }
   button{
     background-color: white;
+    padding-left: 2rem;
+    font-size: 1.2rem;
     width: 18vw;
+    min-height: 4rem;
     border-radius:5px;
     text-align: left;
   }
@@ -155,33 +312,53 @@ const MessagesChatContainer = styled.div`
   width: 48vw;
   left: 38%;
   height: 775px;
-  background-color: #d3d3d3;
+  background-color: #38698fe8;
+  border: 1px solid #f5f5f5;
   border-radius: 15px;
   text-align: center;
   padding: 25px;
-  input{
-    position: relative;
-    width: 48vw;
-    top: 95%;
+`
+const StyledWriteMessage = styled.div`
+  position: relative;
+  width: 48vw;
+  top: 94%;
+  display: flex;
+  gap: 2rem;
+  textarea {
     border-radius: 10px;
+    font-family: 'Roboto', sans-serif;
     border: none;
-    height: 40px;
+    height: 3rem;
+    width: 60rem;
+    padding: 5px;
     font-size: 20px;
-    background-color: #90EE90;
-    box-shadow: 1px 1px #808080;
+    background-color: #f5f5f5;
+    box-shadow: 2px 2px 5px #383838;
     &:focus {
       border: none;
     };
   }
 `
+
+const MessageProfilePic = styled.img`
+  position: relative;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  object-fit: cover;
+  float: right;
+  border: 1px solid #383838;
+`
+
 const MessagesTopContainer = styled.div`
   position: absolute;
   background-color: white;
-  height: 15px;
+  height: 2rem;
   width: 46.5vw;
   border-radius: 10px;
   padding: 10px;
   text-align: center;
+  font-size: 2rem;
   img {
     position: absolute;
     left: -3%;
@@ -192,14 +369,38 @@ const MessagesTopContainer = styled.div`
     object-fit: cover;
   }
 `
+
+const MessageFriends = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 38rem;
+  width: auto;
+  overflow-y:auto;
+  border-radius: 10px;
+  &::-webkit-scrollbar {
+    width: 0px;
+    }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #9e9e9e;
+    border-radius: 4px;
+  }
+  background-color: #838383;
+  padding: 1rem;
+  border: 1px solid #f5f5f5;
+`
 const MessagesTextContainer = styled.div`
   display: flex;
   position: absolute;
   top: 8%;
-  left: 4%;
-  width: 44vw;
-  height: 630px;
+  left: 2.5%;
+  width: 45vw;
+  height: 37rem;
   background-color: white;
+  margin-top: 2rem;
   border-radius: 15px;
   text-align: center;
   padding: 25px;
@@ -244,7 +445,9 @@ const LightGreyButton = styled.button`
   display: inline-block;
   font-size: 16px;
   width: 22vw;
+  height: 10rem;
   margin-top: 20px;
+  transition: 0.3s;
   &:hover {
       color: white;
       background-color: grey;
@@ -274,7 +477,7 @@ const StyledTextInput = styled.input.attrs({ type: 'text' })`
   width: 15;
   font-size: 1rem;
   padding: 0.3rem;
-  border-radius: 5px;
+  border-radius: 100px;
   box-shadow: 5px 5px 5px #383838;
   border: 1px solid #383838;
 `
@@ -283,7 +486,7 @@ const StyledTextEmail = styled.input.attrs({ type: 'email' })`
   width: 15;
   font-size: 1rem;
   padding: 0.3rem;
-  border-radius: 5px;
+  border-radius: 50px;
   box-shadow: 5px 5px 5px #383838;
   border: 1px solid #383838;
 `
@@ -294,10 +497,10 @@ const StyledRadioInput = styled.input.attrs({ type: 'radio' })`
 const StyledSelectInput = styled.select`
   width: 10rem;
   padding: .5rem;
-  border-radius: 5px;
+  border-radius: 50px;
   box-shadow: 5px 5px 5px #383838;
   border: 1px solid #383838;
-  height: 3rem;
+  height: 2.8rem;
   color: #386A8F;
   font-size: 1.2rem;
   option {
@@ -326,7 +529,7 @@ const StyledButton = styled.button`
 `
 
 const StyledloginSignUpBox = styled.div`
-  background-image: url("https://images.unsplash.com/photo-1607893351349-0cfa621476ed?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80");
+  background-image: url("https://images.unsplash.com/photo-1565214975484-3cfa9e56f914?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=627&q=80");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -340,13 +543,13 @@ const StyledloginSignUpBox = styled.div`
   border-radius: 20px;
   box-shadow: 5px 5px 5px #383838;
   border: 2px solid #383838;
-  color: #f5f5f5;
 `
 
 const StyledLoginSignUpForm = styled.form`
-  background-color: #383838;
   border-radius: 20px;
   padding: 1rem;
+  color: #f5f5f5;
+  background-color: #383838b2;
   display: flex;
   gap: 2rem;
   justify-content: center;
@@ -356,14 +559,14 @@ const StyledLoginSignUpForm = styled.form`
 `
 
 const StyledLogPage = styled.div`
+  color: #383838;
   width: 90vw;
-  min-height: 90vh;
-  height: auto;
+  min-height: 100vh;
   margin: auto;
   display: flex;
+  padding-top: 7rem;
   justify-content: center;
   align-items: center;
-  color: #f5f5f5;
 `
 
 const StyledLabel = styled.label`
@@ -381,7 +584,82 @@ const StyledRightAlignedForms = styled.div`
   flex-direction: column;
   gap: 1rem;
 `
+const StyledAbout = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  gap 5rem;
+`
+const StyledPageColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  background-color: #f5f5f52b;
+  padding: 4rem;
+  border-radius: 20px;
+  border: 1px solid #38698fda;
+`
 
+const StyledPageRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  background-color: #f5f5f52b;
+  padding: 4rem;
+  border-radius: 20px;
+  border: 1px solid #38698fda;
+`
+
+const StyledImage = styled.img`
+  width: 40rem;
+  border: 1px solid #f5f5f5;
+  border-radius: 20px;
+  box-shadow: 5px 5px 5px #383838;
+  `
+
+const FriendsModalContainer = styled.div`
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const FriendsModalContent = styled.div`
+  width: 500px;
+  height: 200px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  justify-content: center;
+  h4 {
+    font-size: 20px;
+  }
+  div {
+    padding: 10px;
+  }
+  input{
+    position: relative;
+    width: 350px;
+    border-radius: 10px;
+    border: 1px solid black;
+    height: 40px;
+    font-size: 20px;
+    background-color: white;
+    &:focus {
+      border: none;
+    };
+  }
+`
 
 export {
   StyledNavBar,
@@ -397,6 +675,7 @@ export {
   MessagesConvoContainer,
   MessagesChatContainer,
   MessagesTextContainer,
+  StyledFriendSearchSpan,
   MyMessage,
   TheirMessage,
   MessagesTopContainer,
@@ -410,5 +689,20 @@ export {
   StyledButton,
   StyledTextEmail,
   StyledRightAlignedForms,
-  StyledRadioInput
+  StyledRadioInput,
+  StyledAbout,
+  StyledPageColumn,
+  StyledPageRow,
+  StyledImage,
+  StyledFriend,
+  StyledFriendIcons,
+  MessageFriends,
+  MessageProfilePic,
+  StyledWriteMessage,
+  StyledFriendSearch,
+  LightTheme,
+  DarkTheme,
+  AddPicture,
+  FriendsModalContainer,
+  FriendsModalContent,
 }

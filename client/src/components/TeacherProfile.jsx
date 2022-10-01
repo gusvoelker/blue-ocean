@@ -12,14 +12,10 @@ import {
   StyledFriend,
   StyledFriendIcons,
   StyledFriendSearchSpan,
-  StyledFriendSearch,
-  AddPicture,
+  StyledFriendSearch
 } from './StyledComponents/StyledComponents.jsx'
 
-import FriendsModal from './FriendsModal.jsx';
-import AddFriendModal from './AddFriendModal.jsx';
-
-export default function Profile(props) {
+export default function TeacherProfile (props) {
   const [name, setname] = useState('Anthony');
   const [email, setEmail] = useState('hello@gmail.com');
   const [password, setPassword] = useState('');
@@ -27,9 +23,6 @@ export default function Profile(props) {
   const [role, setRole] = useState('Student')
   const [profilePicture, setProfilePicture] = useState('https://i.postimg.cc/gkDMWvVY/photo-1615497001839-b0a0eac3274c.jpg');
   const [profileBackground, setProfileBackground] = useState('https://i.postimg.cc/hGpk2kjq/denis-istomin-sunset-120317-night-long.jpg');
-  const [show, setShow] = useState(false);
-  const [addShow, setAddShow] = useState(false);
-  const [currentFriend, setCurrentFriend] = useState('');
 
   // const onProfilePictureChange = () => {
   //   axios.put(`/profile/${email}/profilepic`, { profilePicture: profilePicture })
@@ -51,44 +44,19 @@ export default function Profile(props) {
   //   axios.get(`/profile/${props.email}`)
   // })
 
-  const onFriendClick = (e) => {
-    setShow(true);
-    setCurrentFriend(e.target.id);
-  }
-
-  const onAddFriendClick = () => {
-    setAddShow(true);
-  }
 
   return (
     <div>
       <ProfileContainer>
         <ProfilePicture src={profilePicture} />
         <ProfileBackground src={profileBackground}></ProfileBackground>
-        {/* <AddPicture src='https://i.postimg.cc/65z5t7jr/3465604-200.png'></AddPicture> */}
         <ProfileAccountInfo>
           <h3><strong>ACCOUNT INFO</strong></h3>
           <div><strong>{role}</strong></div>
           <div>Name: {name}</div>
           <div>Email: {email}</div>
           <div>Password: ***********</div>
-          <h3><strong><u>Account Info</u></strong></h3>
-          <h4><strong>{role}</strong></h4>
-          <table>
-            <tr>
-              <td>Name:</td>
-              <td>{name}</td>
-            </tr>
-            <tr>
-              <td>E-mail:</td>
-              <td>{email}</td>
-            </tr>
-            <tr>
-              <td>Password:</td>
-              <td>*********</td>
-            </tr>
-          </table>
-          <StyledButton style={{marginTop: '1rem'}}>EDIT INFO</StyledButton>
+        <StyledButton style={{marginTop: '1rem'}}>EDIT INFO</StyledButton>
         </ProfileAccountInfo>
         <ProfileFriendsList>
           <StyledFriendSearchSpan>
@@ -112,15 +80,8 @@ export default function Profile(props) {
           })}
           </p>
           <StyledButton style={{marginTop: '0rem'}}>ADD FRIEND</StyledButton>
-
-          <div id={friend} onClick={onFriendClick}>{friend}</div>
-
-
-          <LightGreyButton onClick={onAddFriendClick}>Add Friend +</LightGreyButton>
-      </ProfileFriendsList>
-    </ProfileContainer>
-    <FriendsModal onClose={() => setShow(false)} show={show} friend={currentFriend} />
-    <AddFriendModal onClose={() => setAddShow(false)} show={addShow} />
-    </div >
+        </ProfileFriendsList>
+      </ProfileContainer>
+    </div>
   )
 }
