@@ -8,6 +8,8 @@ import TeacherProfile from './components/TeacherProfile.jsx';
 import Error from './components/LoginSignup/Error.jsx';
 import Messages from './components/Messages.jsx';
 import { StyledLogPage, LightTheme, DarkTheme } from './components/StyledComponents/StyledComponents.jsx'
+import FriendsModal from './components/FriendsModal.jsx';
+import { StyledLogPage } from './components/StyledComponents/StyledComponents.jsx'
 import EntryForm from './components/LoginSignup/EntryForm.jsx';
 import Role from './components/LoginSignup/Role.jsx'
 import UserSignUp from './components/LoginSignup/User/UserSignUp.jsx';
