@@ -6,9 +6,10 @@ const query = require('../db/db.js').poolQuery;
 // account.firstName
 // account.lastName
 // account.isTeacher
+// TODO: Remove salt field, as it will be handled by bcrypt / passport (?)
 module.exports.createAccount = (account) => {
   return query(`
-    INSERT INTO account(
+    INSERT INTO accounts(
       email,
       pw_hash,
       salt,
