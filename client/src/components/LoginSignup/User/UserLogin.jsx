@@ -9,7 +9,9 @@ import {
   StyledTextEmail,
   StyledTextInput,
   StyledRightAlignedForms,
-  StyledSubmitInput
+  StyledSubmitInput,
+  StyledPageRow,
+  StyledImage
 } from '../../StyledComponents/StyledComponents.jsx'
 
 export default function UserLogin () {
@@ -27,7 +29,8 @@ export default function UserLogin () {
   }
 
   return (
-    <StyledloginSignUpBox style={{height: '27rem'}}>
+    <StyledPageRow style={{paddingTop: '12rem', paddingBottom: '10rem'}}>
+    <StyledloginSignUpBox style={{height: '27rem', marginTop: '-12rem', zIndex: '2'}}>
       <StyledLoginSignUpForm>
         <h1>
           USER LOGIN
@@ -45,5 +48,7 @@ export default function UserLogin () {
           <StyledSubmitInput value='SUBMIT'></StyledSubmitInput>
       </StyledLoginSignUpForm>
     </StyledloginSignUpBox>
+    <StyledImage style={{marginBottom: '-6rem', marginLeft: '-6rem', zIndex: '0'}} src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1173&q=80" />
+    </StyledPageRow>
   )
 }

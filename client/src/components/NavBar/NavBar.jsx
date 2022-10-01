@@ -15,6 +15,7 @@ export default function NavBar () {
       <StyledNavBarLinks>
         <p>Language</p>
         <p>Profile</p>
+        <p>Chat</p>
       </StyledNavBarLinks>
     </StyledNavBar>
   )

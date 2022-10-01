@@ -15,7 +15,7 @@ import {
   StyledFriendSearch
 } from './StyledComponents/StyledComponents.jsx'
 
-export default function Profile (props) {
+export default function TeacherProfile (props) {
   const [name, setname] = useState('Anthony');
   const [email, setEmail] = useState('hello@gmail.com');
   const [password, setPassword] = useState('');
