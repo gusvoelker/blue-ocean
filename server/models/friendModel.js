@@ -2,6 +2,15 @@ const query = require('../db/db.js').poolQuery;
 
 // connection.user1
 // connection.user2
+module.exports.findFriends = (user_id) => {
+  //TODO: figure out which id to return
+  return query(`
+  SELECT *
+  FROM connections
+  WHERE conn_id=${user_id}
+  `)
+};
+
 module.exports.createFriend = (connection) => {
   return query(`
     INSERT INTO connections(

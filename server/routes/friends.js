@@ -2,8 +2,13 @@ const express = require('express');
 const router = express.Router();
 const model = require('../models/friendModel.js');
 
+//req.query.userId
 router.get('/friend', (req, res, next) => {
-  res.sendStatus(200); //TODO:
+  model.findFriends(req.query.userId)
+  .then((friends) => {
+    res.status(200).send(friends);
+  })
+  .catch((error) => res.status(400).send(error));
 });
 
 
@@ -22,9 +27,9 @@ router.post('/friend', (req, res, next) => {
 });
 
 //accept friend status
-//req.query.connectionID
+//req.query.connectionId
 router.put('/friend', (req, res, next) => {
-  model.acceptFriend(req.query.connectionID)
+  model.acceptFriend(req.query.connectionId)
     .then(() => {
       res.sendStatus(202);
     })
@@ -32,9 +37,9 @@ router.put('/friend', (req, res, next) => {
 });
 
 //delete friend or deny friend request
-//req.query.connectionID
+//req.query.connectionId
 router.delete('/friend', (req, res, next) => {
-  model.deleteFriend(req.query.connectionID)
+  model.deleteFriend(req.query.connectionId)
     .then(() => {
       res.sendStatus(204);
     })
