@@ -5,10 +5,18 @@ import styled, { createGlobalStyle } from 'styled-components';
 
 const LightTheme = createGlobalStyle`
   body {
-    color: #386A8F;
-    background-color: #f5f5f5;
-    transition: 0.3s;
-  }
+  margin: 0;
+  display: block;
+  min-width: 100vw;
+  min-height: 100vh;
+  background-image: url("https://images.unsplash.com/photo-1562504208-03d85cc8c23e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: absolute;
+  background-attachment: fixed;
+  font-family: 'Roboto', sans-serif;
+  overflow-x: hidden;
+}
 `
 
 const DarkTheme = createGlobalStyle`
