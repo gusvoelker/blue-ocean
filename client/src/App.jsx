@@ -38,7 +38,7 @@ export default function App () {
     <div>
       <StyledLogPage>
         <NavBar/>
-        <Profile/>
+        <TeacherProfile/>
       </StyledLogPage>
     </div>
   );
