@@ -8,7 +8,7 @@ module.exports.addClass = (classObj) => {
     class_name,
   ) VALUES (
     ${classObj.teacher_id},
-    ${classObj.className}
+    '${classObj.className}'
   )
   RETURNING class_id
 `)
