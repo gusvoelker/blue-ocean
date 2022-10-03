@@ -13,6 +13,7 @@ router.get('/friend', (req, res, next) => {
 
 
 // req.body.requestedId - Integer (receiver account id)
+// TODO: Ensure that users of different types can not request friendship (could add this to model)
 router.post('/friend', (req, res, next) => {
   let requesterId = req.user.id;
   model.requestFriend(requesterId, req.body.requestedId)
