@@ -504,6 +504,15 @@ const StyledTextEmail = styled.input.attrs({ type: 'email' })`
   box-shadow: 5px 5px 5px #383838;
   border: 1px solid #383838;
 `
+const StyledClassTextInput = styled.input.attrs({ type: 'text' })`
+  width: 15;
+  font-size: 1rem;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  border-radius: 100px;
+  box-shadow: 5px 5px 5px #383838;
+  border: 1px solid #383838;
+`
 
 const StyledRadioInput = styled.input.attrs({ type: 'radio' })`
 `
@@ -674,7 +683,132 @@ const FriendsModalContent = styled.div`
     };
   }
 `
+const StyledSpinner = styled.svg`
+  animation: rotate 1s linear infinite;
+  margin: 0px
+  width: 35px;
+  height: 35px;
 
+  & .path {
+    stroke: #5652bf;
+    stroke-linecap: round;
+    animation: dash 1.5s ease-in-out infinite;
+  }
+
+  @keyframes rotate {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes dash {
+    0% {
+      stroke-dasharray: 1, 150;
+      stroke-dashoffset: 0;
+    }
+    50% {
+      stroke-dasharray: 90, 150;
+      stroke-dashoffset: -35;
+    }
+    100% {
+      stroke-dasharray: 90, 150;
+      stroke-dashoffset: -124;
+    }
+  }
+`
+const StyledCSVCloseButton = styled.button`
+  width: 8em;
+  height: 3rem;
+  font-size: 1rem;
+  margin-left: .5rem;
+  background-color: #f5f5f5;
+  padding: .5rem;
+  border-radius: 50px;
+  color: #386A8F;
+  box-shadow: 5px 5px 5px #383838;
+  border: 1px solid #383838;
+  transition: 0.3s;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 3px 3px 5px #383838;
+    color: #f5f5f5;
+    background-color: #386A8F;
+  }
+`
+const StyledCSVButton = styled.button`
+  width: 20vw !important;
+  height: 3rem;
+  font-size: 1rem;
+  margin: 0.5rem !important;
+  background-color: #f5f5f5;
+  padding: .5rem;
+  border-radius: 50px;
+  color: #386A8F;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: 5px 5px 5px #383838;
+  border: 1px solid #383838;
+  transition: 0.3s;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 3px 3px 5px #383838;
+    color: #f5f5f5;
+    background-color: #386A8F;
+  }
+`
+const CSVModalContainer = styled.div`
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const CSVModalContent = styled.div`
+  width: 700px;
+  height: 400px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  justify-content: center;
+  h4 {
+    font-size: 20px;
+  }
+  div {
+    padding: 10px;
+  }
+  input{
+    position: relative;
+    width: 350px;
+    border-radius: 10px;
+    border: 1px solid black;
+    height: 40px;
+    font-size: 20px;
+    background-color: white;
+    &:focus {
+      border: none;
+    };
+  }
+`
+const StyledSpan = styled.span`
+width: 70%;
+color: black;
+display: inline-block;
+font-size: 1rem;
+padding: 0.3rem;
+word-wrap: break-word;
+`
+const StyledButtonDiv = styled.div`
+width: 100%;
+display: flex;
+justify-content: center;
+align-items: center;
+`
 export {
   StyledNavBar,
   StyledNavBarIcon,
@@ -719,4 +853,12 @@ export {
   AddPicture,
   FriendsModalContainer,
   FriendsModalContent,
+  StyledClassTextInput,
+  StyledSpinner,
+  StyledCSVButton,
+  CSVModalContainer,
+  CSVModalContent,
+  StyledCSVCloseButton,
+  StyledSpan,
+  StyledButtonDiv,
 }

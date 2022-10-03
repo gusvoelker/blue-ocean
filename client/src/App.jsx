@@ -38,7 +38,7 @@ export default function App () {
       <LightTheme/>
       <StyledLogPage>
         <NavBar/>
-        <Profile/>
+        <TeacherProfile/>
       </StyledLogPage>
     </div>
   );

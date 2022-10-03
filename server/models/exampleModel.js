@@ -23,7 +23,7 @@ module.exports.insertExample = (data) => {
   return query(`
     INSERT INTO ${'table'} (${'firstField'}, ${'secondField'})
       VALUES (${data.firstValue}, ${data.secondValue})
-    RETURNING review_id
+    RETURNING data_id
   `);
 };
 
