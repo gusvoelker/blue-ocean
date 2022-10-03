@@ -10,7 +10,6 @@ const app = express();
 app.use(compression());
 app.use(express.json());
 app.use(cors({origin: process.env.CL_ORIGIN}));
-// app.use(auth);
 
 for (let router of Object.values(routers)) {
   app.use(router);
