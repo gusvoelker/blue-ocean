@@ -30,8 +30,8 @@ module.exports.getMessagesByRoomId = (roomId, accountId, sort='created_at DESC')
 module.exports.createRoom = (participantOneId, participantTwoId) => {
   return friendModel.checkIfFriends(participantOneId, participantTwoId)
     .then((result) => {
-      if (result === 'f') { // TODO: Check that this result is accurate, haven't tested, may need to be accessing result.rows?
-        throw new Error('Can\'t create rooms between non-connected users');
+      if (!result.rows[0].exists) {
+        throw new Error('Can\'t create rooms between non-connected users'); // TODO: Ensure this is handled properly
       }
       return query(`
         INSERT INTO account_room
