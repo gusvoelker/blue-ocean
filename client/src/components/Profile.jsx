@@ -154,9 +154,8 @@ export default function Profile(props) {
           {x === 0 ? null : <LeftButton data-testid='left-arrow' onClick={goLeft}><FontAwesomeIcon icon={faChevronLeft} /></LeftButton>}
           {x >= profileBackground.length - 1 ? null : <RightButton data-testid='right-arrow' onClick={goRight}><FontAwesomeIcon icon={faChevronRight} /></RightButton>}
         </ProfileBackground>
-        {/* <AddPicture src='https://i.postimg.cc/65z5t7jr/3465604-200.png'></AddPicture> */}
         <ProfileAccountInfo>
-          <h3><strong><u>Account Info</u></strong></h3>
+          <h3><strong>Account Info</strong></h3>
           <h4><strong>{role}</strong></h4>
           <table>
             <tr>

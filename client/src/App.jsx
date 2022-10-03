@@ -14,8 +14,8 @@ import Role from './components/LoginSignup/Role.jsx'
 import UserSignUp from './components/LoginSignup/User/UserSignUp.jsx';
 import UserLogin from './components/LoginSignup/User/UserLogin.jsx'
 import UserInfo from './components/LoginSignup/User/UserInfo.jsx'
-import TeacherSignUp from './components/LoginSignup/Teacher/TeacherSignUp.jsx'
-import TeacherLogin from './components/LoginSignup/Teacher/TeacherLogin.jsx'
+import SignUp from './components/LoginSignup/Teacher/SignUp.jsx'
+import Login from './components/LoginSignup/Teacher/Login.jsx'
 import TeacherInfo from './components/LoginSignup/Teacher/TeacherInfo.jsx'
 import About from './components/LoginSignup/About.jsx'
 
@@ -38,7 +38,7 @@ export default function App () {
       <LightTheme/>
       <StyledLogPage>
         <NavBar/>
-        <TeacherProfile/>
+        <TeacherInfo/>
       </StyledLogPage>
     </div>
   );
