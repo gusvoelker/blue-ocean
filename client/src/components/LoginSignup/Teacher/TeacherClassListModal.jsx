@@ -13,6 +13,7 @@ import {
 } from '../../StyledComponents/StyledComponents.jsx';
 import exampleCSVPic from './exampleCSVPic.png'
 import axios from 'axios';
+import serverURL from '../../../config.js'
 
 
 export default function TeacherClassListModal({ onClose, teacherId }) {
@@ -39,7 +40,7 @@ export default function TeacherClassListModal({ onClose, teacherId }) {
     //Have a spinner graphic so teachers know the file is loading
     setSpinner(true)
     var options={
-      url: `http://localhost:3000/classes`,
+      url: `${serverURL}/classes`,
       method: 'post',
       headers: {
         'Content-Type': 'application/json'
@@ -53,7 +54,7 @@ export default function TeacherClassListModal({ onClose, teacherId }) {
       console.log('classId ', classId)
       const formData = new FormData();
       formData.append('file', file)
-        axios.post(`http://localhost:3000/classes/students`, formData, {
+        axios.post(`${serverURL}/classes/students`, formData, {
           headers: {
             'Content-Type': 'mulitpart/form-data'
           }

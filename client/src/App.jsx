@@ -36,10 +36,12 @@ export default function App () {
   return (
     <div>
       <LightTheme/>
-      <StyledLogPage>
+      {/* <StyledLogPage>
         <NavBar/>
         <SignUp/>
-      </StyledLogPage>
+      </StyledLogPage> */}
+      <NavBar />
+      <TeacherProfile />
     </div>
   );
 }
