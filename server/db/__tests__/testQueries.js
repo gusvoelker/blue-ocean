@@ -12,7 +12,6 @@ const chatModel = require('../../models/chatModel.js');
   let teacherAccount = {
     email: 'teacher@test.edu',
     passwordHash: '3iojfsoinfw',
-    passwordSalt: '3kjrgio8',
     firstName: 'Teacher',
     lastName: 'Person',
     isTeacher: true
@@ -22,7 +21,6 @@ const chatModel = require('../../models/chatModel.js');
   let userAccount = {
     email: 'user@test.com',
     passwordHash: '3iojfsoinfw',
-    passwordSalt: '3kjrgio8',
     firstName: 'Ryan',
     lastName: 'Nelson',
     isTeacher: false
@@ -35,9 +33,9 @@ const chatModel = require('../../models/chatModel.js');
 (async () => {
   let teacherAccountId = 1;
   let userAccountId = 2;
-  let result = await accountModel.getAccountInfo(teacherAccountId);
+  let result = await accountModel.getPublicAccountInfo(teacherAccountId);
   console.log(result.rows);
-  result = await accountModel.getAccountInfo(userAccountId);
+  result = await accountModel.getPublicAccountInfo(userAccountId);
   console.log(result.rows);
 });
 
@@ -88,12 +86,12 @@ const chatModel = require('../../models/chatModel.js');
   let accountId = 1;
   let participantTwoId = 3;
   let message = 'hello there';
-  let roomId = await accountChatModel.createRoom(accountId, participantTwoId);
+  let roomId = await chatModel.createRoom(accountId, participantTwoId);
   console.log(roomId);
-  let result = await accountChatModel.postMessage(roomId, accountId, message);
+  let result = await chatModel.postMessage(roomId, accountId, message);
   console.log(result);
-  result = await accountChatModel.getRoomsByAccountId(accountId);
+  result = await chatModel.getRoomsByAccountId(accountId);
   console.log(result.rows);
-  result = await accountChatModel.getMessagesByRoomId(roomId, accountId);
+  result = await chatModel.getMessagesByRoomId(roomId, accountId);
   console.log(result.rows);
 });
