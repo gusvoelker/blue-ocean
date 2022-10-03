@@ -34,16 +34,16 @@ const chatModel = require('../../models/chatModel.js');
   let teacherAccountId = 1;
   let userAccountId = 2;
   let result = await accountModel.getPublicAccountInfoById(teacherAccountId);
-  console.log(result.rows);
+  console.log(result);
   result = await accountModel.getPublicAccountInfoById(userAccountId);
-  console.log(result.rows);
+  console.log(result);
 });
 
 // LANGUAGES //
 
 // INSERT LANGUAGE
 (async () => {
-  let result = await languageModel.insertLanguage('english');
+  let result = await languageModel.insertLanguage('spanish');
   console.log(result);
 });
 
@@ -57,8 +57,8 @@ const chatModel = require('../../models/chatModel.js');
 // INSERT TAUGHT, KNOWN, DESIRED LANGUAGES
 // Should throw an error if language or taughtLevel is invalid
 (async () => {
-  let teacherId = 3;
-  let userId = 4;
+  let teacherId = 1;
+  let userId = 2;
   let taughtLevel = '5';
   let language = 'english';
   let result = await languageModel.insertTaughtLanguage(teacherId, taughtLevel, language);
@@ -74,11 +74,11 @@ const chatModel = require('../../models/chatModel.js');
   let teacherId = 1;
   let userId = 2;
   let result = await languageModel.getTaughtLanguagesByTeacherId(teacherId);
-  console.log(result);
+  console.log('taught', result.rows);
   result = await languageModel.getKnownLanguagesByUserId(userId);
-  console.log(result);
+  console.log('known', result.rows);
   result = await languageModel.getDesiredLanguagesByUserId(userId);
-  console.log(result);
+  console.log('desired', result.rows);
 });
 
 // accountChat tests

@@ -58,7 +58,7 @@ module.exports.insertLanguage = (language) => {
 
 module.exports.insertTaughtLanguage = (teacherId, taughtLevel, language) => {
   return query(`
-    INSERT INTO taught_languages(teacher_id, taught_lang_id, taught_level)
+    INSERT INTO taught_languages(teacher_id, lang_id, taught_level)
       VALUES (
         ${teacherId},
         (SELECT lang_id
@@ -70,9 +70,8 @@ module.exports.insertTaughtLanguage = (teacherId, taughtLevel, language) => {
 };
 
 module.exports.insertKnownLanguage = (userId, language) => {
-  // TODO: Change known_lang_id to lang_id once schema is changed
   return query(`
-    INSERT INTO known_languages(user_id, known_lang_id)
+    INSERT INTO known_languages(user_id, lang_id)
       VALUES (
         ${userId},
         (SELECT lang_id
@@ -83,9 +82,8 @@ module.exports.insertKnownLanguage = (userId, language) => {
 };
 
 module.exports.insertDesiredLanguage = (userId, language) => {
-  // TODO: Change desired_lang_id to lang_id once schema is changed
   return query(`
-    INSERT INTO desired_languages(user_id, desired_lang_id)
+    INSERT INTO desired_languages(user_id, lang_id)
       VALUES (
         ${userId},
         (SELECT lang_id
