@@ -1,6 +1,7 @@
 module.exports = {
   exampleRoute: require('./exampleRoute.js'),
-  account: require('./account.js'),
-  language: require('./language.js'),
+  accounts: require('./accounts.js'),
+  languages: require('./languages.js'),
+  chats: require('./chats.js'),
   friends: require('./friends.js')
 };

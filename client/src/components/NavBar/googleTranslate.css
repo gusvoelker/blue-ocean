@@ -1,0 +1,28 @@
+.goog-logo-link {
+  display:none !important;
+}
+
+.goog-te-gadget{
+  color: transparent !important;
+  padding-left: 50px;
+
+}
+.goog-te-banner-frame{
+  display:none !important;
+  }
+
+
+#translate2 {
+  padding-left: 30px;
+  height: 25px;
+  width: 25%;
+  position: flex;
+  justify-content: end;
+  z-index: 1;
+
+
+}
+.links {
+  height: 60px;
+
+}
