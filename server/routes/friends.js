@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const model = require('../models/friendModel.js');
+const accountModel = require('../models/accountModel.js');
 
 router.get('/friend', (req, res, next) => {
   let requesterId = req.user.id;
@@ -13,14 +14,26 @@ router.get('/friend', (req, res, next) => {
 
 
 // req.body.requestedId - Integer (receiver account id)
-// TODO: Ensure that users of different types can not request friendship (could add this to model)
 router.post('/friend', (req, res, next) => {
   let requesterId = req.user.id;
-  model.requestFriend(requesterId, req.body.requestedId)
+  accountModel.getAccountTypeById(req.body.requestedId)
+    .then((result) => {
+      if (result.rows[0].is_teacher !== req.user.isTeacher) { // Checks that the requester and requesting are of the same type
+        res.status(403).send({
+          message: 'Students and teachers can not be friends!'
+        });
+      }
+      console.log('type', result.rows[0].is_teacher);
+      return model.requestFriend(requesterId, req.body.requestedId);
+    })
     .then((connectionID) => {
-      res.status(201).send(`${connectionID}`);
+      res.status(201).send({
+        message: 'Friend request sent',
+        connectionID
+      });
     })
     .catch((error) => console.log(error));
+
 });
 
 //accept friend status

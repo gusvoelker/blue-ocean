@@ -53,7 +53,7 @@ const friendModel = require('../../models/friendModel.js');
   let result = await languageModel.getAllLanguages();
   console.log(result);
   console.log(result.rows.slice(0, 10));
-})();
+});
 
 // INSERT TAUGHT, KNOWN, DESIRED LANGUAGES
 // Should throw an error if language or taughtLevel is invalid
