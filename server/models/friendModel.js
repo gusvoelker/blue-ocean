@@ -1,5 +1,17 @@
 const query = require('../db/db.js').poolQuery;
 
+// NOTE: This works without needing to check both ways
+// due to accepting a friend request creating 2 records, one each way
+module.exports.checkIfFriends = (accountId1, accountId2) => {
+  return query(`
+    SELECT EXISTS (
+      SELECT conn_id FROM connections
+        WHERE req_account_id=${accountId1}
+          AND rec_account_id=${accountId2}
+          AND status = true
+    )
+  `);
+};
 
 module.exports.findFriends = (user_id) => {
   return query(`
