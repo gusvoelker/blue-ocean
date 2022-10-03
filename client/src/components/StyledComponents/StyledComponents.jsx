@@ -5,10 +5,18 @@ import styled, { createGlobalStyle } from 'styled-components';
 
 const LightTheme = createGlobalStyle`
   body {
-    color: #386A8F;
-    background-color: #f5f5f5;
-    transition: 0.3s;
-  }
+  margin: 0;
+  display: block;
+  min-width: 100vw;
+  min-height: 100vh;
+  background-image: url("https://images.unsplash.com/photo-1562504208-03d85cc8c23e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: absolute;
+  background-attachment: fixed;
+  font-family: 'Roboto', sans-serif;
+  overflow-x: hidden;
+}
 `
 
 const DarkTheme = createGlobalStyle`
@@ -21,16 +29,14 @@ const DarkTheme = createGlobalStyle`
 
 const StyledNavBar = styled.div`
   background-color: #386A8F;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
   height: 7rem;
-  position: absolute;
+  position: fixed;
   top: 0;
   width: 100vw;
   display: flex;
   align-items: center;
   box-shadow: 0px 5px 5px #383838;
+  z-index: 4;
 `
 
 const StyledNavBarIcon = styled.h1`
@@ -55,9 +61,11 @@ const StyledNavBarLinks = styled.h2`
   margin-right: 3rem;
   cursor: pointer;
   transition: 0.3s;
+  overflow: hidden;
   p{
     text-shadow: 2px 2px #383838;
     transition: 0.3s;
+    overflow: hidden;
     color: #f5f5f5;
     &:hover {
       text-shadow: 4px 4px 4px #383838;
@@ -83,6 +91,7 @@ const ProfilePicture = styled.img`
   object-fit: cover;
   border: 1px solid #f5f5f5;
   visibility: visible;
+  z-index: 1;
   /* &:hover {
     visibility: hidden;
   } */
@@ -100,11 +109,15 @@ const AddPicture = styled.img`
     visibility: visible;
   }
 `
-const ProfileBackground = styled.img`
+const ProfileBackground = styled.div`
   top: 0%;
   width: 70vw;
+  overflow: hidden;
   height: 300px;
   border-radius: 15px;
+  display: flex;
+  align-items: center;
+  position:relative;
   object-fit: cover;
   border: 1px solid #f5f5f5;
 `

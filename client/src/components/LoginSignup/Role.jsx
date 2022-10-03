@@ -5,12 +5,28 @@ import {
   StyledTextInput,
   StyledSelectInput,
   StyledLogPage,
-  StyledloginSignUpBox,
   StyledLoginSignUpForm,
   StyledLabel,
   StyledPageRow,
   StyledImage
 } from '../StyledComponents/StyledComponents.jsx'
+
+const StyledloginSignUpBox = styled.div`
+  background-image: url("https://images.unsplash.com/photo-1557409518-691ebcd96038?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  width: 35rem;
+  height: 30rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 20px;
+  box-shadow: 5px 5px 5px #383838;
+  border: 2px solid #383838;
+`
+
 
 export default function Role () {
   const [formData, setFormData] = useState('')
@@ -21,8 +37,7 @@ export default function Role () {
     console.log(formData);
   }
   return (
-    <StyledPageRow>
-      <StyledloginSignUpBox style={{marginTop: '-10rem'}}>
+      <StyledloginSignUpBox>
         <StyledLoginSignUpForm>
           <h1>
             CHOOSE A ROLE
@@ -36,7 +51,5 @@ export default function Role () {
           <StyledSubmitInput value='Select'></StyledSubmitInput>
         </StyledLoginSignUpForm>
       </StyledloginSignUpBox>
-      <StyledImage style={{marginTop: '4rem'}} src="https://images.unsplash.com/photo-1557409518-691ebcd96038?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" />
-    </StyledPageRow>
   )
 }
