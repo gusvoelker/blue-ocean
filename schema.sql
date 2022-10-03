@@ -29,12 +29,6 @@ CREATE TABLE ratings (
 	rating rating_enum
 );
 
-CREATE TABLE sessions (
-	session_id VARCHAR(120) NOT NULL,
-	account_id INT NOT NULL REFERENCES accounts(account_id),
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
 CREATE TABLE classes (
 	class_id SERIAL NOT NULL PRIMARY KEY,
 	teacher_id INT NOT NULL REFERENCES accounts(account_id),
