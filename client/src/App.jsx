@@ -18,6 +18,8 @@ import SignUp from './components/LoginSignup/Teacher/SignUp.jsx'
 import Login from './components/LoginSignup/Teacher/Login.jsx'
 import TeacherInfo from './components/LoginSignup/Teacher/TeacherInfo.jsx'
 import About from './components/LoginSignup/About.jsx'
+import VideoChat from './components/VideoChat.jsx'
+
 
 
 // order:
@@ -38,7 +40,7 @@ export default function App () {
       <LightTheme/>
       <StyledLogPage>
         <NavBar/>
-        <TeacherInfo/>
+        <TeacherInfo />
       </StyledLogPage>
     </div>
   );
