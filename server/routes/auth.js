@@ -9,15 +9,14 @@ const passport = require("passport");
 router.post("/register", (req, res, next) => {
   const { email, password, firstName, lastName, isTeacher } = req.body;
   if (isTeacher && !email.endsWith(".edu")) {
-    res.send({ message: "Unverified email" });
+    res.status(400).send({ message: "Unverified email" });
   } else if (!email && password) {
-    res.send({ message: "Please fill in email field" });
+    res.status(400).send({ message: "Please fill in email field" });
   } else if (!password && email) {
-    res.send({ message: "Please fill in password field" });
+    res.status(400).send({ message: "Please fill in password field" });
   } else if (!email && !password) {
-    res.send({ message: "Please fill in all fields" });
+    res.status(400).send({ message: "Please fill in all fields" });
   } else {
-    //check to see if the user exists
     model
       .getPasswordByEmail(email)
       .then((userPass) => {
@@ -37,10 +36,9 @@ router.post("/register", (req, res, next) => {
                 isTeacher,
               })
               .then((user) => {
-                console.log(user); //this gives back a number, no clue why
-                //Not sure what should happen now
-                //should we send them to the login page? with res.redirect
-                res.send({ message: "Account successfully created" });
+                res
+                  .status(201)
+                  .send({ message: "Account successfully created" });
               })
               .catch((err) => console.log(err));
           });
@@ -55,18 +53,12 @@ router.post("/register", (req, res, next) => {
 // LOGIN
 //session is established after authentication
 router.post("/login", (req, res, next) => {
-  passport.authenticate("local", {
+  passport.authenticate(
+    "local"
     //is there like a homepage route?
-    successRedirect: "/dashboard",
-    failureRedirect: "/login",
-  })(req, res, next);
-});
-
-router.get("/", (req, res) => {
-  console.log(req.session);
-  if (req.user) {
-    console.log(req.user);
-  }
+    // successRedirect: "/dashboard",
+    // failureRedirect: "/login",
+  )(req, res, () => res.sendStatus(201));
 });
 
 //LOGOUT
@@ -75,7 +67,7 @@ router.post("/logout", (req, res, next) => {
     if (err) {
       return next(err);
     }
-    res.redirect("/login");
+    res.send("You are logged out!");
   });
 });
 

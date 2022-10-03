@@ -9,7 +9,6 @@ module.exports = (passport) => {
       model
         .getAccountAuthByEmail(email)
         .then((user) => {
-          console.log(user.rows);
           if (user.rows[0].length === 0) {
             return done(null, false, {
               message: "That email is not registered",
