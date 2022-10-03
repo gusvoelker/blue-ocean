@@ -11,85 +11,102 @@ router.get('/languages', (req, res, next) => {
       let languages = result.rows;
       languages.length > 0 ?
         res.status(200).send(languages) :
-        res.sendStatus(404)
+        res.sendStatus(404);
     })
     .catch((error) => res.status(404).send(error));
 });
 
-// Get taught languages for a given accountId (must be a teacher)
+// Get taught languages for a given accountId
+// Querying this with an accountId for a student
+// should result in a 404 (nothing will be found)
+// If accountId is not provided, retrieves info for requesting user
 router.get('/languages/taught', (req, res, next) => {
-  if (!req.query.accountId) {
-    res.sendStatus(404);
-    return;
-  }
-  model.getTaughtLanguagesByTeacherId(req.query.accountId)
+  let accountId = req.query.accountId || req.user.id;
+  model.getTaughtLanguagesByTeacherId(accountId)
     .then((result) => {
       let languages = result.rows;
       languages.length > 0 ?
         res.status(200).send(languages) :
-        res.sendStatus(404)
+        res.sendStatus(404);
     })
     .catch((error) => res.status(404).send(error));
 });
 
-// Get known languages for a given accountId (must be a user)
+// Get known languages for a given accountId
+// Querying this with an accountId for a teacher
+// should result in a 404 (nothing will be found)
+// If accountId is not provided, retrieves info for requesting user
 router.get('/languages/known', (req, res, next) => {
-  if (!req.query.accountId) {
-    res.sendStatus(404);
-    return;
-  }
-  model.getKnownLanguagesByUserId(req.query.accountId)
+  let accountId = req.query.accountId || req.user.id;
+  model.getKnownLanguagesByUserId(accountId)
     .then((result) => {
       let languages = result.rows;
       languages.length > 0 ?
         res.status(200).send(languages) :
-        res.sendStatus(404)
+        res.sendStatus(404);
     })
     .catch((error) => res.status(404).send(error));
 });
 
-// Get desired languages for a given accountId (must be a user)
+// Get desired languages for a given accountId
+// Querying this with an accountId for a teacher
+// should result in a 404 (nothing will be found)
+// If accountId is not provided, retrieves info for requesting user
 router.get('/languages/desired', (req, res, next) => {
-  if (!req.query.accountId) {
-    res.sendStatus(404);
-    return;
-  }
-  model.getDesiredLanguagesByUserId(req.query.accountId)
+  let accountId = req.query.accountId || req.user.id;
+  model.getDesiredLanguagesByUserId(accountId)
     .then((result) => {
       let languages = result.rows;
       languages.length > 0 ?
         res.status(200).send(languages) :
-        res.sendStatus(404)
+        res.sendStatus(404);
     })
     .catch((error) => res.status(404).send(error));
 });
 
 // POST REQUESTS //
 
-// TODO: Must validate that request is coming from teacher account
+// Expects in req.body:
+//  taughtLevel - String in range ('1', '2', '3', '4', '5', 'AP')
+//  language - String
+// Meant for teachers, will 403 on request by a student account
 router.post('/languages/taught', (req, res, next) => {
-  // TODO: Get teacherId by searching db sessions table with request cookie hash (session)
+  if (!req.user.isTeacher) {
+    res.sendStatus(403);
+    return;
+  }
   // TODO: Figure out how to insert many rather than just one at a time
-  model.insertTaughtLanguage(teacherId, req.body.taughtLevel, req.body.language)
+  model.insertTaughtLanguage(req.user.id, req.body.taughtLevel, req.body.language)
     .then((result) => {
       res.sendStatus(201);
     })
     .catch((error) => res.status(400).send(error));
 });
 
-// TODO: See above
-// TODO: Must validate that request is coming from user (non-teacher) account
+// Expects in req.body:
+//  language - String
+// Meant for students, will 403 on request by a teacher account
 router.post('/languages/known', (req, res, next) => {
-  model.insertKnownLanguage(userId, req.body.language)
+  if (req.user.isTeacher) {
+    res.sendStatus(403);
+    return;
+  }
+  model.insertKnownLanguage(req.user.id, req.body.language)
     .then((result) => {
       res.sendStatus(201);
     })
     .catch((error) => res.status(400).send(error));
 });
 
-// TODO: See above
+// Expects in req.body:
+//  language - String
+// Meant for students, will 403 on request by a teacher account
 router.post('/languages/desired', (req, res, next) => {
-  model.insertDesiredLanguage(userId, req.body.language)
+  if (req.user.isTeacher) {
+    res.sendStatus(403);
+    return;
+  }
+  model.insertDesiredLanguage(req.user.id, req.body.language)
     .then((result) => {
       res.sendStatus(201);
     })

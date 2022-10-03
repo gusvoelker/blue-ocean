@@ -46,7 +46,7 @@ export default function TeacherClassListModal({ onClose, teacherId }) {
       },
       data: {
         className: className,
-        teacherId: teacherId
+        teacher_id: teacherId,
       },
     }
     axios(options).then(classId=>{
