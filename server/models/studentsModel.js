@@ -1,6 +1,6 @@
 const query = require('../db/db.js').poolQuery;
 
-
+//none of this works due to schem change
 module.exports.findClassesByTeacher = (teacher_id) => {
   //TODO: add classname to schema?
   return query(`

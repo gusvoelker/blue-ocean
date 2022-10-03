@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const model = require('../models/studentsModel.js');
 
-//req.query.classID
+//none of this works due to schem change
 router.get('/classes', (req, res, next) => {
   model.findClassesByTeacher(req.query.classID)
   .then((classes) => {
