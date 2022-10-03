@@ -12,9 +12,10 @@ import {
   StyledButtonDiv,
 } from '../../StyledComponents/StyledComponents.jsx';
 import exampleCSVPic from './exampleCSVPic.png'
+import axios from 'axios';
 
 
-export default function TeacherClassListModal({ onClose }) {
+export default function TeacherClassListModal({ onClose, teacherId }) {
   //state for controlling whether loading spinner is visible
   const [spinner, setSpinner] = useState(false)
   const [className, setClassName] = useState('')
@@ -37,22 +38,33 @@ export default function TeacherClassListModal({ onClose }) {
     console.log('file received')
     //Have a spinner graphic so teachers know the file is loading
     setSpinner(true)
-    const formData = new FormData();
-    formData.append('className', className)
-    formData.append('file', file)
-    //   axios.post(`/profile/${email}/`, formData, {
-    //     headers: {
-    //       'Content-Type': 'mulitpart/form-data'
-    //     }
-    //   })
-    //     .then(() => {
-    //       setSpinner(false);
+    var options={
+      url: `http://localhost:3000/classes`,
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: {
+        className: className,
+        teacherId: teacherId
+      },
+    }
+    axios(options).then(classId=>{
+      console.log('classId ', classId)
+      const formData = new FormData();
+      formData.append('file', file)
+        axios.post(`http://localhost:3000/classes/students`, formData, {
+          headers: {
+            'Content-Type': 'mulitpart/form-data'
+          }
+        })
+          .then(() => {setSpinner(false); })
+          .catch((err) => {
+            setSpinner(false)
+            console.log(err)
+          })
 
-    //     })
-    //     .catch((err) => {
-    //       setSpinner(false)
-    //       console.log(err)
-    //     })
+    }).catch(err=>{setSpinner(false); console.log(err)})
   }
 
   return (
