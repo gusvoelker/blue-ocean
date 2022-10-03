@@ -1,17 +1,17 @@
 const query = require('../db/db.js').poolQuery;
 
-// connection.user1
-// connection.user2
+
 module.exports.findFriends = (user_id) => {
-  //TODO: figure out which id to return
   return query(`
-  SELECT *
+  SELECT rec_account_id
   FROM connections
-  WHERE conn_id=${user_id}
+  WHERE req_account_id=${user_id}
+  AND status = true
   `)
 };
 
 module.exports.createFriend = (connection) => {
+  console.log(connection);
   return query(`
     INSERT INTO connections(
       req_account_id,
@@ -20,22 +20,21 @@ module.exports.createFriend = (connection) => {
     ) VALUES (
       ${connection.user1},
       ${connection.user2},
-      0
+      false
     )
     RETURNING conn_id
   `)
     .then((response) => {
-      if (response.name === 'error') {
-        throw new Error(response.message);
-      }
-      return response.rows[0].account_id;
-    });
+      console.log(response.rows[0].conn_id)
+      return response.rows[0].conn_id;
+    })
+    .catch(err => console.log(err))
 };
 
 module.exports.acceptFriend = (connection_id) => {
   return query(`
     UPDATE connections
-    SET status = 1
+    SET status = true
     WHERE conn_id = ${connection_id}
   `);
 };

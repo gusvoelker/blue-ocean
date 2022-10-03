@@ -4,17 +4,16 @@ const model = require('../models/friendModel.js');
 
 //req.query.userId
 router.get('/friend', (req, res, next) => {
-  res.sendStatus(200);
   model.findFriends(req.query.userId)
-  .then((friends) => {
-    res.status(200).send(friends);
+  .then(({rows}) => {
+    res.status(200).send(rows);
   })
   .catch((error) => res.status(400).send(error));
 });
 
 
-// req.body.user1 - Integer
-// req.body.user2 - Integer
+// req.body.user1 - Integer (request sender account id)
+// req.body.user2 - Integer (receiver account id)
 router.post('/friend', (req, res, next) => {
   let connection = {
     user1: req.body.user1,
@@ -22,9 +21,9 @@ router.post('/friend', (req, res, next) => {
   }
   model.createFriend(connection)
     .then((connectionID) => {
-      res.status(201).send(connectionID);
+      res.status(201).send(`${connectionID}`);
     })
-    .catch((error) => res.status(400).send(error));
+    .catch((error) => console.log(error));
 });
 
 //accept friend status
