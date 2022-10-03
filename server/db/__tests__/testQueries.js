@@ -33,9 +33,9 @@ const chatModel = require('../../models/chatModel.js');
 (async () => {
   let teacherAccountId = 1;
   let userAccountId = 2;
-  let result = await accountModel.getPublicAccountInfo(teacherAccountId);
+  let result = await accountModel.getPublicAccountInfoById(teacherAccountId);
   console.log(result.rows);
-  result = await accountModel.getPublicAccountInfo(userAccountId);
+  result = await accountModel.getPublicAccountInfoById(userAccountId);
   console.log(result.rows);
 });
 

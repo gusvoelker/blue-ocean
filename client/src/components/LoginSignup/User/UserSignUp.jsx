@@ -1,3 +1,5 @@
+// THIS SHOULDN'T BE USED! THIS HAS BEEN STREAMLINED TO THE LOGIN IN THE TEACHER FOLDER
+
 import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
 import {

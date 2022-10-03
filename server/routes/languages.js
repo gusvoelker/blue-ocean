@@ -68,9 +68,12 @@ router.get('/languages/desired', (req, res, next) => {
 
 // TODO: Must validate that request is coming from teacher account
 router.post('/languages/taught', (req, res, next) => {
-  // TODO: Get teacherId by searching db sessions table with request cookie hash (session)
+  if (!req.user.isTeacher) {
+    res.sendStatus(403);
+    return;
+  }
   // TODO: Figure out how to insert many rather than just one at a time
-  model.insertTaughtLanguage(teacherId, req.body.taughtLevel, req.body.language)
+  model.insertTaughtLanguage(req.user.id, req.body.taughtLevel, req.body.language)
     .then((result) => {
       res.sendStatus(201);
     })
@@ -80,7 +83,11 @@ router.post('/languages/taught', (req, res, next) => {
 // TODO: See above
 // TODO: Must validate that request is coming from user (non-teacher) account
 router.post('/languages/known', (req, res, next) => {
-  model.insertKnownLanguage(userId, req.body.language)
+  if (req.user.isTeacher) {
+    res.sendStatus(403);
+    return;
+  }
+  model.insertKnownLanguage(req.user.id, req.body.language)
     .then((result) => {
       res.sendStatus(201);
     })
@@ -89,7 +96,11 @@ router.post('/languages/known', (req, res, next) => {
 
 // TODO: See above
 router.post('/languages/desired', (req, res, next) => {
-  model.insertDesiredLanguage(userId, req.body.language)
+  if (req.user.isTeacher) {
+    res.sendStatus(403);
+    return;
+  }
+  model.insertDesiredLanguage(req.user.id, req.body.language)
     .then((result) => {
       res.sendStatus(201);
     })
