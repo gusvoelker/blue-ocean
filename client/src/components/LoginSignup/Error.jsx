@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import {
   StyledButton,
   StyledLogPage,
-  StyledloginSignUpBox,
   StyledLoginSignUpForm,
   StyledLabel,
   StyledTextEmail,
@@ -13,6 +12,22 @@ import {
   StyledPageRow,
   StyledImage
 } from '../StyledComponents/StyledComponents.jsx'
+
+const StyledloginSignUpBox = styled.div`
+  background-image: url("https://images.unsplash.com/photo-1545251142-f32339076e6d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  width: 35rem;
+  height: 40rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 20px;
+  box-shadow: 5px 5px 5px #383838;
+  border: 2px solid #383838;
+`
 
 export default function Error () {
   const [formData, setFormData] = useState({
@@ -29,8 +44,7 @@ export default function Error () {
   }
 
   return (
-    <StyledPageRow style={{paddingTop: '12rem', paddingBottom: '10rem'}}>
-    <StyledloginSignUpBox style={{height: '27rem', marginTop: '-12rem', zIndex: '2'}}>
+    <StyledloginSignUpBox style={{height: '30rem', marginTop: '-10rem', zIndex: '2'}}>
       <StyledLoginSignUpForm>
         <h1 style={{textAlign: 'center'}}>
           Looks Like something <br></br>went wrong.
@@ -41,7 +55,5 @@ export default function Error () {
         <StyledSubmitInput value='GO BACK'></StyledSubmitInput>
       </StyledLoginSignUpForm>
     </StyledloginSignUpBox>
-    <StyledImage style={{marginBottom: '-6rem', marginLeft: '-6rem', zIndex: '0'}} src="https://images.unsplash.com/photo-1545251142-f32339076e6d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" />
-    </StyledPageRow>
   )
 }

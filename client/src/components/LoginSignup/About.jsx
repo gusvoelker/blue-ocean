@@ -57,21 +57,10 @@ export default function About () {
       </StyledAbout>
       <StyledLoginSignUpForm style={{width: '20rem', backgroundColor: '#38698fda', height: '12rem', marginLeft: '-30rem', marginTop: '-4rem'}}>
         <h1 style={{marginBottom: '0rem'}}>
-          Pick a language
+          Get Started!
         </h1>
-        <StyledLabel>
-          <StyledSelectInput onChange={handleChange} style={{marginBottom: '-1rem'}}>
-            <option value='english'>English</option>
-            <option value='spanish'>Spanish</option>
-            <option value='romanian'>Romanian</option>
-            <option value='french'>French</option>
-            <option value='latin'>Latin</option>
-            <option value='greek'>Greek</option>
-            <option value='portuguese'>Portuguese</option>
-            <option value='elvish'>Elvish</option>
-          </StyledSelectInput>
-        </StyledLabel>
-        <StyledSubmitInput value='Select'></StyledSubmitInput>
+        <StyledSubmitInput value='LOG IN' style={{marginTop: '-1rem'}}></StyledSubmitInput>
+        <StyledSubmitInput value='SIGN UP' style={{marginTop: '-1rem'}}></StyledSubmitInput>
       </StyledLoginSignUpForm>
     </StyledPageColumn>
   )

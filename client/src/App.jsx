@@ -9,14 +9,13 @@ import Error from './components/LoginSignup/Error.jsx';
 import Messages from './components/Messages.jsx';
 import { StyledLogPage, LightTheme, DarkTheme } from './components/StyledComponents/StyledComponents.jsx'
 import FriendsModal from './components/FriendsModal.jsx';
-
 import EntryForm from './components/LoginSignup/EntryForm.jsx';
 import Role from './components/LoginSignup/Role.jsx'
 import UserSignUp from './components/LoginSignup/User/UserSignUp.jsx';
 import UserLogin from './components/LoginSignup/User/UserLogin.jsx'
 import UserInfo from './components/LoginSignup/User/UserInfo.jsx'
-import TeacherSignUp from './components/LoginSignup/Teacher/TeacherSignUp.jsx'
-import TeacherLogin from './components/LoginSignup/Teacher/TeacherLogin.jsx'
+import SignUp from './components/LoginSignup/Teacher/SignUp.jsx'
+import Login from './components/LoginSignup/Teacher/Login.jsx'
 import TeacherInfo from './components/LoginSignup/Teacher/TeacherInfo.jsx'
 import About from './components/LoginSignup/About.jsx'
 
@@ -36,9 +35,10 @@ export default function App () {
   const [darkTheme, setDarkTheme] = useState(true);
   return (
     <div>
+      <LightTheme/>
       <StyledLogPage>
         <NavBar/>
-        <Profile/>
+        <Login/>
       </StyledLogPage>
     </div>
   );
