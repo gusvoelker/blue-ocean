@@ -4,26 +4,43 @@ import {
   StyledNavBar,
   StyledNavBarIcon,
   StyledNavBarLinks,
-  StyledSelectInput
+  StyledSelectInput,
+  DarkStyledNavBar,
 } from '../StyledComponents/StyledComponents.jsx'
 import './googleTranslate.css'
 
-export default function NavBar() {
+export default function NavBar({ darkTheme }) {
+  if(!darkTheme) {
+    return (
+      <StyledNavBar id='translate'>
+        <StyledNavBarIcon>
+          Not Rosetta Stone
+        </StyledNavBarIcon>
+
+        <StyledNavBarLinks>
+          <p id='translate2' ></p>
+          <p style={{marginTop: '3rem'}}>Profile</p>
+          <p style={{marginTop: '3rem'}}>Chat</p>
+        </StyledNavBarLinks>
 
 
-  return (
-    <StyledNavBar id='translate'>
-      <StyledNavBarIcon>
-        Not Rosetta Stone
-      </StyledNavBarIcon>
+      </StyledNavBar>
+    )
+  } else {
+    return (
+      <DarkStyledNavBar id='translate'>
+        <StyledNavBarIcon>
+          Not Rosetta Stone
+        </StyledNavBarIcon>
 
-      <StyledNavBarLinks>
-        <p id='translate2' ></p>
-        <p style={{marginTop: '3rem'}}>Profile</p>
-        <p style={{marginTop: '3rem'}}>Chat</p>
-      </StyledNavBarLinks>
+        <StyledNavBarLinks>
+          <p id='translate2' ></p>
+          <p style={{marginTop: '3rem'}}>Profile</p>
+          <p style={{marginTop: '3rem'}}>Chat</p>
+        </StyledNavBarLinks>
 
 
-    </StyledNavBar>
-  )
+      </DarkStyledNavBar>
+    )
+  }
 }
