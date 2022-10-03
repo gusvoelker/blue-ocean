@@ -602,7 +602,7 @@ const StyledLabel = styled.label`
 
 const StyledRightAlignedForms = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: end;
   flex-direction: column;
   gap: 1rem;
