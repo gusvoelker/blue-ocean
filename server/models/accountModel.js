@@ -77,7 +77,7 @@ module.exports.createAccount = (account) => {
       '${account.passwordHash}',
       '${account.firstName}',
       '${account.lastName}',
-      '${account.isTeacher}'
+      ${account.isTeacher}
     )
     RETURNING account_id
   `).then((createRes) => {
