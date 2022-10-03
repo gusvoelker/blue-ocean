@@ -43,7 +43,8 @@ module.exports.getAccountAuthByEmail = (email) => {
   return query(`
     SELECT
       account_id,
-      pw_hash
+      pw_hash,
+      is_teacher
     FROM accounts
       WHERE email='${email}'
   `);
