@@ -8,7 +8,6 @@ const model = require('../models/accountModel.js');
 // Only gets information from accounts matching the requesting user
 // TODO: Add ability to filter accounts by name / email (?)
 router.get('/accounts', (req, res, next) => {
-  console.log(req.user);
   model.getAccountsByType(req.user.isTeacher)
     .then((result) => {
       let accounts = result.rows;
