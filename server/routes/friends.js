@@ -4,6 +4,7 @@ const model = require('../models/friendModel.js');
 
 //req.query.userId
 router.get('/friend', (req, res, next) => {
+  res.sendStatus(200);
   model.findFriends(req.query.userId)
   .then((friends) => {
     res.status(200).send(friends);
@@ -45,4 +46,7 @@ router.delete('/friend', (req, res, next) => {
     })
     .catch((error) => res.status(400).send(error));
 });
+
+module.exports = router;
+
 
