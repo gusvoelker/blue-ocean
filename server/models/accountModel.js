@@ -1,4 +1,4 @@
-const query = require('../db/db.js').poolQuery;
+const query = require("../db/db.js").poolQuery;
 
 module.exports.getAccountAuthByEmail = (email) => {
   return query(`
@@ -49,14 +49,13 @@ module.exports.createAccount = (account) => {
       '${account.passwordHash}',
       '${account.firstName}',
       '${account.lastName}',
-      ${account.isTeacher}
+      '${account.isTeacher}'
     )
     RETURNING account_id
-  `)
-    .then((createRes) => {
-      if (createRes.name === 'error') {
-        throw new Error(createRes.message);
-      }
-      return createRes.rows[0].account_id;
-    });
+  `).then((createRes) => {
+    if (createRes.name === "error") {
+      throw new Error(createRes.message);
+    }
+    return createRes.rows[0].account_id;
+  });
 };

@@ -6,8 +6,8 @@ const passport = require("passport");
 
 // GET REQUESTS //
 
-router.post("/registerUser", (req, res, next) => {
-  const { email, password } = req.body;
+router.post("/register", (req, res, next) => {
+  const { email, password, firstName, lastName, isTeacher } = req.body;
   if (!email && password) {
     res.send({ message: "Please fill in email field" });
   } else if (!password && email) {
@@ -19,8 +19,8 @@ router.post("/registerUser", (req, res, next) => {
     model
       .getPasswordByEmail(email)
       .then((userPass) => {
-        console.log(userPass);
-        if (userPass) {
+        console.log("userpass", userPass);
+        if (userPass.rows[0]) {
           res.status(400).send({ message: "Email already in use" });
         } else {
           bcrypt.hash(password, 12, function (err, hash) {
@@ -28,9 +28,15 @@ router.post("/registerUser", (req, res, next) => {
               console.log(err);
             }
             model
-              .createAccount({ email, passwordHash: hash })
-              .then((account_id) => {
-                console.log(account_id);
+              .createAccount({
+                email,
+                passwordHash: hash,
+                firstName,
+                lastName,
+                isTeacher,
+              })
+              .then((user) => {
+                console.log(user.rows);
                 //Not sure what should happen now
                 //should we send them to the login page? with res.redirect
                 res.send({ message: "Account successfully created" });
