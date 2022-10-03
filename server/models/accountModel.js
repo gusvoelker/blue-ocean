@@ -1,5 +1,14 @@
 const query = require('../db/db.js').poolQuery;
 
+module.exports.getAccountAuthByEmail = (email) => {
+  return query(`
+    SELECT
+      account_id,
+      pw_hash
+    FROM accounts
+      WHERE email='${email}'
+  `);
+};
 
 module.exports.getPublicAccountInfo = (accountId) => {
   return query(`
