@@ -19,7 +19,10 @@ module.exports = (passport) => {
             .then((res) => {
               if (res) {
                 //TODO: need to send the user or the account info
-                return done(null, { id: user.rows[0].account_id });
+                return done(null, {
+                  id: user.rows[0].account_id,
+                  isTeacher: user.rows[0].is_teacher,
+                });
               } else {
                 return done(null, false, { message: "Password incorrect" });
               }

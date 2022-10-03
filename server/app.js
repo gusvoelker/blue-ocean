@@ -16,8 +16,9 @@ app.use(cors({ origin: process.env.CL_ORIGIN }));
 app.use(
   session({
     secret: process.env.SV_SECRET,
-    resave: false,
+    resave: true,
     saveUninitialized: true,
+    cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 },
   })
 );
 app.use(passport.initialize());

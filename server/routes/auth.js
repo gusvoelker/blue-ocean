@@ -53,12 +53,22 @@ router.post("/register", (req, res, next) => {
 // LOGIN
 //session is established after authentication
 router.post("/login", (req, res, next) => {
+  console.log(req.body.email, req.body.password);
   passport.authenticate(
-    "local"
+    "local",
+    (err, user, info) => {
+      if (err) return res.status(500).send();
+      if (!user) return res.status(400).send("Incorrect credentials");
+      req.logIn(user, function (err) {
+        if (err) return next(err);
+        console.log(req.session);
+        return res.status(200).send("You have been successfully logged in");
+      });
+    }
     //is there like a homepage route?
     // successRedirect: "/dashboard",
     // failureRedirect: "/login",
-  )(req, res, () => res.sendStatus(201));
+  )(req, res, next);
 });
 
 //LOGOUT
