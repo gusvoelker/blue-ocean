@@ -17,10 +17,10 @@ export default function NavBar() {
         Not Rosetta Stone
       </StyledNavBarIcon>
 
-      <div id='translate2' ></div>
       <StyledNavBarLinks>
-        <p>Profile</p>
-        <p>Chat</p>
+        <p id='translate2' ></p>
+        <p style={{marginTop: '3rem'}}>Profile</p>
+        <p style={{marginTop: '3rem'}}>Chat</p>
       </StyledNavBarLinks>
 
 

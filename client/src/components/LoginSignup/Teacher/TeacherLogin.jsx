@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import {
   StyledButton,
   StyledLogPage,
-  StyledloginSignUpBox,
   StyledLoginSignUpForm,
   StyledLabel,
   StyledTextEmail,
@@ -13,6 +12,22 @@ import {
   StyledPageRow,
   StyledImage
 } from '../../StyledComponents/StyledComponents.jsx'
+
+const StyledloginSignUpBox = styled.div`
+  background-image: url("https://images.unsplash.com/photo-1502602898657-3e91760cbb34?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1173&q=80");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  width: 35rem;
+  height: 30rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 20px;
+  box-shadow: 5px 5px 5px #383838;
+  border: 2px solid #383838;
+`
 
 export default function TeacherLogin () {
   const [formData, setFormData] = useState({
@@ -29,8 +44,7 @@ export default function TeacherLogin () {
   }
 
   return (
-    <StyledPageRow style={{paddingTop: '6rem', paddingBottom: '6rem'}}>
-      <StyledloginSignUpBox style={{height: '27rem', zIndex: '1', marginTop: '-2rem'}}>
+      <StyledloginSignUpBox style={{height: '30rem', zIndex: '1', marginTop: '-2rem'}}>
         <StyledLoginSignUpForm>
           <h1>
             TEACHER LOG IN
@@ -48,7 +62,5 @@ export default function TeacherLogin () {
             <StyledSubmitInput value='SUBMIT'></StyledSubmitInput>
         </StyledLoginSignUpForm>
       </StyledloginSignUpBox>
-      <StyledImage style={{marginBottom: '-6rem', marginLeft: '-6rem', zIndex: '0'}} src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1173&q=80" />
-    </StyledPageRow>
   )
 }
