@@ -14,6 +14,7 @@ import {
   StyledFriendSearchSpan,
   StyledFriendSearch,
   AddPicture,
+  Dark,
 } from './StyledComponents/StyledComponents.jsx'
 
 import { faChevronLeft, faChevronRight, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons'
@@ -136,6 +137,7 @@ export default function Profile({ darkTheme }) {
 
   return (
     <div>
+      <Dark>
       <ProfileContainer>
         <ProfilePicture src={profilePicture} />
         {!darkTheme ?
@@ -200,6 +202,7 @@ export default function Profile({ darkTheme }) {
       </ProfileContainer>
       <FriendsModal onClose={() => setShow(false)} show={show} friend={currentFriend} />
       <AddFriendModal onClose={() => setAddShow(false)} show={addShow} />
+      </Dark>
     </div>
   )
 }

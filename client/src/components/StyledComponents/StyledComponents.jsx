@@ -36,6 +36,10 @@ const DarkTheme = createGlobalStyle`
 }
 `
 
+const Dark = styled.div`
+  background-color: #383838b5;
+`
+
 const ThemeToggle = styled.div`
   color: #f5f5f5;
   padding: 5px;
@@ -916,4 +920,5 @@ export {
   ThemeToggle,
   OuterToggle,
   InnerToggle,
+  Dark,
 }

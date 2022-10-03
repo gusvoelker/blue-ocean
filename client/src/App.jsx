@@ -44,7 +44,7 @@ export default function App () {
         <ThemeToggleButton setDarkTheme={setDarkTheme} darkTheme={darkTheme}/>
         <StyledLogPage>
           <NavBar darkTheme={darkTheme}/>
-          <About darkTheme={darkTheme}/>
+          <Messages darkTheme={darkTheme}/>
         </StyledLogPage>
       </div>
     );
