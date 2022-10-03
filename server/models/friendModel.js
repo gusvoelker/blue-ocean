@@ -3,8 +3,9 @@ const query = require('../db/db.js').poolQuery;
 
 module.exports.findFriends = (user_id) => {
   return query(`
-  SELECT rec_account_id
-  FROM connections
+  SELECT c.rec_account_id, a.first_name, a.last_name
+  FROM connections c
+  INNER JOIN accounts a ON c.rec_account_id = a.account_id
   WHERE req_account_id=${user_id}
   AND status = true
   `)
@@ -28,7 +29,7 @@ module.exports.createFriend = (connection) => {
       console.log(response.rows[0].conn_id)
       return response.rows[0].conn_id;
     })
-    .catch(err => console.log(err))
+    .catch(err => console.log(err));
 };
 
 module.exports.acceptFriend = (connection_id) => {
