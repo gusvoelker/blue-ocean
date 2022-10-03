@@ -2,6 +2,7 @@ const query = require('../db.js').poolQuery;
 const accountModel = require('../../models/accountModel.js');
 const languageModel = require('../../models/languageModel.js');
 const chatModel = require('../../models/chatModel.js');
+const friendModel = require('../../models/friendModel.js');
 
 // Will eventually replace this with jest testing in queries.test.js, but for now...
 
@@ -81,17 +82,79 @@ const chatModel = require('../../models/chatModel.js');
   console.log('desired', result.rows);
 });
 
-// accountChat tests
+// CHAT //
+
+// CREATE ROOM (requires users to be friends)
 (async () => {
   let accountId = 1;
   let participantTwoId = 3;
+  let result = await chatModel.createRoom(accountId, participantTwoId);
+  console.log(result);
+});
+
+// POST MESSAGE
+(async () => {
+  let roomId = 1;
+  let accountId = 1;
   let message = 'hello there';
-  let roomId = await chatModel.createRoom(accountId, participantTwoId);
-  console.log(roomId);
   let result = await chatModel.postMessage(roomId, accountId, message);
   console.log(result);
-  result = await chatModel.getRoomsByAccountId(accountId);
+});
+
+// GET ROOMS
+(async () => {
+  let accountId = 3;
+  let result = await chatModel.getRoomsByAccountId(accountId);
+  console.log(result);
+});
+
+// GET MESSAGES BY ROOM
+(async () => {
+  let accountId = 1;
+  let roomId = 1;
+  let result = await chatModel.getMessagesByRoomId(roomId, accountId);
   console.log(result.rows);
-  result = await chatModel.getMessagesByRoomId(roomId, accountId);
+});
+
+// CONNECTIONS / FRIENDS //
+
+// SEND FRIEND REQUEST
+(async () => {
+  let accountId1 = 3;
+  let accountId2 = 1;
+  let result = await friendModel.requestFriend(accountId1, accountId2);
+  console.log(result);
+});
+
+// ACCEPT FRIEND REQUEST
+(async () => {
+  let accountId1 = 1;
+  let accountId2 = 3;
+  let result = await friendModel.acceptFriend(accountId1, accountId2);
+  console.log(result);
+  result = await friendModel.createFriend(accountId1, accountId2);
+  console.log(result);
+});
+
+// REMOVE FRIEND
+(async () => {
+  let accountId1 = 1;
+  let accountId2 = 3;
+  let result = await friendModel.deleteFriend(accountId1, accountId2);
+  console.log(result);
+});
+
+// GET FRIENDS
+(async () => {
+  let accountId = 1;
+  let result = await friendModel.findFriends(accountId);
   console.log(result.rows);
+});
+
+// CHECK IF FRIENDS
+(async () => {
+  let accountId1 = 1;
+  let accountId2 = 3;
+  let result = await friendModel.checkIfFriends(accountId1, accountId2);
+  console.log(result.rows[0].exists);
 });
