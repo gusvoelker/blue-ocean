@@ -4,11 +4,10 @@ const model = require('../models/classesModel.js');
 
 
 //Teachers need to be able to add classes
-//req.body.teacher_id
 //req.body.className
 router.post('/classes', (req, res, next) => {
   let classObj = {
-    teacher_id: req.body.teacher_id,
+    teacher_id: req.user.id,
     className: req.body.className
   }
   model.addClass(classObj)
