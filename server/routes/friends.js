@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const model = require('../models/friendModel.js');
 
-//req.query.userId
 router.get('/friend', (req, res, next) => {
-  model.findFriends(req.query.userId)
+  let requesterId = req.user.id;
+  model.findFriends(requesterId)
   .then(({rows}) => {
     res.status(200).send(rows);
   })
@@ -15,11 +15,8 @@ router.get('/friend', (req, res, next) => {
 // req.body.user1 - Integer (request sender account id)
 // req.body.user2 - Integer (receiver account id)
 router.post('/friend', (req, res, next) => {
-  let connection = {
-    user1: req.body.user1,
-    user2: req.body.user2,
-  }
-  model.createFriend(connection)
+  let requesterId = req.user.id;
+  model.requestFriend(requesterId, req.body.user2)
     .then((connectionID) => {
       res.status(201).send(`${connectionID}`);
     })
@@ -27,19 +24,24 @@ router.post('/friend', (req, res, next) => {
 });
 
 //accept friend status
-//req.query.connectionId
+//req.query.idToAccept
 router.put('/friend', (req, res, next) => {
-  model.acceptFriend(req.query.connectionId)
+  let requesterId = req.user.id;
+  model.acceptFriend(requesterId, req.query.idToAccept)
     .then(() => {
-      res.sendStatus(202);
+      model.createFriend(requesterId, req.query.idToAccept)
+      .then((connectionID) => {
+        res.status(202).send(`${connectionID}`)
+      })
     })
     .catch((error) => res.status(400).send(error));
 });
 
 //delete friend or deny friend request
-//req.query.connectionId
+//req.query.friend_id
 router.delete('/friend', (req, res, next) => {
-  model.deleteFriend(req.query.connectionId)
+  let requesterId = req.user.id;
+  model.deleteFriend(requesterId, req.query.friend_id)
     .then(() => {
       res.sendStatus(204);
     })
