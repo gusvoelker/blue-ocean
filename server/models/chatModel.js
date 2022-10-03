@@ -1,4 +1,5 @@
 const query = require('../db/db.js').poolQuery;
+const friendModel = require('./friendModel.js');
 
 module.exports.getRoomsByAccountId = (accountId, sort='room_id DESC') => {
   return query(`
@@ -26,13 +27,18 @@ module.exports.getMessagesByRoomId = (roomId, accountId, sort='created_at DESC')
   `);
 };
 
-// TODO: Should first verify that the two participants are connected, work with Gus on this
 module.exports.createRoom = (participantOneId, participantTwoId) => {
-  return query(`
-    INSERT INTO account_room
-    VALUES (DEFAULT)
-    RETURNING room_id
-  `)
+  return friendModel.checkIfFriends(participantOneId, participantTwoId)
+    .then((result) => {
+      if (result === 'f') { // TODO: Check that this result is accurate, haven't tested, may need to be accessing result.rows?
+        throw new Error('Can\'t create rooms between non-connected users');
+      }
+      return query(`
+        INSERT INTO account_room
+        VALUES (DEFAULT)
+        RETURNING room_id
+      `)
+    })
     .then((createRes) => {
       if (createRes.name === 'error') {
         throw new Error(createRes.message);
@@ -62,7 +68,7 @@ module.exports.createRoom = (participantOneId, participantTwoId) => {
     .then((result) => {
       let roomId = result[0]
       return roomId;
-    })
+    });
 };
 
 module.exports.postMessage = (roomId, accountId, message) => {
