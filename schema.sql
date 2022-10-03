@@ -49,7 +49,8 @@ ALTER TABLE enrollments
 
 CREATE TABLE languages (
 	lang_id SERIAL NOT NULL PRIMARY KEY,
-	lang_name VARCHAR(60) NOT NULL
+	lang_name VARCHAR(60) NOT NULL,
+	CONSTRAINT lang_name_unique UNIQUE (lang_name)
 );
 
 CREATE TYPE taught_level_vals AS ENUM ('1','2','3','4','5','AP');
