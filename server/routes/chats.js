@@ -6,8 +6,7 @@ const model = require('../models/chatModel.js');
 
 // Get a list of chats for the authenticated user / teacher
 router.get('/chats', (req, res, next) => {
-  let requesterId = 0; // TODO: SET THIS TO THE RESULT OF AUTHENTICATING THE USER
-  model.getRoomsByAccountId(requesterId)
+  model.getRoomsByAccountId(req.user.id)
     .then((result) => {
       let rooms = result.rows;
       rooms.length > 0 ?
@@ -24,8 +23,7 @@ router.get('/chats/messages', (req, res, next) => {
     res.sendStatus(404);
     return;
   }
-  let requesterId = 0; // TODO: SET THIS TO THE RESULT OF AUTHENTICATING THE USER
-  model.getMessagesByRoomId(req.query.roomId, requesterId)
+  model.getMessagesByRoomId(req.query.roomId, req.user.id)
     .then((result) => {
       let messages = result.rows;
       messages.length > 0 ?
@@ -44,8 +42,7 @@ router.post('/chats', (req, res, next) => {
     res.sendStatus(400);
     return;
   }
-  let requesterId = 0; // TODO: SET THIS TO THE RESULT OF AUTHENTICATING THE USER
-  model.createRoom(requesterId, req.body.requestedId)
+  model.createRoom(req.user.id, req.body.requestedId)
     .then((result) => {
       res.sendStatus(201);
     })
@@ -61,8 +58,7 @@ router.post('/chats/messages', (req, res, next) => {
     res.sendStatus(400);
     return;
   }
-  let requesterId = 0; // TODO: SET THIS TO THE RESULT OF AUTHENTICATING THE USER
-  model.postMessage(req.body.roomId, requesterId, req.body.message)
+  model.postMessage(req.body.roomId, req.user.id, req.body.message)
     .then((result) => {
       res.sendStatus(201);
     })
