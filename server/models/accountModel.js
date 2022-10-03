@@ -1,4 +1,4 @@
-const query = require('../db/db.js').poolQuery;
+const query = require("../db/db.js").poolQuery;
 
 // Should be used by client to retrieve a list of accounts on the website
 module.exports.getAllAccountInfo = () => {
@@ -80,11 +80,10 @@ module.exports.createAccount = (account) => {
       ${account.isTeacher}
     )
     RETURNING account_id
-  `)
-    .then((createRes) => {
-      if (createRes.name === 'error') {
-        throw new Error(createRes.message);
-      }
-      return createRes.rows[0].account_id;
-    });
+  `).then((createRes) => {
+    if (createRes.name === "error") {
+      throw new Error(createRes.message);
+    }
+    return createRes.rows[0].account_id;
+  });
 };
