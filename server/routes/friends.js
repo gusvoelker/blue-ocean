@@ -12,11 +12,10 @@ router.get('/friend', (req, res, next) => {
 });
 
 
-// req.body.user1 - Integer (request sender account id)
-// req.body.user2 - Integer (receiver account id)
+// req.body.requestedId - Integer (receiver account id)
 router.post('/friend', (req, res, next) => {
   let requesterId = req.user.id;
-  model.requestFriend(requesterId, req.body.user2)
+  model.requestFriend(requesterId, req.body.requestedId)
     .then((connectionID) => {
       res.status(201).send(`${connectionID}`);
     })
