@@ -11,9 +11,7 @@ CREATE TABLE accounts (
 	first_name VARCHAR(24),
 	last_name VARCHAR(24),
 	avatar_url TEXT,
-	is_teacher BOOLEAN,
-	UNIQUE(account_id),
-	UNIQUE(account_id)
+	is_teacher BOOLEAN
 );
 
 CREATE TABLE connections (
@@ -57,8 +55,7 @@ ALTER TABLE enrollments
 
 CREATE TABLE languages (
 	lang_id SERIAL NOT NULL PRIMARY KEY,
-	lang_name VARCHAR(60) NOT NULL,
-	UNIQUE (lang_id)
+	lang_name VARCHAR(60) NOT NULL
 );
 
 CREATE TYPE taught_level_vals AS ENUM ('1','2','3','4','5','AP');
@@ -117,8 +114,7 @@ CREATE TABLE account_message (
 	room_id INT NOT NULL,
 	account_id INT NOT NULL,
 	message VARCHAR(1000),
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	UNIQUE (message_id)
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 ALTER TABLE account_message
