@@ -62,6 +62,13 @@ router.post("/login", (req, res, next) => {
   })(req, res, next);
 });
 
+router.get("/", (req, res) => {
+  console.log(req.session);
+  if (req.user) {
+    console.log(req.user);
+  }
+});
+
 //LOGOUT
 router.post("/logout", (req, res, next) => {
   req.logout((err) => {
@@ -70,21 +77,6 @@ router.post("/logout", (req, res, next) => {
     }
     res.redirect("/login");
   });
-});
-// PUT / PATCH REQUESTS //
-
-router.put("/example", (req, res, next) => {
-  res.sendStatus(204);
-});
-
-router.patch("/example", (req, res, next) => {
-  res.sendStatus(204);
-});
-
-// DELETE REQUESTS //
-
-router.delete("/example", (req, res, next) => {
-  res.sendStatus(204);
 });
 
 module.exports = router;
