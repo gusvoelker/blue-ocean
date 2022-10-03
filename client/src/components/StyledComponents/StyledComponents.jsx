@@ -864,6 +864,61 @@ display: flex;
 justify-content: center;
 align-items: center;
 `
+const ProfileCalendarInfo = styled.div`
+  position: absolute;
+  bottom: 0%;
+  width: 20vw;
+  height: 400px;
+  border-radius: 15px;
+  left: 0%;
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  background-color: #38698fef;
+  color: #f5f5f5;
+  box-shadow: 5px 5px 5px #383838;
+  border: 1px solid #386A8F;
+  transition: 0.3s;
+  border: 1px solid #f5f5f5;
+  h3{
+    text-align: center;
+    padding: 25px;
+    font-size: 2rem;
+    color: #f5f5f5;
+    border-bottom: 2px solid #f5f5f5;
+    transition: 0.3s;
+    margin-top: -0.2rem;
+  };
+  h4{
+    text-align: center;
+  };
+  div{
+    padding:10px;
+    color: #f5f5f5;
+  };
+`
+const StyledEditProfileButton = styled.button`
+position: absolute;
+margin-left: 82%;
+margin-top: 15%;
+z-index: 2;
+  width: auto;
+  height: 3rem;
+  font-size: 1rem;
+  background-color: #f5f5f5;
+  padding: .5rem;
+  border-radius: 50px;
+  color: #386A8F;
+  box-shadow: 5px 5px 5px #383838;
+  border: 1px solid #383838;
+  transition: 0.3s;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 3px 3px 5px #383838;
+    color: #f5f5f5;
+    background-color: #386A8F;
+  }
+`
 export {
   StyledNavBar,
   StyledNavBarIcon,
@@ -921,4 +976,6 @@ export {
   OuterToggle,
   InnerToggle,
   Dark,
+  ProfileCalendarInfo,
+  StyledEditProfileButton,
 }

@@ -12,12 +12,14 @@ import {
   StyledFriend,
   StyledFriendIcons,
   StyledFriendSearchSpan,
-  StyledFriendSearch
+  StyledFriendSearch,
+  StyledEditProfileButton,
 } from './StyledComponents/StyledComponents.jsx'
 import axios from 'axios';
 import FormData from 'form-data'
 import TeacherClassListModal from './LoginSignup/Teacher/TeacherClassListModal.jsx'
 import { faChevronLeft, faChevronRight, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons'
+import TeacherCalendar from '../components/LoginSignup/Teacher/TeacherCalendar.jsx'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const LeftButton = styled.button`
@@ -125,8 +127,10 @@ export default function TeacherProfile(props) {
           <img src={profileBackground[x]} style={{textAlign: 'left', display: 'block'}}/>
           {x === 0 ? null : <LeftButton data-testid='left-arrow' onClick={goLeft}><FontAwesomeIcon icon={faChevronLeft} /></LeftButton>}
           {x >= profileBackground.length - 1 ? null : <RightButton data-testid='right-arrow' onClick={goRight}><FontAwesomeIcon icon={faChevronRight} /></RightButton>}
+          <StyledEditProfileButton style={{}}>EDIT ACCOUNT INFO</StyledEditProfileButton>
         </ProfileBackground>
-        <ProfileAccountInfo>
+        <TeacherCalendar />
+        {/* <ProfileAccountInfo>
           <h3><strong>Account Info</strong></h3>
           <h4><strong>{role}</strong></h4>
           <table>
@@ -142,9 +146,9 @@ export default function TeacherProfile(props) {
               <td>Password:</td>
               <td>*********</td>
             </tr>
-          </table>
-          <StyledButton style={{marginTop: '1rem'}}>EDIT INFO</StyledButton>
-        </ProfileAccountInfo>
+          </table> */}
+
+        {/* </ProfileAccountInfo> */}
         <ProfileFriendsList style={{width: '30rem', left: '32%'}}>
           <StyledFriendSearchSpan>
             <h3><strong>Friends List</strong></h3>
@@ -160,7 +164,7 @@ export default function TeacherProfile(props) {
                   <div style={{ fontWeight: 'bold' }}>{friend}</div>
                   <StyledFriendIcons>
                     <img src='https://pnggrid.com/wp-content/uploads/2021/12/Office-Phone-Icon-PNG-Transparent-Background.png' alt='phone icon for starting a call with friend' />
-                    <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' />
+                    <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend"/>
                   </StyledFriendIcons>
                 </StyledFriend>
               )
