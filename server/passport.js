@@ -7,25 +7,25 @@ module.exports = (passport) => {
     new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
       //check to see if the email provided matches email in database
       model
-        .getPasswordByEmail(email)
-        .then((pw_hash) => {
-          if (!pw_hash) {
+        .getAccountAuthByEmail(email)
+        .then((user) => {
+          console.log(user.rows);
+          if (user.rows[0].length === 0) {
             return done(null, false, {
               message: "That email is not registered",
             });
-          } else {
-            bcrypt
-              .compare(password, pw_hash)
-              .then((res) => {
-                if (res) {
-                  //TODO: need to send the user or the account info
-                  return done(null, pw_hash);
-                } else {
-                  return done(null, false, { message: "Password incorrect" });
-                }
-              })
-              .catch((err) => done(err));
           }
+          bcrypt
+            .compare(password, user.rows[0].pw_hash)
+            .then((res) => {
+              if (res) {
+                //TODO: need to send the user or the account info
+                return done(null, user.rows[0].account_id);
+              } else {
+                return done(null, false, { message: "Password incorrect" });
+              }
+            })
+            .catch((err) => done(err));
         })
         .catch((err) => console.log(err));
     })

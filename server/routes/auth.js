@@ -8,7 +8,9 @@ const passport = require("passport");
 
 router.post("/register", (req, res, next) => {
   const { email, password, firstName, lastName, isTeacher } = req.body;
-  if (!email && password) {
+  if (isTeacher && !email.endsWith(".edu")) {
+    res.send({ message: "Unverified email" });
+  } else if (!email && password) {
     res.send({ message: "Please fill in email field" });
   } else if (!password && email) {
     res.send({ message: "Please fill in password field" });
@@ -19,7 +21,6 @@ router.post("/register", (req, res, next) => {
     model
       .getPasswordByEmail(email)
       .then((userPass) => {
-        console.log("userpass", userPass);
         if (userPass.rows[0]) {
           res.status(400).send({ message: "Email already in use" });
         } else {
@@ -36,7 +37,7 @@ router.post("/register", (req, res, next) => {
                 isTeacher,
               })
               .then((user) => {
-                console.log(user.rows);
+                console.log(user); //this gives back a number, no clue why
                 //Not sure what should happen now
                 //should we send them to the login page? with res.redirect
                 res.send({ message: "Account successfully created" });
@@ -51,27 +52,14 @@ router.post("/register", (req, res, next) => {
   }
 });
 
-router.post("/registerTeacher", (req, res, next) => {
-  const { email, password1 } = req.body;
-  if (!email && password) {
-    res.json({ message: "Please fill in email field" });
-  } else if (!password && email) {
-    res.json({ message: "Please fill in password field" });
-  } else if (!email && !password) {
-    res.json({ messag: "Please fill in all fields" });
-  } else {
-    res.sendStatus(200);
-  }
-});
-
 // LOGIN
 //session is established after authentication
 router.post("/login", (req, res, next) => {
   passport.authenticate("local", {
     //is there like a homepage route?
     successRedirect: "/dashboard",
-    failureRedirect: "/loginUser",
-  });
+    failureRedirect: "/login",
+  })(req, res, next);
 });
 
 //LOGOUT

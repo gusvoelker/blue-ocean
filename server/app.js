@@ -6,7 +6,7 @@ const cors = require("cors");
 const routers = require("./routes");
 const auth = require("./middleware/sessionAuth.js");
 const compression = require("compression");
-require("./passport.js");
+require("./passport.js")(passport);
 
 const app = express();
 
