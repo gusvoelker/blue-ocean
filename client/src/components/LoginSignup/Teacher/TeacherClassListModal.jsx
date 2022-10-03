@@ -13,7 +13,7 @@ import {
 } from '../../StyledComponents/StyledComponents.jsx';
 import exampleCSVPic from './exampleCSVPic.png'
 import axios from 'axios';
-import serverURL from '../../../config.js'
+import {serverURL} from '../../../config.js'
 
 
 export default function TeacherClassListModal({ onClose, teacherId }) {

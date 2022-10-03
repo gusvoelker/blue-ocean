@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
-import {serverURL} from '../../../../src/config.js';
+import {serverURL} from '../../../config.js';
 import styled from 'styled-components';
 import {
   StyledButton,

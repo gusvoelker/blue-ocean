@@ -19,12 +19,59 @@ const LightTheme = createGlobalStyle`
 }
 `
 
+
 const DarkTheme = createGlobalStyle`
   body {
-    color: #f5f5f5;
-    background-color: #386A8F;
-    transition: 0.3s;
-  }
+  margin: 0;
+  display: block;
+  min-width: 100vw;
+  min-height: 100vh;
+  background-image: url("https://static.vecteezy.com/system/resources/thumbnails/002/019/067/original/dark-world-map-animate-background-free-video.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: absolute;
+  background-attachment: fixed;
+  font-family: 'Roboto', sans-serif;
+  overflow-x: hidden;
+}
+`
+
+const Dark = styled.div`
+  background-color: #383838b5;
+`
+
+const ThemeToggle = styled.div`
+  color: #f5f5f5;
+  padding: 5px;
+  position: fixed;
+  right: 0;
+  top: 8rem;
+  transition: 0.3s;
+  font-size: small;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+`
+const OuterToggle = styled.div`
+  padding: 2px;
+  width: 50px;
+  height: 25px;
+  border-radius: 30px;
+  background: gray;
+  transition: 0.3s;
+  float: right;
+  margin-left: 5px;
+`
+
+const InnerToggle = styled.div`
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  transition: 0.3s;
+  float: left;
+  background: #DBDBD6;
 `
 
 const StyledNavBar = styled.div`
@@ -38,18 +85,16 @@ const StyledNavBar = styled.div`
   box-shadow: 0px 5px 5px #383838;
   z-index: 4;
 `
-
-const StyledNavBarIcon = styled.h1`
+const DarkStyledNavBar = styled.div`
+  background-color: #383838;
+  height: 7rem;
+  position: fixed;
+  top: 0;
+  width: 100vw;
   display: flex;
-  justify-content: center;
   align-items: center;
-  font-size: 5rem;
-  margin: 1rem;
-  text-shadow: 2px 2px #383838;
-  font-family: 'Dancing Script', cursive;;
-  color: #f5f5f5;
+  z-index: 4;
 `
-
 const StyledNavBarLinks = styled.h2`
   display: flex;
   flex-direction: row;
@@ -73,13 +118,23 @@ const StyledNavBarLinks = styled.h2`
   }
 `
 
+const StyledNavBarIcon = styled.h1`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 5rem;
+  margin: 1rem;
+  text-shadow: 2px 2px #383838;
+  font-family: 'Dancing Script', cursive;;
+  color: #f5f5f5;
+`
+
 const ProfileContainer = styled.div`
   position: absolute;
   top: 15%;
   width: 70vw;
   right: 14%;
   height: 800px;
-
 `
 const ProfilePicture = styled.img`
   position: absolute;
@@ -917,6 +972,11 @@ export {
   StyledCSVCloseButton,
   StyledSpan,
   StyledButtonDiv,
+  DarkStyledNavBar,
+  ThemeToggle,
+  OuterToggle,
+  InnerToggle,
+  Dark,
   ProfileCalendarInfo,
   StyledEditProfileButton,
 }
