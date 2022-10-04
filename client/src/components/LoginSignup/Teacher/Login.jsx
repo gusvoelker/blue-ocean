@@ -81,7 +81,7 @@ export default function Login (props) {
 
   return (
       <StyledloginSignUpBox style={{height: '30rem', zIndex: '1', marginTop: '-2rem'}}>
-        <StyledLoginSignUpForm onSubmit={handleSubmit}>
+        <StyledLoginSignUpForm>
           <h1>
             LOG IN
           </h1>
