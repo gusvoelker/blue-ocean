@@ -15,11 +15,11 @@ router.post('/classes', (req, res, next) => {
     teacher_id: req.body.teacher_id,
     className: req.body.className,
   }
+  console.log('classObj in router ', classObj)
   model.addClass(classObj)
   .then((class_id) => {
-    var classId = '2';
     console.log('after addClass', class_id)
-    res.status(201).send(class_id);
+    res.status(201).send({class_id});
   })
   .catch((error) => res.status(400).send(error));
 });
@@ -36,9 +36,9 @@ router.get('/classes', (req, res, next) => {
 //Add students to the class
 //req.body.email
 //req.body.class_id
-router.post('/classes/students',  upload.single('file'), (req, res, next) =>{
+router.post(`/classes/students/*`,  upload.single('file'), (req, res, next) =>{
+  const class_id = req.url.split('/')[3]
   const file = req.file;
-  const class_id = req.body.class_id;
   const data = fs.readFileSync(file.path)
   async function updateRecords(data) {
     parse(data, (err, records) => {
@@ -47,7 +47,7 @@ router.post('/classes/students',  upload.single('file'), (req, res, next) =>{
         return res.status(400).json({ success: false, message: 'An error occurred' })
       } else {
         model.AddStudents(class_id, records).then(()=>{
-          res.send(204)
+          res.sendStatus(204)
         }).catch((err)=>{res.sendStatus(500).send(err)})
       }
     })

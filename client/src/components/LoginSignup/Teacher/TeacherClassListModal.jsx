@@ -13,7 +13,7 @@ import {
 } from '../../StyledComponents/StyledComponents.jsx';
 import exampleCSVPic from './exampleCSVPic.png'
 import axios from 'axios';
-import {serverURL} from '../../../config.js'
+import { serverURL } from '../../../config.js'
 
 
 export default function TeacherClassListModal({ onClose, teacherId }) {
@@ -24,9 +24,7 @@ export default function TeacherClassListModal({ onClose, teacherId }) {
 
   const handleChange = (e) => {
     e.preventDefault();
-    setClassName({
-      [e.target.name]: e.target.value
-    })
+    setClassName(e.target.value)
     console.log(e.target.value);
   }
 
@@ -39,7 +37,7 @@ export default function TeacherClassListModal({ onClose, teacherId }) {
     console.log('file received')
     //Have a spinner graphic so teachers know the file is loading
     setSpinner(true)
-    var options={
+    var options = {
       url: `${serverURL}/classes`,
       method: 'post',
       headers: {
@@ -50,22 +48,26 @@ export default function TeacherClassListModal({ onClose, teacherId }) {
         teacher_id: teacherId,
       },
     }
-    axios(options).then(classId=>{
-      console.log('classId ', classId)
+    axios(options).then(response => {
+      console.log('response from first query ', response)
+      var class_id = response.data.class_id
       const formData = new FormData();
       formData.append('file', file)
-        axios.post(`${serverURL}/classes/students`, formData, {
-          headers: {
-            'Content-Type': 'mulitpart/form-data'
-          }
+      axios.post(`${serverURL}/classes/students/${class_id}`, formData, {
+        headers: {
+          'Content-Type': 'mulitpart/form-data'
+        }
+      })
+        .then(() => {
+          console.log('response from second query')
+          setSpinner(false);
         })
-          .then(() => {setSpinner(false); })
-          .catch((err) => {
-            setSpinner(false)
-            console.log(err)
-          })
+        .catch((err) => {
+          setSpinner(false)
+          console.log(err)
+        })
 
-    }).catch(err=>{setSpinner(false); console.log(err)})
+    }).catch(err => { setSpinner(false); console.log(err) })
   }
 
   return (

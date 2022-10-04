@@ -3,30 +3,33 @@ const query = require('../db/db.js').poolQuery;
 
 module.exports.addClass = (classObj) => {
   return query(`
-  INSERT INTO classes(
+  INSERT INTO classes (
     teacher_id,
-    class_name,
+    class_name
   ) VALUES (
     ${classObj.teacher_id},
     '${classObj.className}'
   )
   RETURNING class_id
-`)
-  .then((response) => {
-    console.log(response.rows[0].class_id)
+`).then((response) => {
     return response.rows[0].class_id;
   })
   .catch(err => console.log(err))
 };
 
 module.exports.AddStudents = (class_id, records) =>{
-  console.log('Inside AddStudentsMOdal ', records)
+  var queryText = `Select account_id, '${class_id}' FROM accounts WHERE `
+  for (var i=1; i<records.length; i++) {
+    queryText += `email = '${records[i][2]}' or `
+  }
+  queryText = queryText.slice(0, queryText.length - 4);
   return query(`
-  INSERT INTO classes(
-
-  ) VALUES (
-
-  ) WHERE class_id= ${class_id} `)
+  INSERT INTO enrollments (
+    account_id,
+    class_id
+  )
+    ${queryText}
+    `)
 }
 
 module.exports.findClassesByTeacher = (teacher_id) => {
