@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from 'styled-components';
 import axios from 'axios';
 import {serverURL} from '../../../../src/config.js';
@@ -15,8 +15,9 @@ import {
   StyledImage,
   StyledSelectInput
 } from '../../StyledComponents/StyledComponents.jsx';
+import { SocketContext } from '../../VideoComponents/SocketContext.jsx';
 
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 
 const StyledloginSignUpBox = styled.div`
   background-image: url("https://images.unsplash.com/photo-1502602898657-3e91760cbb34?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1173&q=80");
@@ -35,24 +36,32 @@ const StyledloginSignUpBox = styled.div`
 `
 
 export default function Login (props) {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  })
-  const handleChange = (e) => {
-    e.preventDefault();
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
-    console.log(e.target.value);
-  };
+  // const {userId, setUserId} = useContext(SocketContext);
+  const navigate = useNavigate();
 
-  const handleSubmit = async(e) => {
+  let formData = {
+    email: props.email,
+    password: props.password
+  }
+
+  const handleSubmitStudent = async(e) => {
     e.preventDefault();
     try {
       const res = await axios.post(`${serverURL}/login`, formData);
       console.log(res)
+      props.onIdChange(res.data.user.id)
+      navigate("/profile");
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const handleSubmitTeacher = async(e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(`${serverURL}/login`, formData);
+      console.log(res)
+      navigate("/teacherprofile")
     } catch (err) {
       console.log(err);
     }
@@ -62,12 +71,12 @@ export default function Login (props) {
 
   if (props.role === 'user') {
     button = <Link to="/profile">
-                <StyledSubmitInput value='SUBMIT'></StyledSubmitInput>
-              </Link>
+                <StyledSubmitInput value='SUBMIT' onClick={handleSubmitStudent}></StyledSubmitInput>
+            </Link>
   } else {
     button = <Link to="/teacherprofile">
-                <StyledSubmitInput value='SUBMIT'></StyledSubmitInput>
-              </Link>
+                <StyledSubmitInput value='SUBMIT' onClick={handleSubmitTeacher}></StyledSubmitInput>
+            </Link>
   }
 
   return (
