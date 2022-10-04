@@ -11,7 +11,7 @@ import {
 import './googleTranslate.css'
 import { Outlet, Link } from "react-router-dom";
 
-export default function NavBar({ darkTheme, role }) {
+export default function AboutNavBar({ darkTheme, role }) {
 
   let button;
   if (role === 'user') {
@@ -30,15 +30,9 @@ export default function NavBar({ darkTheme, role }) {
         <StyledNavBarIcon>
           Chat Chat
         </StyledNavBarIcon>
-
         <StyledNavBarLinks>
           <p id='translate2' ></p>
-          {button}
-          <Link to="/messages">
-            <p style={{marginTop: '3rem'}}>Chat</p>
-          </Link>
         </StyledNavBarLinks>
-
       </StyledNavBar>
     )
   } else {
@@ -50,10 +44,6 @@ export default function NavBar({ darkTheme, role }) {
 
         <StyledNavBarLinks>
           <p id='translate2' ></p>
-          {button}
-          <Link to="/messages">
-            <p style={{marginTop: '3rem'}}>Chat</p>
-          </Link>
         </StyledNavBarLinks>
       </DarkStyledNavBar>
     )

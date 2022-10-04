@@ -4,24 +4,24 @@ const model = require("../models/accountModel.js");
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 
-// GET REQUESTS //
+// POST REQUESTS //
 
 router.post("/register", (req, res, next) => {
   const { email, password, firstName, lastName, isTeacher } = req.body;
   if (isTeacher && !email.endsWith(".edu")) {
-    res.status(400).send({ message: "Unverified email" });
+    res.status(400).send("Teacher registration requires .edu email");
   } else if (!email && password) {
-    res.status(400).send({ message: "Please fill in email field" });
+    res.status(400).send("Please fill in email field");
   } else if (!password && email) {
-    res.status(400).send({ message: "Please fill in password field" });
-  } else if (!email && !password) {
-    res.status(400).send({ message: "Please fill in all fields" });
+    res.status(400).send("Please fill in password field");
+  } else if (!email || !password || !firstName || !lastName || isTeacher === undefined) {
+    res.status(400).send("Please fill in all required fields");
   } else {
     model
       .getPasswordByEmail(email)
       .then((userPass) => {
         if (userPass.rows[0]) {
-          res.status(400).send({ message: "Email already in use" });
+          res.status(400).send("Email already in use");
         } else {
           bcrypt.hash(password, 12, function (err, hash) {
             if (err) {
@@ -38,15 +38,13 @@ router.post("/register", (req, res, next) => {
               .then((user) => {
                 res
                   .status(201)
-                  .send({ message: "Account successfully created" });
+                  .send("Account successfully created");
               })
-              .catch((err) => console.log(err));
+              .catch((err) => res.sendStatus(500));
           });
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => res.sendStatus(500));
   }
 });
 
@@ -57,17 +55,14 @@ router.post("/login", (req, res, next) => {
   passport.authenticate(
     "local",
     (err, user, errorInfo) => {
-      if (err) return res.status(500).send();
-      if (!user) return res.status(400).send({ message: errorInfo.message });
+      if (err) return res.sendStatus(500);
+      if (!user) return res.status(400).send(errorInfo.message);
       req.logIn(user, function (err) {
         if (err) return next(err);
         console.log(req.session);
         return res.status(200).send("You have been successfully logged in");
       });
     }
-    //is there like a homepage route?
-    // successRedirect: "/dashboard",
-    // failureRedirect: "/login",
   )(req, res, next);
 });
 
@@ -79,6 +74,16 @@ router.post("/logout", (req, res, next) => {
     }
     res.send("You are logged out!");
   });
+});
+
+// Authenticate all user requests
+// Users should not be able to access any resources without being signed in
+router.use('/', (req, res, next) => {
+  if (!req.user) {
+    res.status(403).send('Login required');
+  } else {
+    next();
+  }
 });
 
 module.exports = router;

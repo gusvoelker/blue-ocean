@@ -7,7 +7,7 @@ import {
   StyledButton
 } from './StyledComponents/StyledComponents.jsx';
 
-export default function FriendsModal (props) {
+export default function EditInfoModal (props) {
   if (!props.show) {
     return null;
   }
@@ -16,7 +16,7 @@ export default function FriendsModal (props) {
     <FriendsModalContainer>
       <FriendsModalContent>
         <h4>
-          {props.friend}
+          Edit Info
         </h4>
         <div>
           Random Content

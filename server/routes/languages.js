@@ -5,6 +5,9 @@ const model = require('../models/languageModel.js');
 // GET REQUESTS //
 
 // Get all languages available
+// TODO(?): Instead of returning an array of objects with id & name keys,
+// return a singular JSON object with key = id, value = name
+// this will make it easier for the client to store and access this data
 router.get('/languages', (req, res, next) => {
   model.getAllLanguages()
     .then((result) => {
@@ -13,7 +16,7 @@ router.get('/languages', (req, res, next) => {
         res.status(200).send(languages) :
         res.sendStatus(404);
     })
-    .catch((error) => res.status(404).send(error));
+    .catch((error) => res.sendStatus(404));
 });
 
 // Get taught languages for a given accountId
@@ -29,7 +32,31 @@ router.get('/languages/taught', (req, res, next) => {
         res.status(200).send(languages) :
         res.sendStatus(404);
     })
-    .catch((error) => res.status(404).send(error));
+    .catch((error) => res.sendStatus(404));
+});
+
+// Get a list of accountIds for teachers who teach the provided language
+// Expects in query:
+//  languageId (INTEGER)
+// Will return a list of accounts with these properties:
+//  teacher_id (INTEGER)
+//  lang_id (INTEGER)
+//  taught_level (STRING)
+// If required, it is up to the client to request
+// extended information on each account (name, email, etc.) from /accounts
+router.get('/languages/taught/accounts', (req, res, next) => {
+  if (!req.query.languageId) {
+    res.sendStatus(400);
+    return;
+  }
+  model.getTeachersByTaughtLanguageId(req.query.languageId)
+    .then((result) => {
+      let accounts = result.rows;
+      accounts.length > 0 ?
+        res.status(200).send(accounts) :
+        res.sendStatus(404);
+    })
+    .catch((error) => res.sendStatus(404));
 });
 
 // Get known languages for a given accountId
@@ -45,7 +72,7 @@ router.get('/languages/known', (req, res, next) => {
         res.status(200).send(languages) :
         res.sendStatus(404);
     })
-    .catch((error) => res.status(404).send(error));
+    .catch((error) => res.sendStatus(404));
 });
 
 // Get desired languages for a given accountId
@@ -61,7 +88,7 @@ router.get('/languages/desired', (req, res, next) => {
         res.status(200).send(languages) :
         res.sendStatus(404);
     })
-    .catch((error) => res.status(404).send(error));
+    .catch((error) => res.sendStatus(400));
 });
 
 // POST REQUESTS //
@@ -77,10 +104,8 @@ router.post('/languages/taught', (req, res, next) => {
   }
   // TODO: Figure out how to insert many rather than just one at a time
   model.insertTaughtLanguage(req.user.id, req.body.taughtLevel, req.body.language)
-    .then((result) => {
-      res.sendStatus(201);
-    })
-    .catch((error) => res.status(400).send(error));
+    .then((result) => res.sendStatus(201))
+    .catch((error) => res.sendStatus(400));
 });
 
 // Expects in req.body:
@@ -92,10 +117,8 @@ router.post('/languages/known', (req, res, next) => {
     return;
   }
   model.insertKnownLanguage(req.user.id, req.body.language)
-    .then((result) => {
-      res.sendStatus(201);
-    })
-    .catch((error) => res.status(400).send(error));
+    .then((result) => res.sendStatus(201))
+    .catch((error) => res.sendStatus(400));
 });
 
 // Expects in req.body:
@@ -107,10 +130,8 @@ router.post('/languages/desired', (req, res, next) => {
     return;
   }
   model.insertDesiredLanguage(req.user.id, req.body.language)
-    .then((result) => {
-      res.sendStatus(201);
-    })
-    .catch((error) => res.status(400).send(error));
+    .then((result) => res.sendStatus(201))
+    .catch((error) => res.sendStatus(400));
 });
 
 module.exports = router;
