@@ -21,6 +21,7 @@ export default function FriendsModal (props) {
         <div>
           Random Content
         </div>
+        <br></br>
         <StyledButton onClick={props.onClose}>Close</StyledButton>
       </FriendsModalContent>
     </FriendsModalContainer>
