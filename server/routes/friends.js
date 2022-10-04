@@ -12,6 +12,15 @@ router.get('/friend', (req, res, next) => {
     .catch((error) => res.sendStatus(400));
 });
 
+router.get('/friend/requests', (req, res, next) => {
+  let requesterId = req.user.id;
+  friendModel.findFriendRequests(requesterId)
+    .then(({rows}) => {
+      res.status(200).send(rows);
+    })
+    .catch((error) => res.sendStatus(400));
+});
+
 
 // req.body.requestedId - Integer (receiver account id)
 router.post('/friend', (req, res, next) => {

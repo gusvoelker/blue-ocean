@@ -14,6 +14,14 @@ module.exports.checkIfFriends = (accountId1, accountId2) => {
   `);
 };
 
+module.exports.findFriendRequests = (requesterId) => {
+  return db.query(`
+  SELECT req_account_id FROM connections
+    WHERE rec_account_id=${requesterId}
+      AND status = false
+  `);
+};
+
 module.exports.findFriends = (requesterId) => {
   return db.query(`
   SELECT rec_account_id FROM connections
