@@ -29,11 +29,13 @@ const Grid = styled.div`
   width: 100%;
   align-items: center;
   justify-content: center;
+  margin-bottom: -3rem;
 `
 
 const Paper = styled.div`
   display: flex;
   border: 2px solid black;
+  border-radius: 20px;
   margin: 10px;
   background-color: white;
   position: relative;
@@ -49,5 +51,5 @@ const MyVideoDiv = styled.div`
 
 const VideoHolder = styled.video`
   display: flex;
-  width: 550px;
+  width: 50rem;
 `

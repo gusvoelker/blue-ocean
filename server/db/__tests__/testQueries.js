@@ -1,14 +1,60 @@
-const query = require('../db.js').poolQuery;
 const accountModel = require('../../models/accountModel.js');
 const languageModel = require('../../models/languageModel.js');
 const chatModel = require('../../models/chatModel.js');
 const friendModel = require('../../models/friendModel.js');
+const ratingsModel = require('../../models/ratingsModel.js');
 
 // Will eventually replace this with jest testing in queries.test.js, but for now...
 
 // ACCOUNTS //
+// NOTE: Since we are creating a pw hash directly rather than going through auth
+// we can't log in to these accounts using a service like postman to test the routes
 
-// CREATE ACCOUNTS
+// CREATE ACCOUNTS - STUDENT
+(async () => {
+  let studentOneAccount = {
+    email: 'studentOne@test.com',
+    passwordHash: '3iojfsoinfw',
+    firstName: 'Ryan',
+    lastName: 'Nelson',
+    isTeacher: false
+  }
+  let result = await accountModel.createAccount(studentOneAccount);
+  console.log(result);
+  let studentTwoAccount = {
+    email: 'studentTwo@test.com',
+    passwordHash: '3iojfsoinfw',
+    firstName: 'Bryan',
+    lastName: 'Belson',
+    isTeacher: false
+  }
+  result = await accountModel.createAccount(studentTwoAccount);
+  console.log(result);
+});
+
+// CREATE ACCOUNTS - TEACHER
+(async () => {
+  let teacherOneAccount = {
+    email: 'teacherOne@test.edu',
+    passwordHash: '3iojfsoinfw',
+    firstName: 'Teacher',
+    lastName: 'Person',
+    isTeacher: true
+  }
+  let result = await accountModel.createAccount(teacherOneAccount);
+  console.log(result);
+  teacherTwoAccount = {
+    email: 'teacherTwo@test.edu',
+    passwordHash: '3iojfsoinfw',
+    firstName: 'Beacher',
+    lastName: 'Berson',
+    isTeacher: true
+  }
+  result = await accountModel.createAccount(teacherTwoAccount);
+  console.log(result);
+});
+
+// CREATE ACCOUNTS - BOTH
 (async () => {
   let teacherAccount = {
     email: 'teacher@test.edu',
@@ -19,11 +65,11 @@ const friendModel = require('../../models/friendModel.js');
   }
   let result = await accountModel.createAccount(teacherAccount);
   console.log(result);
-  let userAccount = {
-    email: 'user@test.com',
+  let studentAccount = {
+    email: 'student@test.com',
     passwordHash: '3iojfsoinfw',
-    firstName: 'Ryan',
-    lastName: 'Nelson',
+    firstName: 'Student',
+    lastName: 'Person',
     isTeacher: false
   }
   result = await accountModel.createAccount(userAccount);
@@ -157,4 +203,24 @@ const friendModel = require('../../models/friendModel.js');
   let accountId2 = 3;
   let result = await friendModel.checkIfFriends(accountId1, accountId2);
   console.log(result.rows[0].exists);
+});
+
+// RATINGS //
+
+// ADD RATING
+(() => {
+  let ratingStudentId = 1;
+  let ratedStudentId = 2;
+  let languageId = 1;
+  let rating = 4;
+  ratingsModel.addRating(ratingStudentId, ratedStudentId, languageId, 5)
+    .then((result) => console.log(result))
+    .catch((error) => console.log(error));
+});
+
+// GET RATINGS
+(async () => {
+  let ratedStudentId = 2;
+  let result = await ratingsModel.getRatingsAvgByStudentId(ratedStudentId)
+  console.log(result.rows);
 });

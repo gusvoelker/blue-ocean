@@ -65,7 +65,9 @@ export default function SignUp (props) {
     //props.onIdChange(res.data.user.id)
     navigate('/teacherinfo')
     } catch (err) {
-      console.log(err)
+      setErrorMessage(err.response.data.message)
+      setError(true);
+      console.log(err);
     }
   }
 
@@ -91,12 +93,11 @@ export default function SignUp (props) {
           <StyledLabel>
               First name:
 
-             <StyledTextInput placeholder='enter first name' name='first' onChange={props.onFirstNameChange}></StyledTextInput>
+             <StyledTextInput placeholder='enter first name' name='firstName' onChange={handleChange}></StyledTextInput>
             </StyledLabel>
             <StyledLabel>
               Last name:
               <StyledTextInput placeholder='enter last name' name='last' onChange={props.onLastNameChange}></StyledTextInput>
-
              {/* <StyledTextInput placeholder='enter first name' name='firstName' onChange={handleChange}></StyledTextInput>
             </StyledLabel>
             <StyledLabel>
@@ -108,18 +109,18 @@ export default function SignUp (props) {
               <span>
                 Email:
               </span>
-              <StyledTextEmail placeholder='enter email' name='email' onChange={props.onEmailChange}></StyledTextEmail>
+              <StyledTextEmail placeholder='enter email' name='email' onChange={handleChange}></StyledTextEmail>
             </StyledLabel>
             <StyledLabel>
               <span>
                 Password:
               </span>
-              <StyledTextInput placeholder='enter password' name='password' onChange={props.onPasswordChange}></StyledTextInput>
+              <StyledTextInput placeholder='enter password' name='password' onChange={handleChange}></StyledTextInput>
             </StyledLabel>
             <StyledLabel>
             teacher or student:
 
-            <StyledSelectInput onChange={props.onRoleChange} style={{height: '2rem', fontSize: '0.8rem'}}>
+            <StyledSelectInput onChange={handleSelect} style={{height: '2rem', fontSize: '0.8rem'}}>
 
             {/* <StyledSelectInput onChange={handleSelect} style={{height: '2rem', fontSize: '0.8rem'}}> */}
 
@@ -128,6 +129,9 @@ export default function SignUp (props) {
             </StyledSelectInput>
             </StyledLabel>
           </StyledRightAlignedForms>
+          {error ? <p>
+            {errorMessage}
+          </p> : null}
           {button}
         </StyledLoginSignUpForm>
       </StyledloginSignUpBox>

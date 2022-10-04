@@ -7,6 +7,7 @@ const model = require('../models/accountModel.js');
 // Get all account info by account type (teacher, student)
 // Only gets information from accounts matching the requesting user
 // TODO: Add ability to filter accounts by name / email (?)
+// may decide to get all account info regardless of type
 router.get('/accounts', (req, res, next) => {
   model.getAccountsByType(req.user.isTeacher)
     .then((result) => {
@@ -15,11 +16,11 @@ router.get('/accounts', (req, res, next) => {
         res.status(200).send(accounts) :
         res.sendStatus(404);
     })
-    .catch((error) => res.status(404).send(error));
+    .catch((error) => res.sendStatus(400));
 });
 
 // Get account info for a provided accountId
-// req.body.accountId
+// req.query.accountId
 // If not providing accountId, instead provides info for the requesting user
 router.get('/accounts/id', (req, res, next) => {
   let userId = req.query.accountId || req.user.id;
@@ -30,7 +31,7 @@ router.get('/accounts/id', (req, res, next) => {
         res.status(200).send(accountInfo) :
         res.sendStatus(404);
     })
-    .catch((error) => res.status(404).send(error));
+    .catch((error) => res.sendStatus(400));
 });
 
 module.exports = router;

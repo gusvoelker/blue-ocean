@@ -25,6 +25,9 @@ import AddFriendModal from './AddFriendModal.jsx';
 import EditInfoModal from './EditInfoModal.jsx';
 import TeacherCalendar from '../components/LoginSignup/Teacher/TeacherCalendar.jsx';
 import { Outlet, Link } from "react-router-dom";
+import {serverURL} from '../config.js'
+import ClassListModal from '../components/LoginSignup/Teacher/ClassListModal.jsx'
+
 
 const LeftButton = styled.button`
   position: absolute;
@@ -81,6 +84,12 @@ export default function TeacherProfile(props) {
   const [friendSearch, setFriendSearch] = useState('');
   const [editInfoShow, setEditInfoShow] = useState(false);
   const [teacherId, setTeacherId] = useState('1');
+  const [classes, setClasses] = useState([]);
+  const [students, setStudents] = useState([]);
+  const [modalClassName, setModalClassName] = useState('')
+  const [classShow, setClassShow] = useState(false)
+
+
 
   var [x, setx] = useState(0);
   // function for the image to expand on click
@@ -93,6 +102,15 @@ export default function TeacherProfile(props) {
     setx(x + 1);
   }
 
+  useEffect(()=>{
+    // axios.get(`${serverURL}/friend`).then((friends)=>{
+    //   console.log('friends ', friends)
+    // }).catch((err)=>{console.log('error getting friends ', err)})
+    axios.get(`${serverURL}/classes`, {params: {teacher_id: teacherId}}).then((classData) =>{
+      setClasses(classData.data)
+    }).catch((err)=>{console.log('error getting classes ', err)})
+  }, [])
+
   const onFriendClick = (e) => {
     setShow(true);
     setCurrentFriend(e.target.id);
@@ -102,6 +120,16 @@ export default function TeacherProfile(props) {
   const onAddFriendClick = () => {
     setAddShow(true);
   }
+  const onClassListClick = (e, class_name) => {
+    e.preventDefault()
+    axios.get(`${serverURL}/classes/students`, {params: {class_id: e.target.id}}).then((students) =>{
+      console.log(students.data)
+      setStudents(students.data)
+      setModalClassName(class_name)
+      setClassShow(true)
+    }).catch(err =>{console.log(err)})
+  }
+
 
   const onFriendSearch = (e) => {
     setFriendSearch(e.target.value);
@@ -110,6 +138,17 @@ export default function TeacherProfile(props) {
   const onEditInfo = () => {
     setEditInfoShow(true);
   }
+
+  const [filteredFriends, setFilteredFriends] = useState(props.friends);
+
+  const filterFriends = (e) => {
+    setFilteredFriends(props.friends.filter(function (str) {
+        var lowered = str.toLowerCase();
+        return lowered.includes(e.target.value);
+      }));
+    console.log(filteredFriends);
+  }
+
 
   return (
     <div>
@@ -154,12 +193,11 @@ export default function TeacherProfile(props) {
           <StyledFriendSearchSpan>
             <h3><strong>Friends List</strong></h3>
             <StyledFriendSearch>
-              <input name='friendfilter' type='text' placeholder='filter'></input>
-              <input type='submit' value='Search' style={{ cursor: 'pointer' }} />
+              <input name='friendfilter' type='text' placeholder='filter' onChange={filterFriends}></input>
             </StyledFriendSearch>
           </StyledFriendSearchSpan>
           <p>
-            {props.friends.map(friend => {
+            {filteredFriends.map(friend => {
               return (
                 <StyledFriend id={friend} onClick={onFriendClick}>
                   <div style={{ fontWeight: 'bold' }}>{friend}</div>
@@ -181,16 +219,17 @@ export default function TeacherProfile(props) {
             <h3><strong>Class List</strong></h3>
           </StyledFriendSearchSpan>
           <p>
-            {props.friends.map(friend => {
+            {classes.map(teacherClass => {
               return (
-                <StyledFriend id={friend} onClick={onFriendClick}>
-                  <div style={{ fontWeight: 'bold' }}>{friend}</div>
+                <StyledFriend key={teacherClass.class_id} id={teacherClass.class_id} onClick={(e)=>{onClassListClick(e, teacherClass.class_name)}} >
+                  <div style={{ fontWeight: 'bold' }} >{teacherClass.class_name}</div>
                   <StyledFriendIcons>
                   </StyledFriendIcons>
                 </StyledFriend>
               )
             })}
           </p>
+          {classShow && <ClassListModal onClose={()=>setClassShow(false)} classShow={classShow} modalClassName={modalClassName} students={students}/>}
           <StyledButton style={{ marginTop: '0rem', marginLeft: '1rem', width: '12rem'}} onClick={()=> {setTeacherShow(true)}}>ADD CLASS LIST</StyledButton>
           {teacherShow && <TeacherClassListModal onClose={()=>setTeacherShow(false)} show={teacherShow} onFriendSearch={onFriendSearch}/>}
 
