@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import { serverURL } from './config.js';
 import NavBar from './components/NavBar/NavBar.jsx';
+import AboutNavBar from './components/NavBar/AboutNavBar.jsx';
 import Profile from './components/Profile.jsx';
 import TeacherProfile from './components/TeacherProfile.jsx';
 import Error from './components/LoginSignup/Error.jsx';
@@ -102,7 +103,7 @@ export default function App () {
           <Routes>
             <Route path="/" element={
               <>
-                <NavBar role={role} darkTheme={darkTheme}/>
+                <AboutNavBar role={role} darkTheme={darkTheme}/>
                   <About/>
               </>
             }>
