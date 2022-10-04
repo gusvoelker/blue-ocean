@@ -32,16 +32,17 @@ export default function Messages () {
 
   useEffect(() => {
     socket.current.emit('addUser', 555);
-    socket.current.on('getUsers', users => {
-      console.log(users);
+    socket.current.on('receiveMessage', message => {
+      console.log(message);
   })
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     socket.current.emit('sendMessage', {
-      senderId: 555,
-      receiverId: 555,
+      senderId: socket.id,
+      receiverId: socket.id,
+      text: 'Hello There',
     })
   }
 

@@ -22,17 +22,20 @@ const getUser = (userId) => {
 io.on("connection", (socket) => {
   // socket.emit("chat-message", "Hello World");
   console.log("a user connected");
+  console.log(socket.id);
   socket.on("addUser", (userId) => {
     addUser(userId, socket.id);
     io.emit("getUsers", users);
   });
 
   socket.on("sendMessage", ({ senderId, receiverId, text }) => {
-    const user = getUser(receiverId);
-    io.to(user.socketId).emit("getMessage", {
-      senderId,
-      text,
-    });
+    console.log(senderId, receiverId, text);
+    io.emit("receiveMessage", text);
+    // const user = getUser(receiverId);
+    // io.to(user.socketId).emit("getMessage", {
+    //   senderId,
+    //   text,
+    // });
   });
 
   socket.on("disconnect", () => {
