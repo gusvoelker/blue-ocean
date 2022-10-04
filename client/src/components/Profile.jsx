@@ -173,7 +173,6 @@ export default function Profile (props) {
             <h3><strong>Friends List</strong></h3>
             <StyledFriendSearch>
               <input name='friendfilter' type='text' placeholder='filter' onChange={filterFriends}></input>
-              <input type='submit' value='Search' style={{cursor: 'pointer'}}/>
             </StyledFriendSearch>
           </StyledFriendSearchSpan>
           <p>
