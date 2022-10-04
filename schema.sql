@@ -50,6 +50,8 @@ ALTER TABLE enrollments
 CREATE TABLE languages (
 	lang_id SERIAL NOT NULL PRIMARY KEY,
 	lang_name VARCHAR(60) NOT NULL,
+	lang_icon_url TEXT,
+	lang_bg_url TEXT,
 	CONSTRAINT lang_name_unique UNIQUE (lang_name)
 );
 
