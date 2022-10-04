@@ -25,8 +25,8 @@ CREATE TABLE connections (
 CREATE TYPE rating_enum AS ENUM('1', '2', '3', '4');
 CREATE TABLE ratings (
 	rating_id SERIAL NOT NULL,
-	rating_account_id INT REFERENCES accounts(account_id),
-	rated_account_id INT REFERENCES accounts(account_id),
+	rating_account_id INT,
+	rated_account_id INT,
 	rated_lang_id INT,
 	rating rating_enum
 );
