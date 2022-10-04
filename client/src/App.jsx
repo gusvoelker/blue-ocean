@@ -29,15 +29,14 @@ import VideoChat from './components/VideoChat.jsx'
 import ThemeToggleButton from './components/NavBar/DarkModeToggle.jsx'
 
 
-// order:
+// User Story
   // About
-  // Role,
-  // EntryForm
-  // TeacherSignUp
-  // TeacherLogin
-  // TeacherInfo
+  // Login or signup
+    // signup
+      // Teacher or User
+    // login
   // Profile
-  // Messages
+  // You can get anywhere
 
 
 export default function App () {

@@ -191,7 +191,7 @@ export default function TeacherProfile(props) {
           <StyledFriendSearchSpan>
             <h3><strong>Friends List</strong></h3>
             <StyledFriendSearch>
-              <input name='friendfilter' type='text' placeholder='filter' onChange={filterFriends} style={{appearance: 'none'}}></input>
+              <input name='friendfilter' type='text' placeholder='filter' onChange={filterFriends}></input>
             </StyledFriendSearch>
           </StyledFriendSearchSpan>
           <p>

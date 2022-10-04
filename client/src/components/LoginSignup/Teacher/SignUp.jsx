@@ -70,10 +70,9 @@ export default function SignUp (props) {
     const res = await axios.post(`${serverURL}/register`, {...formData, isTeacher: isTeacher})
     console.log(res)
     } catch (err) {
-      // setErrorMessage(err.)
       setErrorMessage(err.response.data.message)
       setError(true);
-      console.log('err: ', err.response.data.message);
+      console.log(err);
     }
 
   }

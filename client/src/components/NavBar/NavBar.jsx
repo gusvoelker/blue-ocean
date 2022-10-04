@@ -28,7 +28,7 @@ export default function NavBar({ darkTheme, role }) {
     return (
       <StyledNavBar id='translate'>
         <StyledNavBarIcon>
-          Not Rosetta Stone
+          Chat Chat
         </StyledNavBarIcon>
 
         <StyledNavBarLinks>
