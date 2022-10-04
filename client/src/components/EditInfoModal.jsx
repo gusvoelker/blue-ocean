@@ -4,10 +4,10 @@ import {
   FriendsModalContainer,
   FriendsModalContent,
   LightGreyButton,
-  StyledButton,
+  StyledButton
 } from './StyledComponents/StyledComponents.jsx';
 
-export default function AddFriendModal (props) {
+export default function EditInfoModal (props) {
   if (!props.show) {
     return null;
   }
@@ -16,10 +16,11 @@ export default function AddFriendModal (props) {
     <FriendsModalContainer>
       <FriendsModalContent>
         <h4>
-          ADD FRIEND
+          Edit Info
         </h4>
-        <input type="text" onChange={props.onFriendClick}></input>
-        <br></br>
+        <div>
+          Random Content
+        </div>
         <br></br>
         <StyledButton onClick={props.onClose}>Close</StyledButton>
       </FriendsModalContent>

@@ -9,7 +9,7 @@ import {
   StyledPageColumn,
   StyledSubmitInput,
   StyledImage
-} from '../StyledComponents/StyledComponents.jsx'
+} from '../StyledComponents/StyledComponents.jsx';
 
 
 const StyledInfo = styled.div`
@@ -33,6 +33,7 @@ const StyledInfo = styled.div`
   }
 `
 
+import { Outlet, Link } from "react-router-dom";
 
 export default function About () {
   const [formData, setFormData] = useState()
@@ -42,6 +43,7 @@ export default function About () {
     setFormData(e.target.value);
     console.log(formData);
   }
+
   return (
     <StyledPageColumn style={{paddingTop: '6rem'}}>
       <StyledAbout>
@@ -59,8 +61,12 @@ export default function About () {
         <h1 style={{marginBottom: '0rem'}}>
           Get Started!
         </h1>
-        <StyledSubmitInput value='LOG IN' style={{marginTop: '-1rem'}}></StyledSubmitInput>
-        <StyledSubmitInput value='SIGN UP' style={{marginTop: '-1rem'}}></StyledSubmitInput>
+        <Link to="/login">
+          <StyledSubmitInput value='LOG IN' style={{marginTop: '-1rem'}}></StyledSubmitInput>
+        </Link>
+        <Link to="/signup">
+          <StyledSubmitInput value='SIGN UP' style={{marginTop: '-1rem'}}></StyledSubmitInput>
+        </Link>
       </StyledLoginSignUpForm>
     </StyledPageColumn>
   )

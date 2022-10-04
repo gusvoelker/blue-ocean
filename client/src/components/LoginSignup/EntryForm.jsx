@@ -44,7 +44,6 @@ export default function EntryForm () {
           <StyledButton>LOG IN</StyledButton>
           <StyledButton>SIGN UP</StyledButton>
         </StyledSideBySideButtons>
-
       </StyledLoginSignUpForm>
     </StyledloginSignUpBox>
   )

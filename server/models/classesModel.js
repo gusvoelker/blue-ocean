@@ -2,6 +2,7 @@ const query = require('../db/db.js').poolQuery;
 
 
 module.exports.addClass = (classObj) => {
+  console.log(classObj)
   return query(`
   INSERT INTO classes (
     teacher_id,
@@ -11,7 +12,8 @@ module.exports.addClass = (classObj) => {
     '${classObj.className}'
   )
   RETURNING class_id
-`).then((response) => {
+`)
+  .then((response) => {
     return response.rows[0].class_id;
   })
   .catch(err => console.log(err))

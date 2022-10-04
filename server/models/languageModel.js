@@ -16,6 +16,14 @@ module.exports.getAllLanguages = (sort='lang_name desc') => {
   `);
 };
 
+module.exports.getTeachersByTaughtLanguageId = (languageId) => {
+  return query(`
+    SELECT teacher_id, lang_id, taught_level
+      FROM taught_languages
+        WHERE lang_id = ${languageId}
+  `);
+};
+
 module.exports.getTaughtLanguagesByTeacherId = (teacherId, sort='lang_name desc') => {
   return query(`
     SELECT languages.lang_id, languages.lang_name, taught_languages.taught_level
