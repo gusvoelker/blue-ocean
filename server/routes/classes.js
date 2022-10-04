@@ -26,6 +26,7 @@ router.post('/classes', (req, res, next) => {
 
 //view list of classes
 router.get('/classes', (req, res, next) => {
+
   model.findClassesByTeacher(req.query.teacher_id)
   .then(({rows}) => {
     res.status(200).send(rows);

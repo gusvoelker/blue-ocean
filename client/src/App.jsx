@@ -46,6 +46,10 @@ export default function App () {
           <NavBar darkTheme={darkTheme}/>
           {/* <Messages darkTheme={darkTheme}/> */}
           <TeacherProfile darkTheme={darkTheme} />
+          {/* <Profile darkTheme={darkTheme}/> */}
+          {/* <TeacherInfo /> */}
+          {/* <SignUp /> */}
+          {/* <About /> */}
         </StyledLogPage>
       </div>
     );

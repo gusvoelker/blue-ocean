@@ -21,6 +21,7 @@ import TeacherClassListModal from './LoginSignup/Teacher/TeacherClassListModal.j
 import { faChevronLeft, faChevronRight, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import TeacherCalendar from '../components/LoginSignup/Teacher/TeacherCalendar.jsx'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {serverURL} from '../config.js'
 
 const LeftButton = styled.button`
   position: absolute;
@@ -77,6 +78,8 @@ export default function TeacherProfile(props) {
   const [profileBackground, setProfileBackground] = useState(['https://images.unsplash.com/photo-1470125634816-ede3f51bbb42?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1998&q=80', 'https://images.unsplash.com/photo-1552288084-454d4fa5caa1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2170&q=80', 'https://images.unsplash.com/photo-1606335270813-52d62bfc5e69?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2525&q=80', 'https://images.unsplash.com/photo-1591467847734-12186c3a3f1c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2156&q=80', 'https://images.unsplash.com/photo-1603731125936-1c28b35b1659?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1905&q=80', 'https://images.unsplash.com/photo-1590918836821-3c692676add7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80']);
   const [teacherShow, setTeacherShow] = useState(false);
   const [teacherId, setTeacherId] = useState('1')
+  const [classes, setClasses] = useState([]);
+
 
 
 
@@ -110,6 +113,16 @@ export default function TeacherProfile(props) {
     setx(x + 1);
   }
 
+  useEffect(()=>{
+    // axios.get(`${serverURL}/friend`).then((friends)=>{
+    //   console.log('friends ', friends)
+    // }).catch((err)=>{console.log('error getting friends ', err)})
+    axios.get(`${serverURL}/classes`, {params: {teacher_id: teacherId}}).then((classData) =>{
+      console.log(classData.data)
+      setClasses(classData.data)
+    }).catch((err)=>{console.log('error getting classes ', err)})
+  }, [])
+
   const onFriendClick = (e) => {
     setShow(true);
     setCurrentFriend(e.target.id);
@@ -119,6 +132,11 @@ export default function TeacherProfile(props) {
   const onAddFriendClick = () => {
     setAddShow(true);
   }
+  const onClassListClick = () => {
+    e.preventDefault()
+    axios.get(`${serverURL}/classes/students`, )
+  }
+
 
   return (
     <div>
@@ -179,10 +197,10 @@ export default function TeacherProfile(props) {
             <h3><strong>Class List</strong></h3>
           </StyledFriendSearchSpan>
           <p>
-            {friends.map(friend => {
+            {classes.map(teacherClass => {
               return (
-                <StyledFriend>
-                  <div style={{ fontWeight: 'bold' }}>{friend}</div>
+                <StyledFriend key={teacherClass.class_id} name={teacherClass.class_id}>
+                  <div style={{ fontWeight: 'bold' }} onClick={onClassListClick}>{teacherClass.className}</div>
                   <StyledFriendIcons>
                   </StyledFriendIcons>
                 </StyledFriend>
