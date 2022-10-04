@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import axios from 'axios';
+import {serverURL} from '../../../config.js';
 import styled from 'styled-components';
 import {
   StyledButton,
@@ -36,9 +38,10 @@ export default function SignUp (props) {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    first: '',
-    last: '',
+    firstName: '',
+    lastName: '',
   })
+  const [isTeacher, setTeacher] = useState(true);
   const handleChange = (e) => {
     e.preventDefault();
     setFormData({
@@ -48,20 +51,35 @@ export default function SignUp (props) {
     console.log(e.target.value);
   }
 
-  const handleClick = (e) => {
+  const handleSelect = (e) => {
     e.preventDefault();
-    console.log('you clicked on a thing');
+    if (e.target.value === 'teacher') {
+      setTeacher(true);
+    } else {
+      setTeacher(false);
+    }
+  }
+
+  const handleClick = async(e) => {
+    e.preventDefault();
+    try{
+    const res = await axios.post(`${serverURL}/register`, {...formData, isTeacher: isTeacher})
+    console.log(res)
+    } catch (err) {
+      console.log(err)
+    }
+
   }
 
   let button;
 
   if (props.role === 'user') {
     button = <Link to="/profile">
-                <StyledSubmitInput value='SUBMIT'></StyledSubmitInput>
+                <StyledSubmitInput value='SUBMIT' onClick={handleClick}></StyledSubmitInput>
               </Link>
   } else {
     button = <Link to="/teacherinfo">
-                <StyledSubmitInput value='SUBMIT'></StyledSubmitInput>
+                <StyledSubmitInput value='SUBMIT' onClick={handleClick}></StyledSubmitInput>
               </Link>
   }
 
@@ -74,11 +92,19 @@ export default function SignUp (props) {
           <StyledRightAlignedForms>
           <StyledLabel>
               First name:
-              <StyledTextInput placeholder='enter first name' name='first' onChange={props.onFirstNameChange}></StyledTextInput>
+
+             <StyledTextInput placeholder='enter first name' name='first' onChange={props.onFirstNameChange}></StyledTextInput>
             </StyledLabel>
             <StyledLabel>
               Last name:
-              <StyledTextInput placeholder='enter last name' name='last' onChange={props.onLastNameChange}></StyledTextInput>
+              <StyledTextInput placeholder='enter last name' name='last' onChange={props.onLastNameChange}></StyledTextInput> 
+
+             {/* <StyledTextInput placeholder='enter first name' name='firstName' onChange={handleChange}></StyledTextInput>
+            </StyledLabel>
+            <StyledLabel>
+              Last name:
+              <StyledTextInput placeholder='enter last name' name='lastName' onChange={handleChange}></StyledTextInput> */}
+
             </StyledLabel>
             <StyledLabel>
               <span>
@@ -94,7 +120,11 @@ export default function SignUp (props) {
             </StyledLabel>
             <StyledLabel>
             teacher or student:
+
             <StyledSelectInput onChange={props.onRoleChange} style={{height: '2rem', fontSize: '0.8rem'}}>
+
+            {/* <StyledSelectInput onChange={handleSelect} style={{height: '2rem', fontSize: '0.8rem'}}> */}
+
               <option value='teacher'>Teacher</option>
               <option value='user'>Student</option>
             </StyledSelectInput>

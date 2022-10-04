@@ -14,6 +14,7 @@ import {
   StyledFriendSearchSpan,
   StyledFriendSearch,
   AddPicture,
+  Dark,
 } from './StyledComponents/StyledComponents.jsx'
 
 import { faChevronLeft, faChevronRight, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
@@ -82,25 +83,15 @@ import FriendsModal from './FriendsModal.jsx';
 import AddFriendModal from './AddFriendModal.jsx';
 import EditInfoModal from './EditInfoModal.jsx';
 
+
 export default function Profile (props) {
   const [profileBackground, setProfileBackground] = useState(['https://images.unsplash.com/photo-1470125634816-ede3f51bbb42?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1998&q=80', 'https://images.unsplash.com/photo-1552288084-454d4fa5caa1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2170&q=80', 'https://images.unsplash.com/photo-1606335270813-52d62bfc5e69?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2525&q=80', 'https://images.unsplash.com/photo-1591467847734-12186c3a3f1c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2156&q=80', 'https://images.unsplash.com/photo-1603731125936-1c28b35b1659?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1905&q=80', 'https://images.unsplash.com/photo-1590918836821-3c692676add7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80']);
+  const [profileBackgroundDark, setProfileBackgroundDark] = useState(['https://images.unsplash.com/photo-1475738198235-4b30fc20cff4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1976&q=80', 'https://images.unsplash.com/photo-1552288084-454d4fa5caa1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2170&q=80', 'https://images.unsplash.com/photo-1504069424204-a54566b5165c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1984&q=80', 'https://images.unsplash.com/photo-1529984489975-079884dc3bc9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2320&q=80', 'https://images.unsplash.com/photo-1538254815620-1d3e0b3f14cf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2416&q=80']);
   const [show, setShow] = useState(false);
   const [addShow, setAddShow] = useState(false);
   const [editInfoShow, setEditInfoShow] = useState(false);
   const [currentFriend, setCurrentFriend] = useState('');
   const [friendSearch, setFriendSearch] = useState('');
-
-  const photoList = profileBackground.map((photo, index) => {
-    return (
-      // This translate x transformation is given to the slide div because it allows the picture to be shown that correlates with the x axis vertex
-      // i.e. the first picture is at x=0, the second is x=100, the third is x=200
-      // updating the x value changes what picture is shown
-      <Slide key={index}
-        style={{transform: `translateX(${x}%)`}}>
-        <img src={photo} alt='style-photo'/>
-      </Slide>
-    )
-  })
 
   var [x, setx] = useState(0);
   // function for the image to expand on click
@@ -133,13 +124,21 @@ export default function Profile (props) {
 
   return (
     <div>
+      <Dark>
       <ProfileContainer>
         <ProfilePicture src={props.profilePicture} />
+        {!props.darkTheme ?
         <ProfileBackground>
           <img src={profileBackground[x]} style={{textAlign: 'left', display: 'block'}}/>
           {x === 0 ? null : <LeftButton data-testid='left-arrow' onClick={goLeft}><FontAwesomeIcon icon={faChevronLeft} /></LeftButton>}
           {x >= profileBackground.length - 1 ? null : <RightButton data-testid='right-arrow' onClick={goRight}><FontAwesomeIcon icon={faChevronRight} /></RightButton>}
+        </ProfileBackground> :
+        <ProfileBackground>
+          <img src={profileBackgroundDark[x]} style={{textAlign: 'left', display: 'block'}}/>
+          {x === 0 ? null : <LeftButton data-testid='left-arrow' onClick={goLeft}><FontAwesomeIcon icon={faChevronLeft} /></LeftButton>}
+          {x >= profileBackgroundDark.length - 1 ? null : <RightButton data-testid='right-arrow' onClick={goRight}><FontAwesomeIcon icon={faChevronRight} /></RightButton>}
         </ProfileBackground>
+      }
         <ProfileAccountInfo>
           <h3><strong>Account Info</strong></h3>
           <h4><strong>Student</strong></h4>
@@ -153,8 +152,8 @@ export default function Profile (props) {
               <td>{props.email}</td>
             </tr>
             <tr>
-              <td>Password:</td>
-              <td>*********</td>
+              <td>Language:</td>
+              <td>Elvish</td>
             </tr>
           </table>
           <StyledButton onClick={onEditInfo} style={{marginTop: '1rem'}}>EDIT INFO</StyledButton>
@@ -182,11 +181,18 @@ export default function Profile (props) {
           })}
           </p>
           <StyledButton style={{marginTop: '0rem'}} onClick={onAddFriendClick}>ADD FRIEND</StyledButton>
+          <StyledButton>PENDING REQUESTS</StyledButton>
+
+            {/* //return (<div id={friend} onClick={onFriendClick}>{friend}</div>)
+          //})}
+          //</p>
+          //<LightGreyButton onClick={onAddFriendClick}>Add Friend +</LightGreyButton> */}
         </ProfileFriendsList>
       </ProfileContainer>
       <FriendsModal onClose={() => setShow(false)} show={show} friend={currentFriend} />
       <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch}/>
       <EditInfoModal onClose={() => setEditInfoShow(false)} show={editInfoShow} />
+      </Dark>
     </div>
   )
 }

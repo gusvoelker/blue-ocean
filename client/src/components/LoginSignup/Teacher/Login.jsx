@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
+import axios from 'axios';
+import {serverURL} from '../../../../src/config.js';
 import {
   StyledButton,
   StyledLogPage,
@@ -44,6 +46,16 @@ export default function Login (props) {
       [e.target.name]: e.target.value
     })
     console.log(e.target.value);
+  };
+
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(`${serverURL}/login`, formData);
+      console.log(res)
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   let button;

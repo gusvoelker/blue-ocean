@@ -6,11 +6,12 @@ import {
   StyledNavBarLinks,
   StyledSelectInput,
   StyledSubmitInput
+  DarkStyledNavBar,
 } from '../StyledComponents/StyledComponents.jsx'
 import './googleTranslate.css'
 import { Outlet, Link } from "react-router-dom";
 
-export default function NavBar(props) {
+export default function NavBar({ darkTheme, role }) {
 
   let button;
   if (props.role === 'user') {
@@ -22,23 +23,37 @@ export default function NavBar(props) {
               <p style={{marginTop: '3rem'}}>Profile</p>
             </Link>
   }
+  
+  if(!darkTheme) {
+    return (
+      <StyledNavBar id='translate'>
+        <StyledNavBarIcon>
+          Not Rosetta Stone
+        </StyledNavBarIcon>
 
-
-  return (
-    <StyledNavBar id='translate'>
-      <StyledNavBarIcon>
-        Not Rosetta Stone
-      </StyledNavBarIcon>
-
-      <StyledNavBarLinks>
-        <p id='translate2' ></p>
-        {button}
-        <Link to="/messages">
+        <StyledNavBarLinks>
+          <p id='translate2' ></p>
+          <p style={{marginTop: '3rem'}}>Profile</p>
           <p style={{marginTop: '3rem'}}>Chat</p>
-        </Link>
-      </StyledNavBarLinks>
+        </StyledNavBarLinks>
+
+      </StyledNavBar>
+    )
+  } else {
+    return (
+      <DarkStyledNavBar id='translate'>
+        <StyledNavBarIcon>
+          Not Rosetta Stone
+        </StyledNavBarIcon>
+
+        <StyledNavBarLinks>
+          <p id='translate2' ></p>
+          {button}
+          <p style={{marginTop: '3rem'}}>Chat</p>
+        </StyledNavBarLinks>
 
 
-    </StyledNavBar>
-  )
+      </DarkStyledNavBar>
+    )
+  }
 }

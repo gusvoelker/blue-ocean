@@ -12,7 +12,8 @@ import {
   StyledFriend,
   StyledFriendIcons,
   StyledFriendSearchSpan,
-  StyledFriendSearch
+  StyledFriendSearch,
+  StyledEditProfileButton,
 } from './StyledComponents/StyledComponents.jsx'
 import axios from 'axios';
 import FormData from 'form-data'
@@ -22,6 +23,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import FriendsModal from './FriendsModal.jsx';
 import AddFriendModal from './AddFriendModal.jsx';
 import EditInfoModal from './EditInfoModal.jsx';
+import TeacherCalendar from '../components/LoginSignup/Teacher/TeacherCalendar.jsx'
 
 const LeftButton = styled.button`
   position: absolute;
@@ -76,6 +78,7 @@ export default function TeacherProfile(props) {
   const [currentFriend, setCurrentFriend] = useState('');
   const [friendSearch, setFriendSearch] = useState('');
   const [editInfoShow, setEditInfoShow] = useState(false);
+  const [teacherId, setTeacherId] = useState('1');
 
   var [x, setx] = useState(0);
   // function for the image to expand on click
@@ -114,8 +117,10 @@ export default function TeacherProfile(props) {
           <img src={profileBackground[x]} style={{textAlign: 'left', display: 'block'}}/>
           {x === 0 ? null : <LeftButton data-testid='left-arrow' onClick={goLeft}><FontAwesomeIcon icon={faChevronLeft} /></LeftButton>}
           {x >= profileBackground.length - 1 ? null : <RightButton data-testid='right-arrow' onClick={goRight}><FontAwesomeIcon icon={faChevronRight} /></RightButton>}
+          <StyledEditProfileButton style={{}}>EDIT ACCOUNT INFO</StyledEditProfileButton>
         </ProfileBackground>
-        <ProfileAccountInfo>
+        <TeacherCalendar />
+        {/* <ProfileAccountInfo>
           <h3><strong>Account Info</strong></h3>
           <h4><strong>Teacher</strong></h4>
           <table>
@@ -134,6 +139,9 @@ export default function TeacherProfile(props) {
           </table>
           <StyledButton onClick={onEditInfo} style={{marginTop: '1rem'}}>EDIT INFO</StyledButton>
         </ProfileAccountInfo>
+          </table> */}
+
+        {/* </ProfileAccountInfo> */}
         <ProfileFriendsList style={{width: '30rem', left: '32%'}}>
           <StyledFriendSearchSpan>
             <h3><strong>Friends List</strong></h3>
@@ -149,7 +157,7 @@ export default function TeacherProfile(props) {
                   <div style={{ fontWeight: 'bold' }}>{friend}</div>
                   <StyledFriendIcons>
                     <img src='https://pnggrid.com/wp-content/uploads/2021/12/Office-Phone-Icon-PNG-Transparent-Background.png' alt='phone icon for starting a call with friend' />
-                    <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' />
+                    <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend"/>
                   </StyledFriendIcons>
                 </StyledFriend>
               )
@@ -175,6 +183,7 @@ export default function TeacherProfile(props) {
           </p>
           <StyledButton style={{ marginTop: '0rem', marginLeft: '1rem', width: '12rem'}} onClick={()=> {setTeacherShow(true)}}>ADD CLASS LIST</StyledButton>
           {teacherShow && <TeacherClassListModal onClose={()=>setTeacherShow(false)} show={teacherShow} onFriendSearch={onFriendSearch}/>}
+
         </ProfileFriendsList>
       </ProfileContainer>
       <FriendsModal onClose={() => setShow(false)} show={show} friend={currentFriend} />
