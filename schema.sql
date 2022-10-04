@@ -138,3 +138,15 @@ ALTER TABLE account_message
 	ADD CONSTRAINT fk_account_message_account_id FOREIGN KEY(account_id) REFERENCES accounts(account_id);
 
 CREATE INDEX account_message_room_id_idx ON account_message (room_id);
+
+--table for the meetings
+CREATE TABLE meetings (
+	conn_id SERIAL NOT NULL,
+	description VARCHAR(300),
+	req_account_id INT NOT NULL REFERENCES accounts(account_id),
+	rec_account_id INT NOT NULL REFERENCES accounts(account_id),
+	start_time TIMESTAMP,
+	status BOOLEAN
+);
+
+CREATE INDEX meetings_req_account_id_idx ON meetings (req_account_id);
