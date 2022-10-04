@@ -6,4 +6,5 @@ module.exports = {
   friends: require("./friends.js"),
   classes: require("./classes.js"),
   auth: require("./auth.js"),
+  ratings: require("./ratings.js")
 };
