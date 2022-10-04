@@ -25,6 +25,7 @@ import AddFriendModal from './AddFriendModal.jsx';
 import EditInfoModal from './EditInfoModal.jsx';
 import TeacherCalendar from '../components/LoginSignup/Teacher/TeacherCalendar.jsx'
 import {serverURL} from '../config.js'
+import ClassListModal from '../components/LoginSignup/Teacher/ClassListModal.jsx'
 
 const LeftButton = styled.button`
   position: absolute;
@@ -82,7 +83,9 @@ export default function TeacherProfile(props) {
   const [editInfoShow, setEditInfoShow] = useState(false);
   const [teacherId, setTeacherId] = useState('1');
   const [classes, setClasses] = useState([]);
-
+  const [students, setStudents] = useState([]);
+  const [modalClassName, setModalClassName] = useState('')
+  const [classShow, setClassShow] = useState(false)
 
 
 
@@ -102,7 +105,6 @@ export default function TeacherProfile(props) {
     //   console.log('friends ', friends)
     // }).catch((err)=>{console.log('error getting friends ', err)})
     axios.get(`${serverURL}/classes`, {params: {teacher_id: teacherId}}).then((classData) =>{
-      console.log(classData.data)
       setClasses(classData.data)
     }).catch((err)=>{console.log('error getting classes ', err)})
   }, [])
@@ -116,9 +118,14 @@ export default function TeacherProfile(props) {
   const onAddFriendClick = () => {
     setAddShow(true);
   }
-  const onClassListClick = () => {
+  const onClassListClick = (e, class_name) => {
     e.preventDefault()
-    axios.get(`${serverURL}/classes/students`, )
+    axios.get(`${serverURL}/classes/students`, {params: {class_id: e.target.id}}).then((students) =>{
+      console.log(students.data)
+      setStudents(students.data)
+      setModalClassName(class_name)
+      setClassShow(true)
+    }).catch(err =>{console.log(err)})
   }
 
 
@@ -200,14 +207,15 @@ export default function TeacherProfile(props) {
           <p>
             {classes.map(teacherClass => {
               return (
-                <StyledFriend key={teacherClass.class_id} name={teacherClass.class_id}>
-                  <div style={{ fontWeight: 'bold' }} onClick={onClassListClick}>{teacherClass.className}</div>
+                <StyledFriend key={teacherClass.class_id} id={teacherClass.class_id} onClick={(e)=>{onClassListClick(e, teacherClass.class_name)}} >
+                  <div style={{ fontWeight: 'bold' }} >{teacherClass.class_name}</div>
                   <StyledFriendIcons>
                   </StyledFriendIcons>
                 </StyledFriend>
               )
             })}
           </p>
+          {classShow && <ClassListModal onClose={()=>setClassShow(false)} classShow={classShow} modalClassName={modalClassName} students={students}/>}
           <StyledButton style={{ marginTop: '0rem', marginLeft: '1rem', width: '12rem'}} onClick={()=> {setTeacherShow(true)}}>ADD CLASS LIST</StyledButton>
           {teacherShow && <TeacherClassListModal onClose={()=>setTeacherShow(false)} show={teacherShow} onFriendSearch={onFriendSearch}/>}
 
