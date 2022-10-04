@@ -110,6 +110,17 @@ export default function TeacherProfile(props) {
     setEditInfoShow(true);
   }
 
+  const [filteredFriends, setFilteredFriends] = useState(props.friends);
+
+  const filterFriends = (e) => {
+    setFilteredFriends(props.friends.filter(function (str) {
+        var lowered = str.toLowerCase();
+        return lowered.includes(e.target.value);
+      }));
+    console.log(filteredFriends);
+  }
+
+
   return (
     <div>
       <ProfileContainer>
@@ -153,12 +164,12 @@ export default function TeacherProfile(props) {
           <StyledFriendSearchSpan>
             <h3><strong>Friends List</strong></h3>
             <StyledFriendSearch>
-              <input name='friendfilter' type='text' placeholder='filter'></input>
+              <input name='friendfilter' type='text' placeholder='filter' onChange={filterFriends}></input>
               <input type='submit' value='Search' style={{ cursor: 'pointer' }} />
             </StyledFriendSearch>
           </StyledFriendSearchSpan>
           <p>
-            {props.friends.map(friend => {
+            {filteredFriends.map(friend => {
               return (
                 <StyledFriend id={friend} onClick={onFriendClick}>
                   <div style={{ fontWeight: 'bold' }}>{friend}</div>
