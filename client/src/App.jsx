@@ -7,7 +7,11 @@ import Profile from './components/Profile.jsx';
 import TeacherProfile from './components/TeacherProfile.jsx';
 import Error from './components/LoginSignup/Error.jsx';
 import Messages from './components/Messages.jsx';
-import { StyledLogPage, LightTheme, DarkTheme } from './components/StyledComponents/StyledComponents.jsx'
+import { StyledLogPage,
+  LightTheme,
+  DarkTheme,
+  DarkStyledNavBar,
+} from './components/StyledComponents/StyledComponents.jsx'
 import FriendsModal from './components/FriendsModal.jsx';
 import EntryForm from './components/LoginSignup/EntryForm.jsx';
 import Role from './components/LoginSignup/Role.jsx'
@@ -19,7 +23,7 @@ import Login from './components/LoginSignup/Teacher/Login.jsx'
 import TeacherInfo from './components/LoginSignup/Teacher/TeacherInfo.jsx'
 import About from './components/LoginSignup/About.jsx'
 import VideoChat from './components/VideoChat.jsx'
-
+import ThemeToggleButton from './components/NavBar/DarkModeToggle.jsx'
 
 
 // order:
@@ -35,14 +39,16 @@ import VideoChat from './components/VideoChat.jsx'
 
 export default function App () {
   const [darkTheme, setDarkTheme] = useState(true);
-  return (
-    <div>
-      <LightTheme/>
-      <StyledLogPage>
-        <NavBar/>
-        <TeacherInfo />
-      </StyledLogPage>
-    </div>
-  );
+    return (
+      <div>
+        {!darkTheme ? <LightTheme/> : <DarkTheme/>}
+        <ThemeToggleButton setDarkTheme={setDarkTheme} darkTheme={darkTheme}/>
+        <StyledLogPage>
+          <NavBar darkTheme={darkTheme}/>
+          {/* <Messages darkTheme={darkTheme}/> */}
+          <TeacherProfile darkTheme={darkTheme} />
+        </StyledLogPage>
+      </div>
+    );
 }
 

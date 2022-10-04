@@ -1,6 +1,5 @@
-const query = require('../db/db.js').poolQuery;
+const query = require("../db/db.js").poolQuery;
 
-// Should be used by client to retrieve a list of accounts on the website
 module.exports.getAllAccountInfo = () => {
   return query(`
     SELECT
@@ -27,6 +26,15 @@ module.exports.getAccountsByType = (isTeacher) => {
   `);
 };
 
+module.exports.getAccountTypeById = (accountId) => {
+  return query(`
+    SELECT
+      is_teacher
+    FROM accounts
+      WHERE account_id=${accountId}
+  `);
+};
+
 module.exports.getPublicAccountInfoById = (accountId) => {
   return query(`
     SELECT
@@ -43,13 +51,15 @@ module.exports.getAccountAuthByEmail = (email) => {
   return query(`
     SELECT
       account_id,
-      pw_hash
+      pw_hash,
+      is_teacher
     FROM accounts
       WHERE email='${email}'
   `);
 };
 
 // TODO: Delete(?) Check if needed by auth
+// It is used in one place in auth.js but it could be replaced by getAccountAuthByEmail
 module.exports.getPasswordByEmail = (email) => {
   return query(`
     SELECT
@@ -80,11 +90,10 @@ module.exports.createAccount = (account) => {
       ${account.isTeacher}
     )
     RETURNING account_id
-  `)
-    .then((createRes) => {
-      if (createRes.name === 'error') {
-        throw new Error(createRes.message);
-      }
-      return createRes.rows[0].account_id;
-    });
+  `).then((createRes) => {
+    if (createRes.name === "error") {
+      throw new Error(createRes.message);
+    }
+    return createRes.rows[0].account_id;
+  });
 };

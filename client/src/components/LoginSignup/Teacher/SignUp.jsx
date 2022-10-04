@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import axios from 'axios';
+import {serverURL} from '../../../config.js';
 import styled from 'styled-components';
 import {
   StyledButton,
@@ -34,9 +36,10 @@ export default function SignUp () {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    first: '',
-    last: '',
+    firstName: '',
+    lastName: '',
   })
+  const [isTeacher, setTeacher] = useState(true);
   const handleChange = (e) => {
     e.preventDefault();
     setFormData({
@@ -46,9 +49,24 @@ export default function SignUp () {
     console.log(e.target.value);
   }
 
-  const handleClick = (e) => {
+  const handleSelect = (e) => {
     e.preventDefault();
-    console.log('you clicked on a thing');
+    if (e.target.value === 'teacher') {
+      setTeacher(true);
+    } else {
+      setTeacher(false);
+    }
+  }
+
+  const handleClick = async(e) => {
+    e.preventDefault();
+    try{
+    const res = await axios.post(`${serverURL}/register`, {...formData, isTeacher: isTeacher})
+    console.log(res)
+    } catch (err) {
+      console.log(err)
+    }
+
   }
 
   return (
@@ -60,11 +78,11 @@ export default function SignUp () {
           <StyledRightAlignedForms>
           <StyledLabel>
               First name:
-              <StyledTextInput placeholder='enter first name' name='first' onChange={handleChange}></StyledTextInput>
+              <StyledTextInput placeholder='enter first name' name='firstName' onChange={handleChange}></StyledTextInput>
             </StyledLabel>
             <StyledLabel>
               Last name:
-              <StyledTextInput placeholder='enter last name' name='last' onChange={handleChange}></StyledTextInput>
+              <StyledTextInput placeholder='enter last name' name='lastName' onChange={handleChange}></StyledTextInput>
             </StyledLabel>
             <StyledLabel>
               <span>
@@ -80,13 +98,13 @@ export default function SignUp () {
             </StyledLabel>
             <StyledLabel>
             teacher or student:
-            <StyledSelectInput onChange={handleChange} style={{height: '2rem', fontSize: '0.8rem'}}>
+            <StyledSelectInput onChange={handleSelect} style={{height: '2rem', fontSize: '0.8rem'}}>
               <option value='teacher'>Teacher</option>
               <option value='user'>Student</option>
             </StyledSelectInput>
             </StyledLabel>
           </StyledRightAlignedForms>
-            <StyledSubmitInput value='SUBMIT'></StyledSubmitInput>
+            <StyledSubmitInput value='SUBMIT' onClick={handleClick}></StyledSubmitInput>
         </StyledLoginSignUpForm>
       </StyledloginSignUpBox>
   )

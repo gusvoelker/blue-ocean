@@ -11,7 +11,7 @@ router.get('/chats', (req, res, next) => {
       let rooms = result.rows;
       rooms.length > 0 ?
         res.status(200).send(rooms) :
-        res.sendStatus(404)
+        res.sendStatus(404);
     })
     .catch((error) => res.status(404).send(error));
 });
@@ -28,7 +28,7 @@ router.get('/chats/messages', (req, res, next) => {
       let messages = result.rows;
       messages.length > 0 ?
         res.status(200).send(messages) :
-        res.sendStatus(404)
+        res.sendStatus(404);
     })
     .catch((error) => res.status(404).send(error));
 });
