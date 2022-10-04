@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
+    "@esbuild-plugins/node-modules-polyfill": "^0.1.4",
     "@fortawesome/fontawesome-svg-core": "^6.1.2",
     "@fortawesome/free-regular-svg-icons": "^6.1.2",
     "@fortawesome/free-solid-svg-icons": "^6.1.2",
@@ -16,7 +18,11 @@
     "axios": "^0.27.2",
     "form-data": "^4.0.0",
     "react": "^18.2.0",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.1",
+    "simple-peer": "^9.11.1",
+    "socket.io-client": "^4.5.2",
     "styled-components": "^5.3.6"
   },
   "devDependencies": {

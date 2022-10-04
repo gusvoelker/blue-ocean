@@ -4,7 +4,7 @@ const query = require('../db/db.js').poolQuery;
 module.exports.addClass = (classObj) => {
   console.log(classObj)
   return query(`
-  INSERT INTO classes(
+  INSERT INTO classes (
     teacher_id,
     class_name
   ) VALUES (
@@ -18,6 +18,21 @@ module.exports.addClass = (classObj) => {
   })
   .catch(err => console.log(err))
 };
+
+module.exports.AddStudents = (class_id, records) =>{
+  var queryText = `Select account_id, '${class_id}' FROM accounts WHERE `
+  for (var i=1; i<records.length; i++) {
+    queryText += `email = '${records[i][2]}' or `
+  }
+  queryText = queryText.slice(0, queryText.length - 4);
+  return query(`
+  INSERT INTO enrollments (
+    account_id,
+    class_id
+  )
+    ${queryText}
+    `)
+}
 
 module.exports.findClassesByTeacher = (teacher_id) => {
   return query(`

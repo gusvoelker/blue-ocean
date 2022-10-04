@@ -820,6 +820,7 @@ const CSVModalContainer = styled.div`
   background-color: rgba(0,0,0,0.5);
   display: flex;
   align-items: center;
+  z-index: 4;
   justify-content: center;
 `
 
