@@ -13,7 +13,9 @@ import {
   StyledRadioInput,
   StyledPageRow,
   StyledImage
-} from '../../StyledComponents/StyledComponents.jsx'
+} from '../../StyledComponents/StyledComponents.jsx';
+
+import { Outlet, Link } from "react-router-dom";
 
 const StyledloginSignUpBox = styled.div`
   background-image: url("https://images.unsplash.com/photo-1619447093155-3d646f597c91?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=688&q=80");
@@ -31,31 +33,31 @@ const StyledloginSignUpBox = styled.div`
   border: 2px solid #383838;
 `
 
-export default function TeacherInfo () {
-  const [formData, setFormData] = useState({
-    level: '',
-  })
-  const [checked, setChecked] = useState([]);
+export default function TeacherInfo ({handleCheck, handleChange}) {
+  // const [formData, setFormData] = useState({
+  //   level: '',
+  // })
+  // const [checked, setChecked] = useState([]);
 
-  const handleChange = (e) => {
-    e.preventDefault();
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
-    console.log(e.target.value);
-  }
+  // const handleChange = (e) => {
+  //   e.preventDefault();
+  //   setFormData({
+  //     ...formData,
+  //     [e.target.name]: e.target.value
+  //   })
+  //   console.log(e.target.value);
+  // }
 
-  const handleCheck = (event) => {
-    var updatedList = [...checked];
-    if (event.target.checked) {
-      updatedList = [...checked, event.target.value];
-    } else {
-      updatedList.splice(checked.indexOf(event.target.value), 1);
-    }
-    setChecked(updatedList);
-    console.log(checked);
-  };
+  // const handleCheck = (event) => {
+  //   var updatedList = [...checked];
+  //   if (event.target.checked) {
+  //     updatedList = [...checked, event.target.value];
+  //   } else {
+  //     updatedList.splice(checked.indexOf(event.target.value), 1);
+  //   }
+  //   setChecked(updatedList);
+  //   console.log(checked);
+  // };
 
   return (
     <StyledloginSignUpBox style={{height: '50rem', width: '50rem'}}>
@@ -111,8 +113,12 @@ export default function TeacherInfo () {
           </StyledLabel>
         <StyledRightAlignedForms>
         </StyledRightAlignedForms>
-        <StyledSubmitInput value='SUBMIT'></StyledSubmitInput>
-        <StyledSubmitInput value='SKIP'></StyledSubmitInput>
+        <Link to="/teacherprofile">
+          <StyledSubmitInput value='SUBMIT'></StyledSubmitInput>
+        </Link>
+        <Link to="/teacherprofile">
+          <StyledSubmitInput value='SKIP'></StyledSubmitInput>
+        </Link>
       </StyledLoginSignUpForm>
     </StyledloginSignUpBox>
   )

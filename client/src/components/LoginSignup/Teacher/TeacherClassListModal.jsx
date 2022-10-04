@@ -14,11 +14,15 @@ import {
 import exampleCSVPic from './exampleCSVPic.png'
 
 
-export default function TeacherClassListModal({ onClose }) {
+export default function TeacherClassListModal(props) {
   //state for controlling whether loading spinner is visible
   const [spinner, setSpinner] = useState(false)
   const [className, setClassName] = useState('')
   const hiddenFileInput = useRef(null);
+
+  if (!props.show) {
+    return null;
+  }
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -80,7 +84,7 @@ export default function TeacherClassListModal({ onClose }) {
           </StyledCSVButton>
 
 
-          <StyledCSVCloseButton onClick={onClose} style={{ marginright: '2rem' }}>CLOSE</StyledCSVCloseButton>
+          <StyledCSVCloseButton onClick={props.onClose} style={{ marginright: '2rem' }}>CLOSE</StyledCSVCloseButton>
 
         </StyledButtonDiv>
 

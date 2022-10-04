@@ -16,8 +16,9 @@ import {
   AddPicture,
 } from './StyledComponents/StyledComponents.jsx'
 
-import { faChevronLeft, faChevronRight, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronLeft, faChevronRight, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Outlet, Link } from "react-router-dom";
 
 const Slide = styled.div`
   text-align: initial;
@@ -79,38 +80,15 @@ const RightButton = styled.button`
 
 import FriendsModal from './FriendsModal.jsx';
 import AddFriendModal from './AddFriendModal.jsx';
+import EditInfoModal from './EditInfoModal.jsx';
 
-export default function Profile(props) {
-  const [name, setname] = useState('Anthony');
-  const [email, setEmail] = useState('hello@gmail.com');
-  const [password, setPassword] = useState('');
-  const [friends, setFriends] = useState(['Adam', 'Bob', 'Charlie', 'Daniel', 'Emily', 'Florenza', 'Emily', 'Florenza']);
-  const [role, setRole] = useState('Student')
-  const [profilePicture, setProfilePicture] = useState('https://i.postimg.cc/gkDMWvVY/photo-1615497001839-b0a0eac3274c.jpg');
+export default function Profile (props) {
   const [profileBackground, setProfileBackground] = useState(['https://images.unsplash.com/photo-1470125634816-ede3f51bbb42?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1998&q=80', 'https://images.unsplash.com/photo-1552288084-454d4fa5caa1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2170&q=80', 'https://images.unsplash.com/photo-1606335270813-52d62bfc5e69?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2525&q=80', 'https://images.unsplash.com/photo-1591467847734-12186c3a3f1c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2156&q=80', 'https://images.unsplash.com/photo-1603731125936-1c28b35b1659?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1905&q=80', 'https://images.unsplash.com/photo-1590918836821-3c692676add7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80']);
   const [show, setShow] = useState(false);
   const [addShow, setAddShow] = useState(false);
+  const [editInfoShow, setEditInfoShow] = useState(false);
   const [currentFriend, setCurrentFriend] = useState('');
-
-  // const onProfilePictureChange = () => {
-  //   axios.put(`/profile/${email}/profilepic`, { profilePicture: profilePicture })
-  // }
-
-  // const onProfileBackgroundChange = () => {
-  //   axios.put(`/profile/${email}/background`, { profileBackground: profileBackground })
-  // }
-
-  // const onAddFriend = () => {
-  //   axios.post(`/profile/${email}/friends`, { friends: friends})
-  // }
-
-  // const onChangePassword = () => {
-  //   axios.put(`/profile/${email}/password`, { password: password })
-  // }
-
-  // createEffect(() => {
-  //   axios.get(`/profile/${props.email}`)
-  // })
+  const [friendSearch, setFriendSearch] = useState('');
 
   const photoList = profileBackground.map((photo, index) => {
     return (
@@ -145,10 +123,18 @@ export default function Profile(props) {
     setAddShow(true);
   }
 
+  const onFriendSearch = (e) => {
+    setFriendSearch(e.target.value);
+  }
+
+  const onEditInfo = () => {
+    setEditInfoShow(true);
+  }
+
   return (
     <div>
       <ProfileContainer>
-        <ProfilePicture src={profilePicture} />
+        <ProfilePicture src={props.profilePicture} />
         <ProfileBackground>
           <img src={profileBackground[x]} style={{textAlign: 'left', display: 'block'}}/>
           {x === 0 ? null : <LeftButton data-testid='left-arrow' onClick={goLeft}><FontAwesomeIcon icon={faChevronLeft} /></LeftButton>}
@@ -156,22 +142,22 @@ export default function Profile(props) {
         </ProfileBackground>
         <ProfileAccountInfo>
           <h3><strong>Account Info</strong></h3>
-          <h4><strong>{role}</strong></h4>
+          <h4><strong>Student</strong></h4>
           <table>
             <tr>
               <td>Name:</td>
-              <td>{name}</td>
+              <td>{props.firstName} {props.lastName}</td>
             </tr>
             <tr>
               <td>E-mail:</td>
-              <td>{email}</td>
+              <td>{props.email}</td>
             </tr>
             <tr>
               <td>Password:</td>
               <td>*********</td>
             </tr>
           </table>
-          <StyledButton style={{marginTop: '1rem'}}>EDIT INFO</StyledButton>
+          <StyledButton onClick={onEditInfo} style={{marginTop: '1rem'}}>EDIT INFO</StyledButton>
         </ProfileAccountInfo>
         <ProfileFriendsList>
           <StyledFriendSearchSpan>
@@ -182,27 +168,25 @@ export default function Profile(props) {
             </StyledFriendSearch>
           </StyledFriendSearchSpan>
           <p>
-            {friends.map(friend => {
+            {props.friends.map(friend => {
             return (
               <StyledFriend  id={friend} onClick={onFriendClick}>
                 <div style={{fontWeight: 'bold'}}>{friend}</div>
-                <StyledFriendIcons>
-                  <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png'/>
-                </StyledFriendIcons>
+                <Link to="/messages">
+                  <StyledFriendIcons>
+                    <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png'/>
+                  </StyledFriendIcons>
+                </Link>
               </StyledFriend>
             )
           })}
           </p>
           <StyledButton style={{marginTop: '0rem'}} onClick={onAddFriendClick}>ADD FRIEND</StyledButton>
-
-            {/* //return (<div id={friend} onClick={onFriendClick}>{friend}</div>)
-          //})}
-          //</p>
-          //<LightGreyButton onClick={onAddFriendClick}>Add Friend +</LightGreyButton> */}
         </ProfileFriendsList>
       </ProfileContainer>
       <FriendsModal onClose={() => setShow(false)} show={show} friend={currentFriend} />
-      <AddFriendModal onClose={() => setAddShow(false)} show={addShow} />
+      <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch}/>
+      <EditInfoModal onClose={() => setEditInfoShow(false)} show={editInfoShow} />
     </div>
   )
 }
