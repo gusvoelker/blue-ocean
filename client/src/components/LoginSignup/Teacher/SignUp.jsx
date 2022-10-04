@@ -51,6 +51,7 @@ export default function SignUp (props) {
     console.log(e.target.value);
   }
 
+
   const handleSelect = (e) => {
     e.preventDefault();
     if (e.target.value === 'teacher') {
@@ -60,7 +61,7 @@ export default function SignUp (props) {
     }
   }
 
-  const handleClick = async(e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     try{
     const res = await axios.post(`${serverURL}/register`, {...formData, isTeacher: isTeacher})
@@ -75,11 +76,11 @@ export default function SignUp (props) {
 
   if (props.role === 'user') {
     button = <Link to="/profile">
-                <StyledSubmitInput value='SUBMIT' onClick={handleClick}></StyledSubmitInput>
+                <StyledSubmitInput value='SUBMIT' onClick={handleSubmit}></StyledSubmitInput>
               </Link>
   } else {
     button = <Link to="/teacherinfo">
-                <StyledSubmitInput value='SUBMIT' onClick={handleClick}></StyledSubmitInput>
+                <StyledSubmitInput value='SUBMIT' onClick={handleSubmit}></StyledSubmitInput>
               </Link>
   }
 
