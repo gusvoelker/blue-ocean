@@ -55,19 +55,19 @@ CREATE TABLE languages (
 CREATE INDEX languages_lang_name_idx ON languages (lang_name);
 
 -- TODO: Change enum to INT range(?)
-CREATE TYPE rating_enum AS ENUM('1', '2', '3', '4');
 CREATE TABLE ratings (
 	rating_id SERIAL NOT NULL,
 	rating_account_id INT,
 	rated_account_id INT,
 	rated_lang_id INT,
-	rating rating_enum
+	rating SMALLINT
 );
 
 ALTER TABLE ratings
 	ADD CONSTRAINT fk_rating_account_id FOREIGN KEY (rating_account_id) REFERENCES accounts(account_id),
 	ADD CONSTRAINT fk_rated_account_id FOREIGN KEY (rated_account_id) REFERENCES accounts(account_id),
-	ADD CONSTRAINT fk_rated_lang_id FOREIGN KEY (rated_lang_id) REFERENCES languages(lang_id);
+	ADD CONSTRAINT fk_rated_lang_id FOREIGN KEY (rated_lang_id) REFERENCES languages(lang_id),
+	ADD CONSTRAINT rating_check CHECK (rating >= 1 AND rating <= 4);
 
 CREATE INDEX ratings_rated_account_id_idx ON ratings (rated_account_id);
 
