@@ -46,7 +46,7 @@ export default function App () {
         <StyledLogPage>
           <NavBar darkTheme={darkTheme}/>
           {/* <Messages darkTheme={darkTheme}/> */}
-          <TeacherProfile darkTheme={darkTheme} />
+          <VideoChat darkTheme={darkTheme} />
         </StyledLogPage>
       </div>
     );
