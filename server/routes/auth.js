@@ -4,7 +4,7 @@ const model = require("../models/accountModel.js");
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 
-// GET REQUESTS //
+// POST REQUESTS //
 
 router.post("/register", (req, res, next) => {
   const { email, password, firstName, lastName, isTeacher } = req.body;
