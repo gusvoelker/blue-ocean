@@ -21,13 +21,20 @@ CREATE TABLE connections (
 	status BOOLEAN
 );
 
---MAY NEED TO COME BACK
+-- TODO: Change enum to INT range(?)
 CREATE TYPE rating_enum AS ENUM('1', '2', '3', '4');
 CREATE TABLE ratings (
 	rating_id SERIAL NOT NULL,
 	rating_account_id INT REFERENCES accounts(account_id),
+	rated_account_id INT REFERENCES accounts(account_id),
+	rated_lang_id INT,
 	rating rating_enum
 );
+
+ALTER TABLE ratings
+	ADD CONSTRAINT fk_rating_account_id FOREIGN KEY (rating_account_id) REFERENCES accounts(account_id),
+	ADD CONSTRAINT fk_rated_account_id FOREIGN KEY (rated_account_id) REFERENCES accounts(account_id),
+	ADD CONSTRAINT fk_rated_lang_id FOREIGN KEY (rated_lang_id) REFERENCES languages(lang_id)
 
 CREATE TABLE classes (
 	class_id SERIAL NOT NULL PRIMARY KEY,
