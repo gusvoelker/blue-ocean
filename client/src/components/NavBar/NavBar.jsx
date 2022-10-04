@@ -5,16 +5,16 @@ import {
   StyledNavBarIcon,
   StyledNavBarLinks,
   StyledSelectInput,
-  StyledSubmitInput
+  StyledSubmitInput,
   DarkStyledNavBar,
-} from '../StyledComponents/StyledComponents.jsx'
+} from '../StyledComponents/StyledComponents.jsx';
 import './googleTranslate.css'
 import { Outlet, Link } from "react-router-dom";
 
 export default function NavBar({ darkTheme, role }) {
 
   let button;
-  if (props.role === 'user') {
+  if (role === 'user') {
     button = <Link to="/profile">
                 <p style={{marginTop: '3rem'}}>Profile</p>
               </Link>
@@ -23,7 +23,7 @@ export default function NavBar({ darkTheme, role }) {
               <p style={{marginTop: '3rem'}}>Profile</p>
             </Link>
   }
-  
+
   if(!darkTheme) {
     return (
       <StyledNavBar id='translate'>
@@ -33,8 +33,10 @@ export default function NavBar({ darkTheme, role }) {
 
         <StyledNavBarLinks>
           <p id='translate2' ></p>
-          <p style={{marginTop: '3rem'}}>Profile</p>
-          <p style={{marginTop: '3rem'}}>Chat</p>
+          {button}
+          <Link to="/messages">
+            <p style={{marginTop: '3rem'}}>Chat</p>
+          </Link>
         </StyledNavBarLinks>
 
       </StyledNavBar>
@@ -49,10 +51,10 @@ export default function NavBar({ darkTheme, role }) {
         <StyledNavBarLinks>
           <p id='translate2' ></p>
           {button}
-          <p style={{marginTop: '3rem'}}>Chat</p>
+          <Link to="/messages">
+            <p style={{marginTop: '3rem'}}>Chat</p>
+          </Link>
         </StyledNavBarLinks>
-
-
       </DarkStyledNavBar>
     )
   }

@@ -47,31 +47,31 @@ const TeacherLanguageLevel = styled.span`
 `
 
 export default function TeacherInfo ({handleCheck, handleChange}) {
-  const [formData, setFormData] = useState({
-    level: '',
-  })
-  const [checked, setChecked] = useState([]);
+  // const [formData, setFormData] = useState({
+  //   level: '',
+  // })
+  // const [checked, setChecked] = useState([]);
 
-  const handleChange = (e) => {
-    e.preventDefault();
-    setChecked(existingValues => ({
-      ...existingValues,
-      [e.target.name]: e.target.value,
-    }))
-  }
+  // const handleChange = (e) => {
+  //   e.preventDefault();
+  //   setChecked(existingValues => ({
+  //     ...existingValues,
+  //     [e.target.name]: e.target.value,
+  //   }))
+  // }
 
-  const handleCheck = (event) => {
-    var updatedList = [...checked];
-    if (event.target.checked) {
-      var languageObject = {};
-      languageObject[event.target.value] = 1;
-      updatedList = [...checked, languageObject];
-    } else {
-      updatedList.splice(checked.indexOf(event.target.value), 1);
-    }
-    setChecked(updatedList);
-    console.log(checked);
-  };
+  // const handleCheck = (event) => {
+  //   var updatedList = [...checked];
+  //   if (event.target.checked) {
+  //     var languageObject = {};
+  //     languageObject[event.target.value] = 1;
+  //     updatedList = [...checked, languageObject];
+  //   } else {
+  //     updatedList.splice(checked.indexOf(event.target.value), 1);
+  //   }
+  //   setChecked(updatedList);
+  //   console.log(checked);
+  // };
 
   return (
     <StyledloginSignUpBox style={{height: '50rem', width: '50rem'}}>
