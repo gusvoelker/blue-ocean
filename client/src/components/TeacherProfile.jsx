@@ -23,9 +23,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import FriendsModal from './FriendsModal.jsx';
 import AddFriendModal from './AddFriendModal.jsx';
 import EditInfoModal from './EditInfoModal.jsx';
-import TeacherCalendar from '../components/LoginSignup/Teacher/TeacherCalendar.jsx'
+import TeacherCalendar from '../components/LoginSignup/Teacher/TeacherCalendar.jsx';
+import { Outlet, Link } from "react-router-dom";
 import {serverURL} from '../config.js'
 import ClassListModal from '../components/LoginSignup/Teacher/ClassListModal.jsx'
+
 
 const LeftButton = styled.button`
   position: absolute;
@@ -200,7 +202,9 @@ export default function TeacherProfile(props) {
                 <StyledFriend id={friend} onClick={onFriendClick}>
                   <div style={{ fontWeight: 'bold' }}>{friend}</div>
                   <StyledFriendIcons>
-                    <img src='https://pnggrid.com/wp-content/uploads/2021/12/Office-Phone-Icon-PNG-Transparent-Background.png' alt='phone icon for starting a call with friend' />
+                    <Link to="/messages">
+                      <img src='https://pnggrid.com/wp-content/uploads/2021/12/Office-Phone-Icon-PNG-Transparent-Background.png' alt='phone icon for starting a call with friend' />
+                    </Link>
                     <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend"/>
                   </StyledFriendIcons>
                 </StyledFriend>

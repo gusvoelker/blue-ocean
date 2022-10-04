@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from 'styled-components';
 import {
   ProfileContainer,
@@ -16,6 +16,8 @@ import {
   AddPicture,
   Dark,
 } from './StyledComponents/StyledComponents.jsx'
+
+import { SocketContext } from './VideoComponents/SocketContext.jsx';
 
 import { faChevronLeft, faChevronRight, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -93,6 +95,9 @@ export default function Profile (props) {
   const [currentFriend, setCurrentFriend] = useState('');
   const [friendSearch, setFriendSearch] = useState('');
 
+  //const {userId, setUserId} = useContext(SocketContext);
+  //console.log(userId);
+  console.log(props.userId);
   var [x, setx] = useState(0);
   // function for the image to expand on click
   // on click function to move the carousel to the left

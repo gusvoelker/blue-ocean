@@ -60,7 +60,7 @@ router.post("/login", (req, res, next) => {
       req.logIn(user, function (err) {
         if (err) return next(err);
         console.log(req.session);
-        return res.status(200).send("You have been successfully logged in");
+        return res.status(200).send({user: req.user});
       });
     }
   )(req, res, next);
