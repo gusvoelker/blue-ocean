@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 
-import { serverURL } from './config.example.js';
+import { serverURL } from './config.js';
 import NavBar from './components/NavBar/NavBar.jsx';
 import Profile from './components/Profile.jsx';
 import TeacherProfile from './components/TeacherProfile.jsx';
@@ -95,19 +95,21 @@ export default function App () {
 
   return (
     <div>
+      {!darkTheme ? <LightTheme/> : <DarkTheme/>}
+      <ThemeToggleButton setDarkTheme={setDarkTheme} darkTheme={darkTheme}/>
       <StyledLogPage>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={
               <>
-                <NavBar role={role}/>
+                <NavBar role={role} darkTheme={darkTheme}/>
                   <About/>
               </>
             }>
             </Route>
             <Route path="/SignUp" element={
               <>
-                <NavBar role={role}/>
+                <NavBar role={role} darkTheme={darkTheme}/>
                 <SignUp
                   onFirstNameChange={onFirstNameChange}
                   onLastNameChange={onLastNameChange}
@@ -121,7 +123,7 @@ export default function App () {
             </Route>
             <Route path="/Login" element={
               <>
-                <NavBar role={role}/>
+                <NavBar role={role} darkTheme={darkTheme}/>
                   <Login
                     onEmailChange={onEmailChange}
                     onPasswordChange={onPasswordChange}
@@ -133,7 +135,7 @@ export default function App () {
             </Route>
             <Route path="/teacherInfo" element={
               <>
-                <NavBar role={role}/>
+                <NavBar role={role} darkTheme={darkTheme}/>
                 <TeacherInfo
                   handleCheck={handleCheck}
                   handleChange={handleChange}
@@ -142,8 +144,9 @@ export default function App () {
             }>
             </Route>
             <Route path="/profile" element={<>
-              <NavBar role={role}/>
+              <NavBar role={role} darkTheme={darkTheme}/>
               <Profile
+                darkTheme={darkTheme}
                 friends={friends}
                 profilePicture={profilePicture}
                 firstName={firstName}
@@ -155,8 +158,9 @@ export default function App () {
             </>} >
             </Route>
             <Route path="/teacherprofile" element={<>
-              <NavBar role={role}/>
+              <NavBar role={role} darkTheme={darkTheme}/>
               <TeacherProfile
+                darkTheme={darkTheme}
                 friends={friends}
                 profilePicture={profilePicture}
                 firstName={firstName}
@@ -173,16 +177,16 @@ export default function App () {
       </StyledLogPage>
     </div>
   );
-    {/* return (
-      <div>
-        {!darkTheme ? <LightTheme/> : <DarkTheme/>}
-        <ThemeToggleButton setDarkTheme={setDarkTheme} darkTheme={darkTheme}/>
-        <StyledLogPage>
-          <NavBar darkTheme={darkTheme}/>
-          {/* <Messages darkTheme={darkTheme}/> */}
-          <TeacherProfile darkTheme={darkTheme} />
-        </StyledLogPage>
-      </div>
-    ); */}
+    // {/* return (
+    //   <div>
+    //     {!darkTheme ? <LightTheme/> : <DarkTheme/>}
+    //     <ThemeToggleButton setDarkTheme={setDarkTheme} darkTheme={darkTheme}/>
+    //     <StyledLogPage>
+    //       <NavBar darkTheme={darkTheme}/>
+    //       <Messages darkTheme={darkTheme}/>
+    //       <TeacherProfile darkTheme={darkTheme} />
+    //     </StyledLogPage>
+    //   </div>
+    // ); */}
 }
 
