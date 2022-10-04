@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from 'styled-components';
+import { io } from 'socket.io-client';
 import {
   MessagesConvoContainer,
   LightGreyButton,
@@ -22,6 +23,28 @@ export default function Messages () {
   const [profilePicture, setProfilePicture] = useState('https://i.postimg.cc/gkDMWvVY/photo-1615497001839-b0a0eac3274c.jpg');
   const [currentFriend, setCurrentFriend] = useState('Adam');
   const [friendsPicture, setFriendsPicture] = useState('https://i.postimg.cc/Kv8V2zHT/catbehavior-HERO-1024x576.jpg')
+  const socket = useRef();
+
+
+  useEffect(()=> {
+    socket.current = io('ws://localhost:8080');
+  }, []);
+
+  useEffect(() => {
+    socket.current.emit('addUser', 555);
+    socket.current.on('getUsers', users => {
+      console.log(users);
+  })
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    socket.current.emit('sendMessage', {
+      senderId: 555,
+      receiverId: 555,
+    })
+  }
+
 
   return (
     <div>
@@ -62,7 +85,7 @@ export default function Messages () {
         <StyledWriteMessage>
           <textarea placeholder='write your message'>
           </textarea>
-          <StyledSubmitInput style={{width: '10rem', border: '1px solid #383838'}} value='Send'/>
+          <StyledSubmitInput style={{width: '10rem', border: '1px solid #383838'}} value='Send' onClick={handleSubmit}/>
         </StyledWriteMessage>
       </MessagesChatContainer>
     </div>
