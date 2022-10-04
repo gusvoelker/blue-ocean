@@ -145,7 +145,7 @@ CREATE TABLE meetings (
 	description VARCHAR(300),
 	req_account_id INT NOT NULL REFERENCES accounts(account_id),
 	rec_account_id INT NOT NULL REFERENCES accounts(account_id),
-	start_time TIMESTAMP,
+	start_time TIMESTAMP NOT NULL,
 	status BOOLEAN
 );
 
