@@ -93,11 +93,11 @@ export default function SignUp (props) {
           <StyledLabel>
               First name:
 
-             <StyledTextInput placeholder='enter first name' name='first' onChange={props.onFirstNameChange}></StyledTextInput>
+             <StyledTextInput placeholder='enter first name' name='first' onChange={handleChange}></StyledTextInput>
             </StyledLabel>
             <StyledLabel>
               Last name:
-              <StyledTextInput placeholder='enter last name' name='last' onChange={props.onLastNameChange}></StyledTextInput> 
+              <StyledTextInput placeholder='enter last name' name='last' onChange={handleChange}></StyledTextInput>
 
              {/* <StyledTextInput placeholder='enter first name' name='firstName' onChange={handleChange}></StyledTextInput>
             </StyledLabel>
@@ -110,18 +110,18 @@ export default function SignUp (props) {
               <span>
                 Email:
               </span>
-              <StyledTextEmail placeholder='enter email' name='email' onChange={props.onEmailChange}></StyledTextEmail>
+              <StyledTextEmail placeholder='enter email' name='email' onChange={handleChange}></StyledTextEmail>
             </StyledLabel>
             <StyledLabel>
               <span>
                 Password:
               </span>
-              <StyledTextInput placeholder='enter password' name='password' onChange={props.onPasswordChange}></StyledTextInput>
+              <StyledTextInput placeholder='enter password' name='password' onChange={handleChange}></StyledTextInput>
             </StyledLabel>
             <StyledLabel>
             teacher or student:
 
-            <StyledSelectInput onChange={props.onRoleChange} style={{height: '2rem', fontSize: '0.8rem'}}>
+            <StyledSelectInput onChange={handleSelect} style={{height: '2rem', fontSize: '0.8rem'}}>
 
             {/* <StyledSelectInput onChange={handleSelect} style={{height: '2rem', fontSize: '0.8rem'}}> */}
 

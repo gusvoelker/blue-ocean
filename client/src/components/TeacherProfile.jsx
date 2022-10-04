@@ -24,7 +24,6 @@ import FriendsModal from './FriendsModal.jsx';
 import AddFriendModal from './AddFriendModal.jsx';
 import EditInfoModal from './EditInfoModal.jsx';
 import TeacherCalendar from '../components/LoginSignup/Teacher/TeacherCalendar.jsx'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {serverURL} from '../config.js'
 
 const LeftButton = styled.button`
