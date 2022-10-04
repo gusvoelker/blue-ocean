@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const model = require('../models/chatModel.js');
+const chatModel = require('../models/chatModel.js');
+const friendModel = require('../models/friendModel.js');
 
 // GET REQUESTS //
 
 // Get a list of chats for the authenticated user / teacher
 router.get('/chats', (req, res, next) => {
-  model.getRoomsByAccountId(req.user.id)
+  chatModel.getRoomsByAccountId(req.user.id)
     .then((result) => {
       let rooms = result.rows;
       rooms.length > 0 ?
@@ -23,7 +24,7 @@ router.get('/chats/messages', (req, res, next) => {
     res.sendStatus(404);
     return;
   }
-  model.getMessagesByRoomId(req.query.roomId, req.user.id)
+  chatModel.getMessagesByRoomId(req.query.roomId, req.user.id)
     .then((result) => {
       let messages = result.rows;
       messages.length > 0 ?
@@ -42,10 +43,39 @@ router.post('/chats', (req, res, next) => {
     res.sendStatus(400);
     return;
   }
-  model.createRoom(req.user.id, req.body.requestedId)
-    .then((result) => {
-      res.sendStatus(201);
+  chatModel.createRoom(req.user.id, req.body.requestedId)
+    .then((result) => res.sendStatus(201))
+    .catch((error) => res.status(400).send(error));
+});
+
+// Used by teachers to start a chat between 2 students
+// Will automatically connect the students (if they are not already connected)
+// Expects in request body:
+// userId1 (INTEGER) - Student to connect
+// userId2 (INTEGER) - Student to connect
+router.post('/chats/connect', (req, res, next) => {
+  if (!req.user.isTeacher) {
+    res.sendStatus(403);
+    return;
+  }
+  if (!req.body.userId1 || !req.body.userId2) {
+    res.sendStatus(400);
+    return;
+  }
+  friendModel.checkIfFriends(req.body.userId1, req.body.userId2)
+    .then((checkResult) => {
+      if (checkResult.rows[0].exists) {
+        return checkResult;
+      } else {
+        let friendPromises = [ // Connects each participant as friends
+          friendModel.createFriend(req.body.userId1, req.body.userId2),
+          friendModel.createFriend(req.body.userId2, req.body.userId1)
+        ];
+        return Promise.all(friendPromises);
+      }
     })
+    .then((friendResult) => chatModel.createRoom(req.body.userId1, req.body.userId2))
+    .then((roomResult) => res.sendStatus(201))
     .catch((error) => res.status(400).send(error));
 });
 
@@ -58,10 +88,8 @@ router.post('/chats/messages', (req, res, next) => {
     res.sendStatus(400);
     return;
   }
-  model.postMessage(req.body.roomId, req.user.id, req.body.message)
-    .then((result) => {
-      res.sendStatus(201);
-    })
+  chatModel.postMessage(req.body.roomId, req.user.id, req.body.message)
+    .then((result) => res.sendStatus(201))
     .catch((error) => res.status(400).send(error));
 });
 
