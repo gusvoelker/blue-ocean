@@ -22,8 +22,8 @@ router.post('/friend', (req, res, next) => {
         res.status(403).send({
           message: 'Students and teachers can not be friends!'
         });
+        return;
       }
-      console.log('type', result.rows[0].is_teacher);
       return model.requestFriend(requesterId, req.body.requestedId);
     })
     .then((connectionID) => {
