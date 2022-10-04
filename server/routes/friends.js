@@ -32,7 +32,7 @@ router.post('/friend', (req, res, next) => {
         connectionID
       });
     })
-    .catch((error) => console.log(error));
+    .catch((error) => res.status(400).send(error));
 
 });
 
