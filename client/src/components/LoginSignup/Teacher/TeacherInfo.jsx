@@ -13,7 +13,9 @@ import {
   StyledRadioInput,
   StyledPageRow,
   StyledImage
-} from '../../StyledComponents/StyledComponents.jsx'
+} from '../../StyledComponents/StyledComponents.jsx';
+
+import { Outlet, Link } from "react-router-dom";
 
 const StyledloginSignUpBox = styled.div`
   background-image: url("https://images.unsplash.com/photo-1619447093155-3d646f597c91?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=688&q=80");
@@ -30,7 +32,6 @@ const StyledloginSignUpBox = styled.div`
   box-shadow: 5px 5px 5px #383838;
   border: 2px solid #383838;
 `
-
 const TeacherLanguageLevel = styled.span`
   display: flex;
   flex-direction: column;
@@ -45,7 +46,7 @@ const TeacherLanguageLevel = styled.span`
   }
 `
 
-export default function TeacherInfo () {
+export default function TeacherInfo ({handleCheck, handleChange}) {
   const [formData, setFormData] = useState({
     level: '',
   })
@@ -189,7 +190,9 @@ export default function TeacherInfo () {
           </StyledLabel>
         <StyledRightAlignedForms>
         </StyledRightAlignedForms>
-        <StyledSubmitInput value='SUBMIT'></StyledSubmitInput>
+        <Link to="/teacherprofile">
+          <StyledSubmitInput value='SUBMIT'></StyledSubmitInput>
+        </Link>
       </StyledLoginSignUpForm>
     </StyledloginSignUpBox>
   )

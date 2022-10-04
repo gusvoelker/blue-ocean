@@ -16,11 +16,16 @@ import axios from 'axios';
 import { serverURL } from '../../../config.js'
 
 
-export default function TeacherClassListModal({ onClose, teacherId }) {
+
+export default function TeacherClassListModal(props) {
   //state for controlling whether loading spinner is visible
   const [spinner, setSpinner] = useState(false)
   const [className, setClassName] = useState('')
   const hiddenFileInput = useRef(null);
+
+  if (!props.show) {
+    return null;
+  }
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -95,7 +100,7 @@ export default function TeacherClassListModal({ onClose, teacherId }) {
           </StyledCSVButton>
 
 
-          <StyledCSVCloseButton onClick={onClose} style={{ marginright: '2rem' }}>CLOSE</StyledCSVCloseButton>
+          <StyledCSVCloseButton onClick={props.onClose} style={{ marginright: '2rem' }}>CLOSE</StyledCSVCloseButton>
 
         </StyledButtonDiv>
 

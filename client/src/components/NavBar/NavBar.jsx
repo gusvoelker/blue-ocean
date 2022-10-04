@@ -5,11 +5,25 @@ import {
   StyledNavBarIcon,
   StyledNavBarLinks,
   StyledSelectInput,
+  StyledSubmitInput
   DarkStyledNavBar,
 } from '../StyledComponents/StyledComponents.jsx'
 import './googleTranslate.css'
+import { Outlet, Link } from "react-router-dom";
 
-export default function NavBar({ darkTheme }) {
+export default function NavBar({ darkTheme, role }) {
+
+  let button;
+  if (props.role === 'user') {
+    button = <Link to="/profile">
+                <p style={{marginTop: '3rem'}}>Profile</p>
+              </Link>
+  } else {
+    button = <Link to="/teacherprofile">
+              <p style={{marginTop: '3rem'}}>Profile</p>
+            </Link>
+  }
+  
   if(!darkTheme) {
     return (
       <StyledNavBar id='translate'>
@@ -23,7 +37,6 @@ export default function NavBar({ darkTheme }) {
           <p style={{marginTop: '3rem'}}>Chat</p>
         </StyledNavBarLinks>
 
-
       </StyledNavBar>
     )
   } else {
@@ -35,7 +48,7 @@ export default function NavBar({ darkTheme }) {
 
         <StyledNavBarLinks>
           <p id='translate2' ></p>
-          <p style={{marginTop: '3rem'}}>Profile</p>
+          {button}
           <p style={{marginTop: '3rem'}}>Chat</p>
         </StyledNavBarLinks>
 
