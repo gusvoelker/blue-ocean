@@ -16,7 +16,7 @@ router.get('/languages', (req, res, next) => {
         res.status(200).send(languages) :
         res.sendStatus(404);
     })
-    .catch((error) => res.status(404).send(error));
+    .catch((error) => res.sendStatus(404));
 });
 
 // Get taught languages for a given accountId
@@ -32,7 +32,7 @@ router.get('/languages/taught', (req, res, next) => {
         res.status(200).send(languages) :
         res.sendStatus(404);
     })
-    .catch((error) => res.status(404).send(error));
+    .catch((error) => res.sendStatus(404));
 });
 
 // Get a list of accountIds for teachers who teach the provided language
@@ -56,7 +56,7 @@ router.get('/languages/taught/accounts', (req, res, next) => {
         res.status(200).send(accounts) :
         res.sendStatus(404);
     })
-    .catch((error) => res.status(404).send(error));
+    .catch((error) => res.sendStatus(404));
 });
 
 // Get known languages for a given accountId
@@ -72,7 +72,7 @@ router.get('/languages/known', (req, res, next) => {
         res.status(200).send(languages) :
         res.sendStatus(404);
     })
-    .catch((error) => res.status(404).send(error));
+    .catch((error) => res.sendStatus(404));
 });
 
 // Get desired languages for a given accountId

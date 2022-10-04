@@ -1,10 +1,10 @@
-const query = require('../db/db.js').poolQuery;
+const db = require('../db/db.js');
 
 // NOTE: This works without needing to check both ways
 // due to accepting a friend request creating 2 records, one each way
 // Returns a single row with an 'exists' property, i.e. result.rows[0].exists
 module.exports.checkIfFriends = (accountId1, accountId2) => {
-  return query(`
+  return db.query(`
     SELECT EXISTS (
       SELECT conn_id FROM connections
         WHERE req_account_id=${accountId1}
@@ -15,15 +15,15 @@ module.exports.checkIfFriends = (accountId1, accountId2) => {
 };
 
 module.exports.findFriends = (requesterId) => {
-  return query(`
+  return db.query(`
   SELECT rec_account_id FROM connections
     WHERE req_account_id=${requesterId}
       AND status = true
-  `)
+  `);
 };
 
 module.exports.requestFriend = (requesterId, receiverId) => {
-  return query(`
+  return db.query(`
     INSERT INTO connections(
       req_account_id,
       rec_account_id,
@@ -37,13 +37,12 @@ module.exports.requestFriend = (requesterId, receiverId) => {
   `)
     .then((response) => {
       return response.rows[0].conn_id;
-    })
-    .catch(err => console.log(err));
+    });
 };
 
 
 module.exports.createFriend = (requesterId, receiverId) => {
-  return query(`
+  return db.query(`
     INSERT INTO connections(
       req_account_id,
       rec_account_id,
@@ -57,13 +56,12 @@ module.exports.createFriend = (requesterId, receiverId) => {
   `)
     .then((response) => {
       return response.rows[0].conn_id;
-    })
-    .catch(err => console.log(err));
+    });
 };
 
 
 module.exports.acceptFriend = (requesterId, idToAccept) => {
-  return query(`
+  return db.query(`
     UPDATE connections
     SET status = true
     WHERE req_account_id = ${idToAccept}
@@ -72,7 +70,7 @@ module.exports.acceptFriend = (requesterId, idToAccept) => {
 };
 
 module.exports.deleteFriend = (requesterId, friend_id) => {
-  return query(`
+  return db.query(`
     DELETE FROM connections
     WHERE req_account_id = ${requesterId}
     AND rec_account_id = ${friend_id}

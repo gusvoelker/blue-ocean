@@ -1,4 +1,3 @@
-const query = require('../db.js').poolQuery;
 const accountModel = require('../../models/accountModel.js');
 const languageModel = require('../../models/languageModel.js');
 const chatModel = require('../../models/chatModel.js');
@@ -8,8 +7,10 @@ const ratingsModel = require('../../models/ratingsModel.js');
 // Will eventually replace this with jest testing in queries.test.js, but for now...
 
 // ACCOUNTS //
+// NOTE: Since we are creating a pw hash directly rather than going through auth
+// we can't log in to these accounts using a service like postman to test the routes
 
-// CREATE ACCOUNTS - STUDENTS
+// CREATE ACCOUNTS - STUDENT
 (async () => {
   let studentOneAccount = {
     email: 'studentOne@test.com',
@@ -207,13 +208,14 @@ const ratingsModel = require('../../models/ratingsModel.js');
 // RATINGS //
 
 // ADD RATING
-(async () => {
+(() => {
   let ratingStudentId = 1;
   let ratedStudentId = 2;
   let languageId = 1;
-  let rating = 4
-  let result = await ratingsModel.addRating(ratingStudentId, ratedStudentId, languageId, rating)
-  console.log(result);
+  let rating = 4;
+  ratingsModel.addRating(ratingStudentId, ratedStudentId, languageId, 5)
+    .then((result) => console.log(result))
+    .catch((error) => console.log(error));
 });
 
 // GET RATINGS
