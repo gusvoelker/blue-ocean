@@ -83,7 +83,8 @@ router.post('/chats/connect', (req, res, next) => {
           friendModel.createFriend(req.body.userId1, req.body.userId2),
           friendModel.createFriend(req.body.userId2, req.body.userId1)
         ];
-        return Promise.all(friendPromises);
+        return Promise.all(friendPromises)
+          .catch((error) => res.sendStatus(400));
       }
     })
     .then((friendResult) => chatModel.createRoom(req.body.userId1, req.body.userId2))

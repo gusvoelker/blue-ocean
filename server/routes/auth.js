@@ -40,13 +40,11 @@ router.post("/register", (req, res, next) => {
                   .status(201)
                   .send({ message: "Account successfully created" });
               })
-              .catch((err) => console.log(err));
+              .catch((err) => res.sendStatus(500));
           });
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => res.sendStatus(500));
   }
 });
 
