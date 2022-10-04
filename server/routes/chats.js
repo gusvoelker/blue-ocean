@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const chatModel = require('../models/chatModel.js');
 const friendModel = require('../models/friendModel.js');
+const accountModel = require('../models/accountModel.js');
 
 // GET REQUESTS //
 
@@ -14,7 +15,7 @@ router.get('/chats', (req, res, next) => {
         res.status(200).send(rooms) :
         res.sendStatus(404);
     })
-    .catch((error) => res.status(404).send(error));
+    .catch((error) => res.sendStatus(400));
 });
 
 // Get a list of messages in the provided roomId for the authenticated user / teacher
@@ -31,7 +32,7 @@ router.get('/chats/messages', (req, res, next) => {
         res.status(200).send(messages) :
         res.sendStatus(404);
     })
-    .catch((error) => res.status(404).send(error));
+    .catch((error) => res.sendStatus(400));
 });
 
 // POST REQUESTS //
@@ -43,9 +44,20 @@ router.post('/chats', (req, res, next) => {
     res.sendStatus(400);
     return;
   }
-  chatModel.createRoom(req.user.id, req.body.requestedId)
-    .then((result) => res.sendStatus(201))
-    .catch((error) => res.status(400).send(error));
+  accountModel.getAccountTypeById(req.body.requestedId)
+    .then((result) => {
+      if (!result.rows[0]) { // Checks that the requestedId account exists
+        res.status(400).send({
+          message: 'Account not found'
+        });
+        return;
+      }
+      chatModel.createRoom(req.user.id, req.body.requestedId)
+        .then((result) => res.sendStatus(201))
+        .catch((error) => res.sendStatus(400));
+    })
+    .catch((error) => res.sendStatus(400));
+
 });
 
 // Used by teachers to start a chat between 2 students
@@ -76,7 +88,7 @@ router.post('/chats/connect', (req, res, next) => {
     })
     .then((friendResult) => chatModel.createRoom(req.body.userId1, req.body.userId2))
     .then((roomResult) => res.sendStatus(201))
-    .catch((error) => res.status(400).send(error));
+    .catch((error) => res.sendStatus(400));
 });
 
 // Post a message to a chat room
@@ -90,7 +102,7 @@ router.post('/chats/messages', (req, res, next) => {
   }
   chatModel.postMessage(req.body.roomId, req.user.id, req.body.message)
     .then((result) => res.sendStatus(201))
-    .catch((error) => res.status(400).send(error));
+    .catch((error) => res.sendStatus(400));
 });
 
 

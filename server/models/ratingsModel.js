@@ -1,22 +1,27 @@
 const query = require('../db/db.js').poolQuery;
 
-// TODO: Implement
-// Should output a row for each language and the average rating of each row
-// May need to convert ratings enum to integer
 module.exports.getRatingsAvgByStudentId = (studentId) => {
   return query(`
-    SELECT rated_lang_id,
-      FROM ${'table'}
-    ORDER BY ${sort}
-    LIMIT ${count || 10}
+    SELECT rated_lang_id, AVG(rating)::NUMERIC(10,2)
+      FROM ratings
+        WHERE rated_account_id = ${studentId}
+      GROUP BY rated_lang_id
   `);
 };
 
 // TODO: Ensure ratingStudentId or ratedStudentId are not teacher accounts
-module.exports.addRating = (ratingStudentId, ratedStudentId, rating, languageId) => {
+module.exports.addRating = (ratingStudentId, ratedStudentId, languageId, rating) => {
   return query(`
-    INSERT INTO ${'table'} (${'firstField'}, ${'secondField'})
-      VALUES (${data.firstValue}, ${data.secondValue})
-    RETURNING data_id
+    INSERT INTO ratings (
+      rating_account_id,
+      rated_account_id,
+      rated_lang_id,
+      rating
+    ) VALUES (
+      ${ratingStudentId},
+      ${ratedStudentId},
+      ${languageId},
+      ${rating}
+    )
   `);
 };
