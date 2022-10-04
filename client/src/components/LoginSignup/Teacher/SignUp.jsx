@@ -41,6 +41,8 @@ export default function SignUp (props) {
     firstName: '',
     lastName: '',
   })
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('error')
   const [isTeacher, setTeacher] = useState(true);
   const handleChange = (e) => {
     e.preventDefault();
@@ -64,10 +66,14 @@ export default function SignUp (props) {
   const handleSubmit = async(e) => {
     e.preventDefault();
     try{
+    setError(false);
     const res = await axios.post(`${serverURL}/register`, {...formData, isTeacher: isTeacher})
     console.log(res)
     } catch (err) {
-      console.log(err)
+      // setErrorMessage(err.)
+      setErrorMessage(err.response.data.message)
+      setError(true);
+      console.log('err: ', err.response.data.message);
     }
 
   }
@@ -94,11 +100,11 @@ export default function SignUp (props) {
           <StyledLabel>
               First name:
 
-             <StyledTextInput placeholder='enter first name' name='first' onChange={handleChange}></StyledTextInput>
+             <StyledTextInput placeholder='enter first name' name='firstName' onChange={handleChange}></StyledTextInput>
             </StyledLabel>
             <StyledLabel>
               Last name:
-              <StyledTextInput placeholder='enter last name' name='last' onChange={handleChange}></StyledTextInput>
+              <StyledTextInput placeholder='enter last name' name='lastName' onChange={handleChange}></StyledTextInput>
 
              {/* <StyledTextInput placeholder='enter first name' name='firstName' onChange={handleChange}></StyledTextInput>
             </StyledLabel>
@@ -131,6 +137,9 @@ export default function SignUp (props) {
             </StyledSelectInput>
             </StyledLabel>
           </StyledRightAlignedForms>
+          {error ? <p>
+            {errorMessage}
+          </p> : null}
           {button}
         </StyledLoginSignUpForm>
       </StyledloginSignUpBox>
