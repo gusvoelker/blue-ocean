@@ -7,6 +7,14 @@ import './calendar.css'
 
 
 export default function TeacherCalendar({teacherID }) {
+  const saveEvent = ()=>{
+
+  }
+
+  const getEvent = () => {
+
+  }
+
   var cal = {
     // (A) PROPERTIES
     // (A1) COMMON CALENDAR

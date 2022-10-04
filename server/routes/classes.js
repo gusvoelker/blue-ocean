@@ -59,6 +59,7 @@ router.post(`/classes/students/*`,  upload.single('file'), (req, res, next) =>{
 //view list of students in the class
 //req.query.class_id
 router.get('/classes/students', (req, res, next) => {
+  console.log(req.query)
   model.findStudentsByClass(req.query.class_id)
   .then(({rows}) => {
     res.status(200).send(rows);
