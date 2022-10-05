@@ -210,6 +210,11 @@ export default function App () {
             </>} >
             </Route>
             <Route path="/messages" element={<><NavBar role={role}/><Messages /></>} ></Route>
+            <Route path="/videoplayer" element={<>
+              <NavBar role={role} darkTheme={darkTheme} />
+              <VideoChat darkTheme={darkTheme} />
+            </>} >
+            </Route>
           </Routes>
         </BrowserRouter>
       </StyledLogPage>
