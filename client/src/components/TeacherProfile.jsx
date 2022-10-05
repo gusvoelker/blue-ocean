@@ -27,7 +27,6 @@ import TeacherCalendar from '../components/LoginSignup/Teacher/TeacherCalendar.j
 import { Outlet, Link } from "react-router-dom";
 import {serverURL} from '../config.js'
 import ClassListModal from '../components/LoginSignup/Teacher/ClassListModal.jsx'
-import { Outlet, Link } from "react-router-dom";
 
 
 
