@@ -109,9 +109,17 @@ export default function TeacherProfile(props) {
   }
 
   // api requests to retrieve all necessary data
-  const retrieveAccountInfo = axios.get(`${serverURL}/accounts/id`)
+  const retrieveAccountInfo = axios.get(`${serverURL}/accounts/id`, {
+    params: {
+      accountId: props.userId
+    }
+  })
 
-  const retrieveFriends = axios.get(`${serverURL}/friend`)
+  const retrieveFriends = axios.get(`${serverURL}/friend`, {
+    params: {
+      accountId: props.userId
+    }
+  })
 
   const retrieveLanguages = axios.get(`${serverURL}/languages`);
 

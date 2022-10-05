@@ -143,13 +143,13 @@ export default function Profile (props) {
     // api requests to retrieve all necessary data
     const retrieveAccountInfo = axios.get(`${serverURL}/accounts/id`, {
       params: {
-        accountId: 1
+        accountId: props.userId
       }
     })
 
     const retrieveFriends = axios.get(`${serverURL}/friend`, {
       params: {
-        id: 1
+        accountId: props.userId
       }
     })
 
@@ -169,7 +169,6 @@ export default function Profile (props) {
         props.setFriends(apiFriends);
         // setting languages
         props.setLanguages(apiLanguages);
-        console.log('friends: ', []);
       }).catch((err) => {
         console.log('error retrieving data', err);
       });

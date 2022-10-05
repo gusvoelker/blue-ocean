@@ -40,7 +40,7 @@ import ThemeToggleButton from './components/NavBar/DarkModeToggle.jsx'
 
 
 export default function App () {
-  const [darkTheme, setDarkTheme] = useState(true);
+  const [darkTheme, setDarkTheme] = useState(false);
   const [email, setEmail] = useState('hello@gmail.com');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('teacher');
@@ -52,7 +52,7 @@ export default function App () {
   const [checked, setChecked] = useState([]);
   const [friends, setFriends] = useState(['Adam', 'Bob', 'Charlie', 'Daniel', 'Emily', 'Florenza', 'Emily', 'Florenza']);
   const [profilePicture, setProfilePicture] = useState('https://i.postimg.cc/gkDMWvVY/photo-1615497001839-b0a0eac3274c.jpg');
-  const [languages, setLanguages] = useState([])
+  const [languages, setLanguages] = useState([]);
   const [isTeacher, setTeacher] = useState(true);
   const [userId, setUserId] = useState('');
 
@@ -172,6 +172,8 @@ export default function App () {
                 <TeacherInfo
                   handleCheck={handleCheck}
                   handleChange={handleChange}
+                  languages={languages}
+                  setLanguages={setLanguages}
                   formData={formData}
                   teacherInfoSubmit={teacherInfoSubmit}
                 />
@@ -184,6 +186,8 @@ export default function App () {
                 <UserInfo
                   handleCheck={handleCheck}
                   handleChange={handleChange}
+                  languages={languages}
+                  setLanguages={setLanguages}
                   formData={formData}
                 />
               </>

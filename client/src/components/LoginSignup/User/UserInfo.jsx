@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
+import { Outlet, Link } from "react-router-dom";
 import {
   StyledButton,
   StyledLogPage,
@@ -14,6 +15,8 @@ import {
   StyledPageRow,
   StyledImage
 } from '../../StyledComponents/StyledComponents.jsx'
+import axios from 'axios';
+import { serverURL } from '../../../config.js';
 
 const StyledloginSignUpBox = styled.div`
   background-image: url("https://images.unsplash.com/photo-1536683402757-75f8d0dfa419?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1332&q=80");
@@ -31,10 +34,59 @@ const StyledloginSignUpBox = styled.div`
   border: 2px solid #383838;
 `
 
-import { Outlet, Link } from "react-router-dom";
+export default function UserInfo ({handleCheck, handleChange, languages, setLanguages }) {
+  // const [formData, setFormData] = useState({
+  //   primary: '',
+  //   tolearn: '',
+  //   videochat: ''
+  // })
+  // const [checked, setChecked] = useState([]);
 
-export default function UserInfo ({handleCheck, handleChange}) {
+  // const handleChange = (e) => {
+  //   e.preventDefault();
+  //   setFormData({
+  //     ...formData,
+  //     [e.target.name]: e.target.value
+  //   })
+  //   console.log(e.target.value);
+  // }
 
+  // const handleCheck = (event) => {
+  //   var updatedList = [...checked];
+  //   if (event.target.checked) {
+  //     updatedList = [...checked, event.target.value];
+  //   } else {
+  //     updatedList.splice(checked.indexOf(event.target.value), 1);
+  //   }
+  //   setChecked(updatedList);
+  //   console.log(checked);
+  // };
+
+  useEffect(() => {
+    axios.get(`${serverURL}/languages`)
+      .then((data) => {
+        var apiLanguages = data.data
+        setLanguages(apiLanguages);
+        console.log(apiLanguages);
+      }).catch((err) => {
+        console.log('err: ', err)
+      })
+  }, [])
+
+  const languageList = languages.map((language) => {
+    return (
+      <option value={language.lang_name} key={language.lang_id}>{language.lang_name}</option>
+    )
+  })
+
+  const languageProficiencies = languages.map((language) => {
+    return (
+      <label key={language.lang_id}>
+        {language.lang_name}:
+        <input value={language.lang_name} type="checkbox" onChange={handleCheck} />
+      </label>
+    )
+  })
   return (
       <StyledloginSignUpBox>
         <StyledLoginSignUpForm>
@@ -45,27 +97,13 @@ export default function UserInfo ({handleCheck, handleChange}) {
             <StyledLabel>
               What is your primary language?
               <StyledSelectInput onChange={handleChange} name='primary'>
-                <option value='english'>English</option>
-                <option value='spanish'>Spanish</option>
-                <option value='romanian'>Romanian</option>
-                <option value='french'>French</option>
-                <option value='latin'>Latin</option>
-                <option value='greek'>Greek</option>
-                <option value='portuguese'>Portuguese</option>
-                <option value='elvish'>Elvish</option>
+                {languageList}
               </StyledSelectInput>
             </StyledLabel>
             <StyledLabel>
               What language would you like to learn?
-              <StyledSelectInput onChange={handleChange} name='tolearn' value='spanish'>
-                <option value='english'>English</option>
-                <option value='spanish'>Spanish</option>
-                <option value='romanian'>Romanian</option>
-                <option value='french'>French</option>
-                <option value='latin'>Latin</option>
-                <option value='greek'>Greek</option>
-                <option value='portuguese'>Portuguese</option>
-                <option value='elvish'>Elvish</option>
+              <StyledSelectInput onChange={handleChange} name='tolearn'>
+                {languageList}
               </StyledSelectInput>
             </StyledLabel>
             <StyledLabel>
@@ -81,34 +119,7 @@ export default function UserInfo ({handleCheck, handleChange}) {
               Do you have any other language profficiencies?
             </p>
             <span style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
-              <label>
-                English:
-                <input value='english' type="checkbox" onChange={handleCheck} />
-              </label>
-              <label>
-                Spanish:
-                <input value='spanish' type="checkbox" onChange={handleCheck} />
-              </label>
-              <label>
-                Romanian:
-                <input value='romanian' type="checkbox" onChange={handleCheck} />
-              </label>
-              <label>
-                French:
-                <input value='french' type="checkbox" onChange={handleCheck} />
-              </label>
-              <label>
-                Portuguese:
-                <input value='portuguese' type="checkbox" onChange={handleCheck} />
-              </label>
-              <label>
-                Latin:
-                <input value='Latin' type="checkbox" onChange={handleCheck} />
-              </label>
-              <label>
-                Greek:
-                <input value='greek' type="checkbox" onChange={handleCheck} />
-              </label>
+              {languageProficiencies}
             </span>
           </StyledLabel>
           <Link to="/login">
