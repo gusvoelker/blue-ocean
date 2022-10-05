@@ -5,6 +5,7 @@ import styled from 'styled-components'
 const VideoPlayer = () => {
   const { name, callAccepted, myVideo, userVideo, callEnded, stream, call } = useContext(SocketContext);
 
+
   return (
     <Grid>
       <Paper>

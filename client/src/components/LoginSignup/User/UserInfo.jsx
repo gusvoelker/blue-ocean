@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
+import { Outlet, Link } from "react-router-dom";
 import {
   StyledButton,
   StyledLogPage,
@@ -86,7 +87,6 @@ export default function UserInfo ({handleCheck, handleChange, languages, setLang
       </label>
     )
   })
-
   return (
       <StyledloginSignUpBox>
         <StyledLoginSignUpForm>
@@ -122,8 +122,9 @@ export default function UserInfo ({handleCheck, handleChange, languages, setLang
               {languageProficiencies}
             </span>
           </StyledLabel>
-          <StyledSubmitInput value='SUBMIT'></StyledSubmitInput>
-          <StyledSubmitInput value='SKIP'></StyledSubmitInput>
+          <Link to="/login">
+            <StyledSubmitInput value='SUBMIT'></StyledSubmitInput>
+          </Link>
         </StyledLoginSignUpForm>
       </StyledloginSignUpBox>
   )

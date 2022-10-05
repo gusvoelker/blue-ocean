@@ -4,6 +4,8 @@ import {
   ProfileCalendarInfo,
 } from '../../StyledComponents/StyledComponents.jsx';
 import './calendar.css'
+import {serverURL} from '../../../config.js'
+import axios from 'axios'
 
 
 export default function TeacherCalendar({teacherID }) {
@@ -60,7 +62,7 @@ export default function TeacherCalendar({teacherID }) {
 
       // (B4) APPEND YEARS SELECTOR
       // Set to 10 years range. Change this as you like.
-      for (let i = nowYear - 10; i <= nowYear + 10; i++) {
+      for (let i = nowYear; i <= nowYear + 10; i++) {
         let opt = document.createElement("option");
         opt.value = i;
         opt.innerHTML = i;
@@ -206,6 +208,7 @@ export default function TeacherCalendar({teacherID }) {
 
   useEffect(()=>{
     cal.init();
+    axios.get(`${serverURL}/calendar`, )
   }, [])
 
   return (
