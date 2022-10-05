@@ -96,6 +96,7 @@ export default function Profile (props) {
   const [editInfoShow, setEditInfoShow] = useState(false);
   const [currentFriend, setCurrentFriend] = useState('');
   const [friendSearch, setFriendSearch] = useState('');
+  const [usersWithSameLanguage, setUsersWithSameLanguage] = useState([])
 
   //const {userId, setUserId} = useContext(SocketContext);
   //console.log(userId);
@@ -118,6 +119,28 @@ export default function Profile (props) {
   }
 
   const onAddFriendClick = () => {
+    axios.get(`${serverURL}/accounts`)
+    .then(({data}) => {
+      return data.map(account => {
+        axios.get(`${serverURL}/languages/known`, {
+          params: {
+            accountId: account.account_id
+          }
+        })
+        .then(({data}) => account.language = data)
+      return account;
+      })
+    })
+    //TODO: grab the languages that the user speaks and finish the filter
+    // .then(accounts => {
+    //   return accounts.filter((account) => {
+    //     return account.language.includes('languages this user speaks')
+    //   })
+    // })
+    .then(accounts => setUsersWithSameLanguage(accounts))
+    .catch((err) => {
+      console.log(err);
+    })
     setAddShow(true);
   }
 
@@ -254,7 +277,7 @@ export default function Profile (props) {
         </ProfileFriendsList>
       </ProfileContainer>
       <FriendsModal onClose={() => setShow(false)} show={show} friend={currentFriend} />
-      <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch}/>
+      <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch} usersWithSameLanguage={usersWithSameLanguage}/>
       <EditInfoModal onClose={() => setEditInfoShow(false)} show={editInfoShow} />
       </Dark>
     </div>

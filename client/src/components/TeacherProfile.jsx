@@ -89,6 +89,7 @@ export default function TeacherProfile(props) {
   const [students, setStudents] = useState([]);
   const [modalClassName, setModalClassName] = useState('')
   const [classShow, setClassShow] = useState(false)
+  const [usersWithSameLanguage, setUsersWithSameLanguage] = useState([]);
 
 
 
@@ -145,8 +146,31 @@ export default function TeacherProfile(props) {
   }
 
   const onAddFriendClick = () => {
+    axios.get(`${serverURL}/accounts`)
+    .then(({data}) => {
+      return data.map(account => {
+        axios.get(`${serverURL}/languages/taught`, {
+          params: {
+            accountId: account.account_id
+          }
+        })
+        .then(({data}) => account.language = data)
+      return account;
+      })
+    })
+    //TODO: grab the languages that the user speaks and finish the filter
+    // .then(accounts => {
+    //   return accounts.filter((account) => {
+    //     return account.language.includes('languages this user speaks')
+    //   })
+    // })
+    .then(accounts => setUsersWithSameLanguage(accounts))
+    .catch((err) => {
+      console.log(err);
+    })
     setAddShow(true);
   }
+
   const onClassListClick = (e, class_name) => {
     e.preventDefault()
     axios.get(`${serverURL}/classes/students`, {params: {class_id: e.target.id}}).then((students) =>{
@@ -277,7 +301,7 @@ export default function TeacherProfile(props) {
         </ProfileFriendsList>
       </ProfileContainer>
       <FriendsModal onClose={() => setShow(false)} show={show} friend={currentFriend} />
-      <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch}/>
+      <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch} usersWithSameLanguage={usersWithSameLanguage}/>
       <TeacherClassListModal onClose={()=>setTeacherShow(false)} show={teacherShow} onFriendSearch={onFriendSearch}/>
       <EditInfoModal onClose={() => setEditInfoShow(false)} show={editInfoShow} />
     </div>

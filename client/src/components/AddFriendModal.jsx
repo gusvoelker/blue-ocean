@@ -14,6 +14,14 @@ export default function AddFriendModal (props) {
   if (!props.show) {
     return null;
   }
+
+  useEffect(() => {
+    let nameArray = props.usersWithSameLanguage.map(user => {
+      return `${user.first_name} ${user.last_name}`
+    })
+    setSearchedFriends(nameArray);
+  }, [props.usersWithSameLanguage])
+
   const [searchedFriends, setSearchedFriends] = useState(['Frodo', 'Gandalf', 'Legolas', 'Bilbo']);
 
   const handleSelect = (e) => {
