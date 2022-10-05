@@ -4,6 +4,7 @@ import {
   ProfileCalendarInfo,
 } from '../../StyledComponents/StyledComponents.jsx';
 import './calendar.css'
+import {serverURL} from '../../../config.js'
 
 
 export default function TeacherCalendar({teacherID }) {
@@ -206,6 +207,7 @@ export default function TeacherCalendar({teacherID }) {
 
   useEffect(()=>{
     cal.init();
+    axios.get(`${serverURL}/calendar`, )
   }, [])
 
   return (

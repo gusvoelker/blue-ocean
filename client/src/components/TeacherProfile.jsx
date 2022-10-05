@@ -27,6 +27,8 @@ import EditInfoModal from './EditInfoModal.jsx';
 import TeacherCalendar from '../components/LoginSignup/Teacher/TeacherCalendar.jsx'
 import { serverURL } from '../config.js'
 import ClassListModal from '../components/LoginSignup/Teacher/ClassListModal.jsx'
+import DateTimePicker from 'react-datetime-picker';
+import ScheduleModal from '../components/LoginSignup/Teacher/ScheduleModal.jsx';
 
 const LeftButton = styled.button`
   position: absolute;
@@ -87,6 +89,8 @@ export default function TeacherProfile(props) {
   const [students, setStudents] = useState([]);
   const [modalClassName, setModalClassName] = useState('')
   const [classShow, setClassShow] = useState(false)
+  const [pickDateShow, setPickDateShow] = useState(false);
+
 
 
 
@@ -149,9 +153,10 @@ export default function TeacherProfile(props) {
   }
 
 
-const handleCalendarClick=(e, friend) => {
-  e.preventDefault()
-  console.log('click')
+const onCalendarClick=( dateTime, friend, user) => {
+  console.log('click and dateTime ', dateTime)
+  setPickDateShow(false)
+
 }
 
   return (
@@ -205,9 +210,10 @@ const handleCalendarClick=(e, friend) => {
             {filteredFriends.map(friend => {
               return (
                 <StyledFriend id={friend} >
-                  <div style={{ fontWeight: 'bold' }} onClick={onFriendClick}>{friend}</div>
+                  <div style={{ fontWeight: 'bold' }} onClick={(onFriendClick)}>{friend}</div>
+                  {pickDateShow && <ScheduleModal onClose={(dateTime)=>{onCalendarClick(dateTime, friend, teacherId)}} pickDateShow={pickDateShow} friend={friend} user={teacherId}/>}
                   <StyledFriendIcons>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call"  onClick={(e)=>{handleCalendarClick(e, friend)}}/>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call"  onClick={()=>{setPickDateShow(true)}}/>
                     <img src='https://pnggrid.com/wp-content/uploads/2021/12/Office-Phone-Icon-PNG-Transparent-Background.png' alt='phone icon for starting a call with friend' />
                     <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend" />
                   </StyledFriendIcons>
@@ -215,6 +221,7 @@ const handleCalendarClick=(e, friend) => {
               )
             })}
           </p>
+
           <StyledButton style={{ marginTop: '0rem', width: '12rem' }} onClick={onAddFriendClick}>ADD FRIEND</StyledButton>
           {teacherShow && <TeacherClassListModal onClose={() => setTeacherShow(false)} />}
         </ProfileFriendsList>
