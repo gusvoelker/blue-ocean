@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 
 import { serverURL } from './config.js';
@@ -44,6 +44,7 @@ export default function App () {
   const [email, setEmail] = useState('hello@gmail.com');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('teacher');
+  const [teacherBoolean, setTeacherBoolean] = useState(false)
   const [firstName, setFirstName] = useState('Anthony');
   const [lastName, setLastName] = useState('Liang');
   const [formData, setFormData] = useState({
@@ -52,6 +53,7 @@ export default function App () {
   const [checked, setChecked] = useState([]);
   const [friends, setFriends] = useState(['Adam', 'Bob', 'Charlie', 'Daniel', 'Emily', 'Florenza', 'Emily', 'Florenza']);
   const [profilePicture, setProfilePicture] = useState('https://i.postimg.cc/gkDMWvVY/photo-1615497001839-b0a0eac3274c.jpg');
+  const [languages, setLanguages] = useState([])
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -154,6 +156,11 @@ export default function App () {
                 email={email}
                 password={password}
                 role={role}
+                setFirstName={setFirstName}
+                setLastName={setLastName}
+                setEmail={setEmail}
+                setLanguages={setLanguages}
+                setFriends={setFriends}
               />
             </>} >
             </Route>
@@ -168,6 +175,11 @@ export default function App () {
                 email={email}
                 password={password}
                 role={role}
+                setFirstName={setFirstName}
+                setLastName={setLastName}
+                setEmail={setEmail}
+                setLanguages={setLanguages}
+                setFriends={setFriends}
               />
             </>} >
             </Route>

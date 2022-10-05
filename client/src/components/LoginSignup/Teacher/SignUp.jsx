@@ -53,7 +53,6 @@ export default function SignUp (props) {
     console.log(e.target.value);
   }
 
-
   const handleSelect = (e) => {
     e.preventDefault();
     if (e.target.value === 'teacher') {
