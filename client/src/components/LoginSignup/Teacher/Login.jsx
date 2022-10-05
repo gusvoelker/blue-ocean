@@ -15,7 +15,7 @@ import {
   StyledImage,
   StyledSelectInput
 } from '../../StyledComponents/StyledComponents.jsx';
-import { SocketContext } from '../../VideoComponents/SocketContext.jsx';
+// import { SocketContext } from '../../VideoComponents/SocketContext.jsx';
 
 import { Outlet, Link, useNavigate } from "react-router-dom";
 
@@ -36,7 +36,9 @@ const StyledloginSignUpBox = styled.div`
 `
 
 export default function Login (props) {
-  // const {userId, setUserId} = useContext(SocketContext);
+  //const { setUserId } = useContext(SocketContext);
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('hello');
   const navigate = useNavigate();
 
   let formData = {
@@ -53,6 +55,8 @@ export default function Login (props) {
       navigate("/profile");
     } catch (err) {
       console.log(err);
+      setErrorMessage(err.response.data);
+      setError(true);
     }
   }
 
@@ -64,6 +68,8 @@ export default function Login (props) {
       navigate("/teacherprofile")
     } catch (err) {
       console.log(err);
+      setErrorMessage(err.response.data);
+      setError(true);
     }
   }
 
@@ -102,7 +108,10 @@ export default function Login (props) {
             </StyledSelectInput>
             </StyledLabel>
           </StyledRightAlignedForms>
-          <StyledSubmitInput value='SUBMIT'></StyledSubmitInput>
+          {error ? <p>
+            {errorMessage}
+          </p> : null}
+          {button}
         </StyledLoginSignUpForm>
       </StyledloginSignUpBox>
   )

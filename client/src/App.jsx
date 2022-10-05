@@ -47,9 +47,7 @@ export default function App () {
   const [firstName, setFirstName] = useState('Anthony');
   const [lastName, setLastName] = useState('Liang');
   // Teacher language levels
-  const [formData, setFormData] = useState({
-    level: '',
-  })
+  const [formData, setFormData] = useState({})
   const [checked, setChecked] = useState([]);
   const [friends, setFriends] = useState(['Adam', 'Bob', 'Charlie', 'Daniel', 'Emily', 'Florenza', 'Emily', 'Florenza']);
   const [profilePicture, setProfilePicture] = useState('https://i.postimg.cc/gkDMWvVY/photo-1615497001839-b0a0eac3274c.jpg');
@@ -58,6 +56,15 @@ export default function App () {
 
   const onIdChange = (value) => {
     setUserId(value);
+  }
+
+  const teacherInfoSubmit = async () => {
+    // try {
+    //   const res = axios.post('/languages/taught', formData)
+    //   console.log(res)
+    // } catch (err) {
+    //   console.log(err)
+    // }
   }
 
   const handleChange = (e) => {
@@ -163,6 +170,19 @@ export default function App () {
                 <TeacherInfo
                   handleCheck={handleCheck}
                   handleChange={handleChange}
+                  formData={formData}
+                  teacherInfoSubmit={teacherInfoSubmit}
+                />
+              </>
+            }>
+            </Route>
+            <Route path="/userInfo" element={
+              <>
+                <NavBar role={role} darkTheme={darkTheme}/>
+                <UserInfo
+                  handleCheck={handleCheck}
+                  handleChange={handleChange}
+                  formData={formData}
                 />
               </>
             }>
@@ -197,22 +217,11 @@ export default function App () {
               />
             </>} >
             </Route>
-            <Route path="/messages" element={<><NavBar role={role}/><Messages /></>} ></Route>
+            <Route path="/messages" element={<><NavBar role={role} darkTheme={darkTheme}/><Messages /></>} ></Route>
           </Routes>
         </BrowserRouter>
       </StyledLogPage>
     </div>
   );
-    // {/* return (
-    //   <div>
-    //     {!darkTheme ? <LightTheme/> : <DarkTheme/>}
-    //     <ThemeToggleButton setDarkTheme={setDarkTheme} darkTheme={darkTheme}/>
-    //     <StyledLogPage>
-    //       <NavBar darkTheme={darkTheme}/>
-    //       <Messages darkTheme={darkTheme}/>
-    //       <TeacherProfile darkTheme={darkTheme} />
-    //     </StyledLogPage>
-    //   </div>
-    // ); */}
 }
 
