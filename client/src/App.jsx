@@ -210,6 +210,7 @@ export default function App () {
                 setLanguages={setLanguages}
                 setFriends={setFriends}
                 userId={userId}
+                languages={languages}
               />
             </>} >
             </Route>
@@ -230,6 +231,7 @@ export default function App () {
                 setLanguages={setLanguages}
                 setFriends={setFriends}
                 userId={userId}
+                languages={languages}
               />
             </>} >
             </Route>

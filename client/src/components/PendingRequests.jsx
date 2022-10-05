@@ -10,7 +10,7 @@ import {
   StyledFriend,
 } from './StyledComponents/StyledComponents.jsx';
 
-export default function AddFriendModal (props) {
+export default function PendingRequests (props) {
   if (!props.show) {
     return null;
   }
@@ -25,29 +25,15 @@ export default function AddFriendModal (props) {
   const [searchedFriends, setSearchedFriends] = useState(['Frodo', 'Gandalf', 'Legolas', 'Bilbo']);
 
   const handleSelect = (e) => {
-    let accounts = [];
-    let language = e.target.value;
-    if (language === 'any') {
-      let nameArray = props.usersWithSameLanguage.map(user => {
-        return `${user.first_name} ${user.last_name}`
+    var accounts = []
+    var language = e.target.value;
+    axios.get(`${serverURL}/accounts`)
+      .then((data) => {
+        accounts = data
+      }).catch((err) => {
+        console.log(err);
       })
-      setSearchedFriends(nameArray);
-    } else {
-      props.usersWithSameLanguage.forEach((account) => {
-        if (account.language.length > 0) {
-          account.language.forEach(item => {
-            if (item.lang_name === language) {
-              accounts.push(account);
-            }
-          })
-        }
-      })
-      let nameArray = accounts.map(user => {
-        return `${user.first_name} ${user.last_name}`
-      })
-      console.log(accounts);
-      setSearchedFriends(nameArray);
-    }
+    // function to filter out all users that aren't learning that language
   }
 
   return (
@@ -63,13 +49,9 @@ export default function AddFriendModal (props) {
       </FriendsModalContent> */}
       <ProfileFriendsList style={{position: 'relative', left: '0%'}}>
         <h3 style={{marginTop: '-0.5rem'}}><strong>Add Friends</strong></h3>
-        <StyledSelectInput onChange={handleSelect} style={{marginTop: '-2rem'}}>
-          <option value='any'>any</option>
-          {props.languages.map(language => {
-            return (
-              <option value={language.lang_name}>{language.lang_name}</option>
-            )
-          })}
+        <StyledSelectInput style={{marginTop: '-2rem'}}>
+          <option value='teacher'>Teacher</option>
+          <option value='user'>User</option>
         </StyledSelectInput>
         <p style={{height: '15rem'}}>
           {searchedFriends.map((friend) => {

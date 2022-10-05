@@ -19,6 +19,7 @@ import {
 import axios from 'axios';
 import FormData from 'form-data'
 import TeacherClassListModal from './LoginSignup/Teacher/TeacherClassListModal.jsx';
+import PendingRequests from './PendingRequests.jsx';
 import { faChevronLeft, faChevronRight, faChevronUp, faChevronDown, faCalendar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import FriendsModal from './FriendsModal.jsx';
@@ -94,6 +95,8 @@ export default function TeacherProfile(props) {
   const [classShow, setClassShow] = useState(false)
   const [usersWithSameLanguage, setUsersWithSameLanguage] = useState([]);
   const [pickDateShow, setPickDateShow] = useState(false);
+  const [showPending, setShowPending] = useState(false);
+
 
 
   console.log(props.userId);
@@ -171,17 +174,15 @@ export default function TeacherProfile(props) {
       return account;
       })
     })
-    //TODO: grab the languages that the user speaks and finish the filter
-    // .then(accounts => {
-    //   return accounts.filter((account) => {
-    //     return account.language.includes('languages this user speaks')
-    //   })
-    // })
     .then(accounts => setUsersWithSameLanguage(accounts))
     .catch((err) => {
       console.log(err);
     })
     setAddShow(true);
+  }
+
+  const onPendingRequestsClick = () => {
+    setShowPending(true);
   }
 
   const onClassListClick = (e, class_name) => {
@@ -304,6 +305,7 @@ const onCalendarClick=( dateTime, friend, user) => {
           </p>
 
           <StyledButton style={{ marginTop: '0rem', width: '12rem' }} onClick={onAddFriendClick}>ADD FRIEND</StyledButton>
+          <StyledButton onClick={onPendingRequestsClick}>PENDING REQUESTS</StyledButton>
           {teacherShow && <TeacherClassListModal onClose={() => setTeacherShow(false)} />}
         </ProfileFriendsList>
         <ProfileFriendsList style={{width: '23rem', left: '71%'}}>
@@ -328,7 +330,8 @@ const onCalendarClick=( dateTime, friend, user) => {
         </ProfileFriendsList>
       </ProfileContainer>
       <FriendsModal onClose={() => setShow(false)} show={show} friend={currentFriend} />
-      <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch} usersWithSameLanguage={usersWithSameLanguage}/>
+      <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch} usersWithSameLanguage={usersWithSameLanguage} languages={props.languages}/>
+      <PendingRequests onClose={() => setShowPending(false)} show={showPending} usersWithSameLanguage={usersWithSameLanguage}/>
       <TeacherClassListModal onClose={()=>setTeacherShow(false)} show={teacherShow} onFriendSearch={onFriendSearch}/>
       <EditInfoModal onClose={() => setEditInfoShow(false)} show={editInfoShow} />
     </div>
