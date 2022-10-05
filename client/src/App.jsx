@@ -229,7 +229,7 @@ export default function App () {
                 setEmail={setEmail}
                 setLanguages={setLanguages}
                 setFriends={setFriends}
-                userid={userId}
+                userId={userId}
               />
             </>} >
             </Route>

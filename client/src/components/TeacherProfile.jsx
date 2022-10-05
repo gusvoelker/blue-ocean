@@ -95,7 +95,7 @@ export default function TeacherProfile(props) {
   const [pickDateShow, setPickDateShow] = useState(false);
 
 
-
+  console.log(props.userId);
 
   var [x, setx] = useState(0);
   // function for the image to expand on click
@@ -149,7 +149,7 @@ export default function TeacherProfile(props) {
     }).catch((err) => {
       console.log('error retrieving data', err);
     });
-  });
+  }, []);
 
   const onFriendClick = (e) => {
     setShow(true);
