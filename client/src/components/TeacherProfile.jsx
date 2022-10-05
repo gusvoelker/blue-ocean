@@ -14,17 +14,18 @@ import {
   StyledFriendSearchSpan,
   StyledFriendSearch,
   StyledEditProfileButton,
+  IconCircleDiv
 } from './StyledComponents/StyledComponents.jsx'
 import axios from 'axios';
 import FormData from 'form-data'
 import TeacherClassListModal from './LoginSignup/Teacher/TeacherClassListModal.jsx';
-import { faChevronLeft, faChevronRight, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faChevronRight, faChevronUp, faChevronDown, faCalendar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import FriendsModal from './FriendsModal.jsx';
 import AddFriendModal from './AddFriendModal.jsx';
 import EditInfoModal from './EditInfoModal.jsx';
 import TeacherCalendar from '../components/LoginSignup/Teacher/TeacherCalendar.jsx'
-import {serverURL} from '../config.js'
+import { serverURL } from '../config.js'
 import ClassListModal from '../components/LoginSignup/Teacher/ClassListModal.jsx'
 
 const LeftButton = styled.button`
@@ -100,13 +101,13 @@ export default function TeacherProfile(props) {
     setx(x + 1);
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     // axios.get(`${serverURL}/friend`).then((friends)=>{
     //   console.log('friends ', friends)
     // }).catch((err)=>{console.log('error getting friends ', err)})
-    axios.get(`${serverURL}/classes`, {params: {teacher_id: teacherId}}).then((classData) =>{
+    axios.get(`${serverURL}/classes`, { params: { teacher_id: teacherId } }).then((classData) => {
       setClasses(classData.data)
-    }).catch((err)=>{console.log('error getting classes ', err)})
+    }).catch((err) => { console.log('error getting classes ', err) })
   }, [])
 
   const onFriendClick = (e) => {
@@ -120,12 +121,12 @@ export default function TeacherProfile(props) {
   }
   const onClassListClick = (e, class_name) => {
     e.preventDefault()
-    axios.get(`${serverURL}/classes/students`, {params: {class_id: e.target.id}}).then((students) =>{
+    axios.get(`${serverURL}/classes/students`, { params: { class_id: e.target.id } }).then((students) => {
       console.log(students.data)
       setStudents(students.data)
       setModalClassName(class_name)
       setClassShow(true)
-    }).catch(err =>{console.log(err)})
+    }).catch(err => { console.log(err) })
   }
 
 
@@ -141,29 +142,34 @@ export default function TeacherProfile(props) {
 
   const filterFriends = (e) => {
     setFilteredFriends(props.friends.filter(function (str) {
-        var lowered = str.toLowerCase();
-        return lowered.includes(e.target.value);
-      }));
+      var lowered = str.toLowerCase();
+      return lowered.includes(e.target.value);
+    }));
     console.log(filteredFriends);
   }
 
+
+const handleCalendarClick=(e, friend) => {
+  e.preventDefault()
+  console.log('click')
+}
 
   return (
     <div>
       <ProfileContainer>
         <ProfilePicture src={props.profilePicture} />
         {!props.darkTheme ?
-        <ProfileBackground>
-          <img src={profileBackground[x]} style={{textAlign: 'left', display: 'block'}}/>
-          {x === 0 ? null : <LeftButton data-testid='left-arrow' onClick={goLeft}><FontAwesomeIcon icon={faChevronLeft} /></LeftButton>}
-          {x >= profileBackground.length - 1 ? null : <RightButton data-testid='right-arrow' onClick={goRight}><FontAwesomeIcon icon={faChevronRight} /></RightButton>}
-        </ProfileBackground> :
-        <ProfileBackground>
-          <img src={profileBackgroundDark[x]} style={{textAlign: 'left', display: 'block'}}/>
-          {x === 0 ? null : <LeftButton data-testid='left-arrow' onClick={goLeft}><FontAwesomeIcon icon={faChevronLeft} /></LeftButton>}
-          {x >= profileBackgroundDark.length - 1 ? null : <RightButton data-testid='right-arrow' onClick={goRight}><FontAwesomeIcon icon={faChevronRight} /></RightButton>}
-        </ProfileBackground>
-      }
+          <ProfileBackground>
+            <img src={profileBackground[x]} style={{ textAlign: 'left', display: 'block' }} />
+            {x === 0 ? null : <LeftButton data-testid='left-arrow' onClick={goLeft}><FontAwesomeIcon icon={faChevronLeft} /></LeftButton>}
+            {x >= profileBackground.length - 1 ? null : <RightButton data-testid='right-arrow' onClick={goRight}><FontAwesomeIcon icon={faChevronRight} /></RightButton>}
+          </ProfileBackground> :
+          <ProfileBackground>
+            <img src={profileBackgroundDark[x]} style={{ textAlign: 'left', display: 'block' }} />
+            {x === 0 ? null : <LeftButton data-testid='left-arrow' onClick={goLeft}><FontAwesomeIcon icon={faChevronLeft} /></LeftButton>}
+            {x >= profileBackgroundDark.length - 1 ? null : <RightButton data-testid='right-arrow' onClick={goRight}><FontAwesomeIcon icon={faChevronRight} /></RightButton>}
+          </ProfileBackground>
+        }
         <TeacherCalendar />
         {/* <ProfileAccountInfo>
           <h3><strong>Account Info</strong></h3>
@@ -187,7 +193,7 @@ export default function TeacherProfile(props) {
           </table> */}
 
         {/* </ProfileAccountInfo> */}
-        <ProfileFriendsList style={{width: '30rem', left: '32%'}}>
+        <ProfileFriendsList style={{ width: '30rem', left: '32%' }}>
           <StyledFriendSearchSpan>
             <h3><strong>Friends List</strong></h3>
             <StyledFriendSearch>
@@ -198,20 +204,21 @@ export default function TeacherProfile(props) {
           <p>
             {filteredFriends.map(friend => {
               return (
-                <StyledFriend id={friend} onClick={onFriendClick}>
-                  <div style={{ fontWeight: 'bold' }}>{friend}</div>
+                <StyledFriend id={friend} >
+                  <div style={{ fontWeight: 'bold' }} onClick={onFriendClick}>{friend}</div>
                   <StyledFriendIcons>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call"  onClick={(e)=>{handleCalendarClick(e, friend)}}/>
                     <img src='https://pnggrid.com/wp-content/uploads/2021/12/Office-Phone-Icon-PNG-Transparent-Background.png' alt='phone icon for starting a call with friend' />
-                    <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend"/>
+                    <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend" />
                   </StyledFriendIcons>
                 </StyledFriend>
               )
             })}
           </p>
           <StyledButton style={{ marginTop: '0rem', width: '12rem' }} onClick={onAddFriendClick}>ADD FRIEND</StyledButton>
-          {teacherShow && <TeacherClassListModal onClose={()=>setTeacherShow(false)} />}
+          {teacherShow && <TeacherClassListModal onClose={() => setTeacherShow(false)} />}
         </ProfileFriendsList>
-        <ProfileFriendsList style={{width: '23rem', left: '71%'}}>
+        {/* <ProfileFriendsList style={{width: '23rem', left: '71%'}}>
           <StyledFriendSearchSpan style={{justifyContent: 'center'}}>
             <h3><strong>Class List</strong></h3>
           </StyledFriendSearchSpan>
@@ -230,11 +237,11 @@ export default function TeacherProfile(props) {
           <StyledButton style={{ marginTop: '0rem', marginLeft: '1rem', width: '12rem'}} onClick={()=> {setTeacherShow(true)}}>ADD CLASS LIST</StyledButton>
           {teacherShow && <TeacherClassListModal onClose={()=>setTeacherShow(false)} show={teacherShow} onFriendSearch={onFriendSearch}/>}
 
-        </ProfileFriendsList>
+        </ProfileFriendsList> */}
       </ProfileContainer>
       <FriendsModal onClose={() => setShow(false)} show={show} friend={currentFriend} />
-      <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch}/>
-      <TeacherClassListModal onClose={()=>setTeacherShow(false)} show={teacherShow} onFriendSearch={onFriendSearch}/>
+      <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch} />
+      <TeacherClassListModal onClose={() => setTeacherShow(false)} show={teacherShow} onFriendSearch={onFriendSearch} />
       <EditInfoModal onClose={() => setEditInfoShow(false)} show={editInfoShow} />
     </div>
   )

@@ -950,6 +950,12 @@ const ClassListModalContent = styled.div`
   }
   }
 `
+const IconCircleDiv = styled.div`
+border-radius: 50%;
+backgroundColor: #ffffff
+height: 20px;
+`
+
 export {
   StyledNavBar,
   StyledNavBarIcon,
@@ -1011,4 +1017,5 @@ export {
   StyledEditProfileButton,
   ClassListModalContainer,
   ClassListModalContent,
+  IconCircleDiv,
 }
