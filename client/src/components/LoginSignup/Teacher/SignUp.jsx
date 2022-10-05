@@ -38,7 +38,8 @@ export default function SignUp (props) {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
-
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(false);
   let formData = {
     email: props.email,
     password: props.password,
@@ -55,8 +56,8 @@ export default function SignUp (props) {
     //props.onIdChange(res.data.user.id)
     navigate('/userinfo')
     } catch (err) {
-      console.log(err);
-      setErrorMessage(err.response.data);
+      console.log(err.response.data)
+      setErrorMessage(err.response.data)
       setError(true);
     }
   }
@@ -65,13 +66,13 @@ export default function SignUp (props) {
     e.preventDefault();
     try{
     const res = await axios.post(`${serverURL}/register`, formData)
-    console.log(res)
+    console.log('res: ', res)
     //props.onIdChange(res.data.user.id)
     navigate('/teacherinfo')
     } catch (err) {
+      console.log(err.response.data)
       setErrorMessage(err.response.data)
       setError(true);
-      console.log(err);
     }
   }
 
