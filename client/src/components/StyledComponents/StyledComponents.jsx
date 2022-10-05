@@ -873,8 +873,9 @@ const ProfileCalendarInfo = styled.div`
   border-radius: 15px;
   left: 0%;
   display: flex;
+  padding: 2px;
   justify-content: center;
-  padding: 10px;
+  align-items: center;
   background-color: #38698fef;
   color: #f5f5f5;
   box-shadow: 5px 5px 5px #383838;
@@ -894,7 +895,6 @@ const ProfileCalendarInfo = styled.div`
     text-align: center;
   };
   div{
-    padding:10px;
     color: #f5f5f5;
   };
 `

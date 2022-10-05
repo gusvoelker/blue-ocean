@@ -29,7 +29,7 @@ import { Outlet, Link } from "react-router-dom";
 import {serverURL} from '../config.js'
 import ClassListModal from '../components/LoginSignup/Teacher/ClassListModal.jsx'
 import DateTimePicker from 'react-datetime-picker';
-import ScheduleModal from '../components/LoginSignup/Teacher/ScheduleModal.jsx';
+import ScheduleModal from '../components/LoginSignup/Teacher/ScheduleModal.jsx'
 
 
 
@@ -87,12 +87,12 @@ export default function TeacherProfile(props) {
   const [currentFriend, setCurrentFriend] = useState('');
   const [friendSearch, setFriendSearch] = useState('');
   const [editInfoShow, setEditInfoShow] = useState(false);
-  const [teacherId, setTeacherId] = useState('1');
   const [classes, setClasses] = useState([]);
   const [students, setStudents] = useState([]);
   const [modalClassName, setModalClassName] = useState('')
   const [classShow, setClassShow] = useState(false)
   const [pickDateShow, setPickDateShow] = useState(false);
+  const [meetings, setMeetings] = useState([])
 
 
 
@@ -116,12 +116,18 @@ export default function TeacherProfile(props) {
   const retrieveLanguages = axios.get(`${serverURL}/languages`);
 
   useEffect(()=>{
-    // axios.get(`${serverURL}/friend`).then((friends)=>{
-    //   console.log('friends ', friends)
-    // }).catch((err)=>{console.log('error getting friends ', err)})
-    axios.get(`${serverURL}/classes`, { params: { teacher_id: teacherId } }).then((classData) => {
+
+    axios.get(`${serverURL}/classes`, { params: { teacher_id: props.userid } })
+    .then((classData) => {
       setClasses(classData.data)
-    }).catch((err) => { console.log('error getting classes ', err) })
+    })
+    .catch((err) => { console.log('error getting classes ', err) })
+
+    axios.get(`${serverURL}/meetings`, {params: {user_id: props.userid}})
+    .then((meetingsRes)=>{
+      setMeetings(meetingsRes.data)
+    })
+    .catch(err=>{console.log('error getting meetings ', err)})
   }, [])
 
   useEffect(() => {
@@ -188,7 +194,12 @@ const onCalendarClick=( dateTime, friend, user) => {
   setPickDateShow(false)
   console.log(dateTime.toUTCString())
   var GMTTime = dateTime.toUTCString()
-  axios.post(`${serverURL}/addMeeting`, {params: {user_id: user_id, friend_id: friend}})
+  axios.post(`${serverURL}/addMeeting`, {params: {req_account_id: user_id, rec_account_id: friend, start_time: GMTTime}}).then((meetingsRes) =>{
+    console.log('meetings ', meetingsRes.data)
+    setMeetings(meetingsRes.data)
+  }).catch((err)=>{
+    console.log(err)
+  })
 
 }
 
@@ -208,7 +219,7 @@ const onCalendarClick=( dateTime, friend, user) => {
             {x >= profileBackgroundDark.length - 1 ? null : <RightButton data-testid='right-arrow' onClick={goRight}><FontAwesomeIcon icon={faChevronRight} /></RightButton>}
           </ProfileBackground>
         }
-        <TeacherCalendar />
+        <TeacherCalendar props={props} meetings={meetings}/>
         {/* <ProfileAccountInfo>
           <h3><strong>Account Info</strong></h3>
           <h4><strong>Teacher</strong></h4>
@@ -243,7 +254,7 @@ const onCalendarClick=( dateTime, friend, user) => {
               return (
                 <StyledFriend  id={friend} key={index} >
            <div style={{ fontWeight: 'bold' }} onClick={(onFriendClick)}>{friend}</div>
-           {pickDateShow && <ScheduleModal onClose={(dateTime)=>{onCalendarClick(dateTime, friend, teacherId)}} pickDateShow={pickDateShow} friend={friend} user={teacherId}/>}
+           {pickDateShow && <ScheduleModal onClose={(dateTime)=>{onCalendarClick(dateTime, friend, props.userid)}} pickDateShow={pickDateShow} friend={friend} user={props.userid}/>}
                     <StyledFriendIcons>
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call"  onClick={()=>{setPickDateShow(true)}}/>
                   <Link to="/messages">
@@ -258,7 +269,7 @@ const onCalendarClick=( dateTime, friend, user) => {
               return (
                 <StyledFriend  id={friend} key={index}>
                  <div style={{ fontWeight: 'bold' }} onClick={(onFriendClick)}>{friend}</div>
-                  {pickDateShow && <ScheduleModal onClose={(dateTime)=>{onCalendarClick(dateTime, friend, teacherId)}} pickDateShow={pickDateShow} friend={friend} user={teacherId}/>}
+                  {pickDateShow && <ScheduleModal onClose={(dateTime)=>{onCalendarClick(dateTime, friend, props.userid)}} pickDateShow={pickDateShow} friend={friend} user={props.userid}/>}
                     <StyledFriendIcons>
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call"  onClick={()=>{setPickDateShow(true)}}/>
                   <Link to="/messages">
@@ -274,7 +285,7 @@ const onCalendarClick=( dateTime, friend, user) => {
           <StyledButton style={{ marginTop: '0rem', width: '12rem' }} onClick={onAddFriendClick}>ADD FRIEND</StyledButton>
           {teacherShow && <TeacherClassListModal onClose={() => setTeacherShow(false)} />}
         </ProfileFriendsList>
-        <ProfileFriendsList style={{width: '23rem', left: '71%'}}>
+        {/* <ProfileFriendsList style={{width: '23rem', left: '71%'}}>
           <StyledFriendSearchSpan style={{justifyContent: 'center'}}>
             <h3><strong>Class List</strong></h3>
           </StyledFriendSearchSpan>
@@ -293,7 +304,7 @@ const onCalendarClick=( dateTime, friend, user) => {
           <StyledButton style={{ marginTop: '0rem', marginLeft: '1rem', width: '12rem'}} onClick={()=> {setTeacherShow(true)}}>ADD CLASS LIST</StyledButton>
           {teacherShow && <TeacherClassListModal onClose={()=>setTeacherShow(false)} show={teacherShow} onFriendSearch={onFriendSearch}/>}
 
-        </ProfileFriendsList>
+        </ProfileFriendsList> */}
       </ProfileContainer>
       <FriendsModal onClose={() => setShow(false)} show={show} friend={currentFriend} />
       <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch} />
