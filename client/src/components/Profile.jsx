@@ -164,11 +164,9 @@ export default function Profile (props) {
         props.setFriends(apiFriends);
         // setting languages
         props.setLanguages(apiLanguages);
-        console.log('account: ', email, firstName, lastName)
-        console.log('friends: ', apiFriends)
-        console.log('languages: ', apiLanguages)
+        console.log('friends: ', []);
       }).catch((err) => {
-        console.log('error retrieving data');
+        console.log('error retrieving data', err);
       });
     }, []);
 
