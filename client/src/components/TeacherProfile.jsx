@@ -104,17 +104,9 @@ export default function TeacherProfile(props) {
   }
 
   // api requests to retrieve all necessary data
-  const retrieveAccountInfo = axios.get(`${serverURL}/accounts/id`, {
-    params: {
-      accountId: 1
-    }
-  })
+  const retrieveAccountInfo = axios.get(`${serverURL}/accounts/id`)
 
-  const retrieveFriends = axios.get(`${serverURL}/friend`, {
-    params: {
-      id: 1
-    }
-  })
+  const retrieveFriends = axios.get(`${serverURL}/friend`)
 
   const retrieveLanguages = axios.get(`${serverURL}/languages`);
 
@@ -144,7 +136,7 @@ export default function TeacherProfile(props) {
     }).catch((err) => {
       console.log('error retrieving data', err);
     });
-  }, []);
+  });
 
   const onFriendClick = (e) => {
     setShow(true);

@@ -102,7 +102,7 @@ export default function Login (props) {
             </StyledSelectInput>
             </StyledLabel>
           </StyledRightAlignedForms>
-          <StyledSubmitInput value='SUBMIT'></StyledSubmitInput>
+          {button}
         </StyledLoginSignUpForm>
       </StyledloginSignUpBox>
   )
