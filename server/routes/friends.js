@@ -5,7 +5,16 @@ const accountModel = require('../models/accountModel.js');
 
 router.get('/friend', (req, res, next) => {
   let requesterId = req.query.accountId || req.user.id;
-  friendModel.findFriends(requesterId)
+  friendModel.findFriendsInfo(requesterId)
+    .then(({rows}) => {
+      res.status(200).send(rows);
+    })
+    .catch((error) => res.sendStatus(400));
+});
+
+router.get('/friend/requests', (req, res, next) => {
+  let requesterId = req.user.id;
+  friendModel.findFriendRequests(requesterId)
     .then(({rows}) => {
       res.status(200).send(rows);
     })
