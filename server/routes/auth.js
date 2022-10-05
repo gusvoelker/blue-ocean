@@ -40,11 +40,17 @@ router.post("/register", (req, res, next) => {
                   .status(201)
                   .send("Account successfully created");
               })
-              .catch((err) => res.sendStatus(500));
+              .catch((err) => {
+                console.log("This is your login error:", err);
+                res.sendStatus(500)
+              });
           });
         }
       })
-      .catch((err) => res.sendStatus(500));
+      .catch((err) => {
+        console.log("This is your login error2:", err);
+        res.sendStatus(500)
+      });
   }
 });
 
