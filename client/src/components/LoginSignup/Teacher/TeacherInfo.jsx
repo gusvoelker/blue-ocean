@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
+import axios from 'axios';
+import { serverURL } from '../../../config.js';
 import {
   StyledButton,
   StyledLogPage,
@@ -46,7 +48,17 @@ const TeacherLanguageLevel = styled.span`
   }
 `
 
-export default function TeacherInfo ({handleCheck, handleChange}) {
+export default function TeacherInfo ({handleCheck, handleChange, languages, setLanguages }) {
+  useEffect(() => {
+    axios.get(`${serverURL}/languages`)
+      .then((data) => {
+        var apiLanguages = data.data
+        setLanguages(apiLanguages);
+        console.log(apiLanguages);
+      }).catch((err) => {
+        console.log('err: ', err)
+      })
+  }, [])
   // const [formData, setFormData] = useState({
   //   level: '',
   // })
@@ -72,6 +84,25 @@ export default function TeacherInfo ({handleCheck, handleChange}) {
   //   setChecked(updatedList);
   //   console.log(checked);
   // };
+  var languageList = languages.map(language => {
+    return (
+      <label  key={language.lang_id}>
+        {language.lang_name}
+        <input value={language.lang_name} type="checkbox" onChange={handleCheck} />
+        <StyledLabel>
+          Level:
+          <StyledSelectInput name='english' onChange={handleChange} style={{height: '2rem', fontSize: '0.8rem', width: '4rem'}}>
+            <option value='1'>1</option>
+            <option value='2'>2</option>
+            <option value='3'>3</option>
+            <option value='4'>4</option>
+            <option value='5'>5</option>
+            <option value='AP'>AP</option>
+          </StyledSelectInput>
+        </StyledLabel>
+      </label>
+    )
+  })
 
   return (
     <StyledloginSignUpBox style={{height: '50rem', width: '50rem'}}>
@@ -81,7 +112,8 @@ export default function TeacherInfo ({handleCheck, handleChange}) {
         </h1>
           <StyledLabel style={{display: 'flex', flexDirection: 'column'}}>
             <TeacherLanguageLevel>
-              <label>
+              {languageList}
+              {/* <label>
                 English:
                 <input value='english' type="checkbox" onChange={handleCheck} />
                 <StyledLabel>
@@ -185,7 +217,7 @@ export default function TeacherInfo ({handleCheck, handleChange}) {
                     <option value='AP'>AP</option>
                   </StyledSelectInput>
                 </StyledLabel>
-              </label>
+              </label> */}
             </TeacherLanguageLevel>
           </StyledLabel>
         <StyledRightAlignedForms>
