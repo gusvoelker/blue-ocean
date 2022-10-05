@@ -15,11 +15,11 @@ export default function NavBar({ darkTheme, role }) {
 
   let button;
   if (role === 'user') {
-    button = <Link to="/profile">
+    button = <Link to="/profile" style={{textDecoration: 'none'}}>
                 <p style={{marginTop: '3rem'}}>Profile</p>
               </Link>
   } else {
-    button = <Link to="/teacherprofile">
+    button = <Link to="/teacherprofile" style={{textDecoration: 'none'}}>
               <p style={{marginTop: '3rem'}}>Profile</p>
             </Link>
   }
@@ -28,13 +28,13 @@ export default function NavBar({ darkTheme, role }) {
     return (
       <StyledNavBar id='translate'>
         <StyledNavBarIcon>
-          Not Rosetta Stone
+          Chat Chat
         </StyledNavBarIcon>
 
         <StyledNavBarLinks>
           <p id='translate2' ></p>
           {button}
-          <Link to="/messages">
+          <Link to="/messages" style={{textDecoration: 'none'}}>
             <p style={{marginTop: '3rem'}}>Chat</p>
           </Link>
         </StyledNavBarLinks>
@@ -51,7 +51,7 @@ export default function NavBar({ darkTheme, role }) {
         <StyledNavBarLinks>
           <p id='translate2' ></p>
           {button}
-          <Link to="/messages">
+          <Link to="/messages" style={{textDecoration: 'none'}}>
             <p style={{marginTop: '3rem'}}>Chat</p>
           </Link>
         </StyledNavBarLinks>

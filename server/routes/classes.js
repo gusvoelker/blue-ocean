@@ -21,7 +21,7 @@ router.post('/classes', (req, res, next) => {
     console.log('after addClass', class_id)
     res.status(201).send({class_id});
   })
-  .catch((error) => res.status(400).send(error));
+  .catch((error) => res.sendStatus(400));
 });
 
 //view list of classes
@@ -31,7 +31,7 @@ router.get('/classes', (req, res, next) => {
   .then(({rows}) => {
     res.status(200).send(rows);
   })
-  .catch((error) => res.status(400).send(error));
+  .catch((error) => res.sendStatus(400));
 });
 
 //Add students to the class
@@ -49,7 +49,7 @@ router.post(`/classes/students/*`,  upload.single('file'), (req, res, next) =>{
       } else {
         model.AddStudents(class_id, records).then(()=>{
           res.sendStatus(204)
-        }).catch((err)=>{res.sendStatus(500).send(err)})
+        }).catch((err)=>{res.sendStatus(500)})
       }
     })
   }
@@ -64,7 +64,7 @@ router.get('/classes/students', (req, res, next) => {
   .then(({rows}) => {
     res.status(200).send(rows);
   })
-  .catch((error) => res.status(400).send(error));
+  .catch((error) => res.sendStatus(400));
 });
 
 

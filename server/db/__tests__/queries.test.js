@@ -1,2 +1,2 @@
-const query = require('../db.js').poolQuery;
+const db = require('../db.js');
 // TODO: Create

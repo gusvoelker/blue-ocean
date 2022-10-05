@@ -190,7 +190,7 @@ export default function TeacherInfo ({handleCheck, handleChange}) {
           </StyledLabel>
         <StyledRightAlignedForms>
         </StyledRightAlignedForms>
-        <Link to="/teacherprofile">
+        <Link to="/login">
           <StyledSubmitInput value='SUBMIT'></StyledSubmitInput>
         </Link>
       </StyledLoginSignUpForm>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 
 import { serverURL } from './config.js';
@@ -29,15 +29,14 @@ import VideoChat from './components/VideoChat.jsx'
 import ThemeToggleButton from './components/NavBar/DarkModeToggle.jsx'
 
 
-// order:
+// User Story
   // About
-  // Role,
-  // EntryForm
-  // TeacherSignUp
-  // TeacherLogin
-  // TeacherInfo
+  // Login or signup
+    // signup
+      // Teacher or User
+    // login
   // Profile
-  // Messages
+  // You can get anywhere
 
 
 export default function App () {
@@ -45,14 +44,23 @@ export default function App () {
   const [email, setEmail] = useState('hello@gmail.com');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('teacher');
+  const [teacherBoolean, setTeacherBoolean] = useState(false)
   const [firstName, setFirstName] = useState('Anthony');
   const [lastName, setLastName] = useState('Liang');
+  // Teacher language levels
   const [formData, setFormData] = useState({
     level: '',
   })
   const [checked, setChecked] = useState([]);
   const [friends, setFriends] = useState(['Adam', 'Bob', 'Charlie', 'Daniel', 'Emily', 'Florenza', 'Emily', 'Florenza']);
   const [profilePicture, setProfilePicture] = useState('https://i.postimg.cc/gkDMWvVY/photo-1615497001839-b0a0eac3274c.jpg');
+  const [languages, setLanguages] = useState([])
+  const [isTeacher, setTeacher] = useState(true);
+  const [userId, setUserId] = useState('');
+
+  const onIdChange = (value) => {
+    setUserId(value);
+  }
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -94,6 +102,14 @@ export default function App () {
     setLastName(e.target.value);
   }
 
+  useEffect(() => {
+    if (role === 'user') {
+      setTeacher(false);
+    } else {
+      setTeacher(true);
+    }
+  }, [role])
+
   return (
     <div>
       {!darkTheme ? <LightTheme/> : <DarkTheme/>}
@@ -117,7 +133,13 @@ export default function App () {
                   onRoleChange={onRoleChange}
                   onEmailChange={onEmailChange}
                   onPasswordChange={onPasswordChange}
+                  email={email}
+                  password={password}
+                  firstName={firstName}
+                  lastName={lastName}
                   role={role}
+                  isTeacher={isTeacher}
+                  onIdChange={onIdChange}
                 />
               </>
             }>
@@ -129,7 +151,10 @@ export default function App () {
                     onEmailChange={onEmailChange}
                     onPasswordChange={onPasswordChange}
                     onRoleChange={onRoleChange}
+                    email={email}
+                    password={password}
                     role={role}
+                    onIdChange={onIdChange}
                   />
                 </>
               }>
@@ -155,6 +180,12 @@ export default function App () {
                 email={email}
                 password={password}
                 role={role}
+                setFirstName={setFirstName}
+                setLastName={setLastName}
+                setEmail={setEmail}
+                setLanguages={setLanguages}
+                setFriends={setFriends}
+                userId={userId}
               />
             </>} >
             </Route>
@@ -169,10 +200,16 @@ export default function App () {
                 email={email}
                 password={password}
                 role={role}
+                setFirstName={setFirstName}
+                setLastName={setLastName}
+                setEmail={setEmail}
+                setLanguages={setLanguages}
+                setFriends={setFriends}
+                userid={userId}
               />
             </>} >
             </Route>
-            <Route path="/messages" element={<><NavBar/><Messages /></>} ></Route>
+            <Route path="/messages" element={<><NavBar role={role}/><Messages /></>} ></Route>
           </Routes>
         </BrowserRouter>
       </StyledLogPage>

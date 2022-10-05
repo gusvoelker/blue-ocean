@@ -24,11 +24,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import FriendsModal from './FriendsModal.jsx';
 import AddFriendModal from './AddFriendModal.jsx';
 import EditInfoModal from './EditInfoModal.jsx';
-import TeacherCalendar from '../components/LoginSignup/Teacher/TeacherCalendar.jsx'
-import { serverURL } from '../config.js'
+import TeacherCalendar from '../components/LoginSignup/Teacher/TeacherCalendar.jsx';
+import { Outlet, Link } from "react-router-dom";
+import {serverURL} from '../config.js'
 import ClassListModal from '../components/LoginSignup/Teacher/ClassListModal.jsx'
 import DateTimePicker from 'react-datetime-picker';
 import ScheduleModal from '../components/LoginSignup/Teacher/ScheduleModal.jsx';
+
+
 
 const LeftButton = styled.button`
   position: absolute;
@@ -105,7 +108,14 @@ export default function TeacherProfile(props) {
     setx(x + 1);
   }
 
-  useEffect(() => {
+  // api requests to retrieve all necessary data
+  const retrieveAccountInfo = axios.get(`${serverURL}/accounts/id`)
+
+  const retrieveFriends = axios.get(`${serverURL}/friend`)
+
+  const retrieveLanguages = axios.get(`${serverURL}/languages`);
+
+  useEffect(()=>{
     // axios.get(`${serverURL}/friend`).then((friends)=>{
     //   console.log('friends ', friends)
     // }).catch((err)=>{console.log('error getting friends ', err)})
@@ -113,6 +123,25 @@ export default function TeacherProfile(props) {
       setClasses(classData.data)
     }).catch((err) => { console.log('error getting classes ', err) })
   }, [])
+
+  useEffect(() => {
+    Promise.all([retrieveAccountInfo, retrieveFriends, retrieveLanguages])
+    .then((data) => {
+      var apiAccountInfo = data[0].data;
+      var apiFriends = data[1].data;
+      var apiLanguages = data[2].data;
+      // setting account info
+      props.setEmail(apiAccountInfo.email);
+      props.setFirstName(apiAccountInfo.first_name);
+      props.setLastName(apiAccountInfo.last_name);
+      // setting friends
+      props.setFriends(apiFriends);
+      // setting languages
+      props.setLanguages(apiLanguages);
+    }).catch((err) => {
+      console.log('error retrieving data', err);
+    });
+  });
 
   const onFriendClick = (e) => {
     setShow(true);
@@ -143,13 +172,14 @@ export default function TeacherProfile(props) {
   }
 
   const [filteredFriends, setFilteredFriends] = useState(props.friends);
+  const [filtering, setFiltering] = useState(false);
 
   const filterFriends = (e) => {
     setFilteredFriends(props.friends.filter(function (str) {
-      var lowered = str.toLowerCase();
-      return lowered.includes(e.target.value);
-    }));
-    console.log(filteredFriends);
+        var lowered = str.toLowerCase();
+        return lowered.includes(e.target.value);
+      }));
+    setFiltering(true);
   }
 
 
@@ -206,20 +236,36 @@ const onCalendarClick=( dateTime, friend, user) => {
             <h3><strong>Friends List</strong></h3>
             <StyledFriendSearch>
               <input name='friendfilter' type='text' placeholder='filter' onChange={filterFriends}></input>
-              <input type='submit' value='Search' style={{ cursor: 'pointer' }} />
             </StyledFriendSearch>
           </StyledFriendSearchSpan>
-          <p>
-            {filteredFriends.map(friend => {
+          <p>{!filtering ?
+            props.friends.map((friend, index) => {
               return (
-                <StyledFriend id={friend} >
-                  <div style={{ fontWeight: 'bold' }} onClick={(onFriendClick)}>{friend}</div>
-                  {pickDateShow && <ScheduleModal onClose={(dateTime)=>{onCalendarClick(dateTime, friend, teacherId)}} pickDateShow={pickDateShow} friend={friend} user={teacherId}/>}
-                  <StyledFriendIcons>
+                <StyledFriend  id={friend} key={index} >
+           <div style={{ fontWeight: 'bold' }} onClick={(onFriendClick)}>{friend}</div>
+           {pickDateShow && <ScheduleModal onClose={(dateTime)=>{onCalendarClick(dateTime, friend, teacherId)}} pickDateShow={pickDateShow} friend={friend} user={teacherId}/>}
+                    <StyledFriendIcons>
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call"  onClick={()=>{setPickDateShow(true)}}/>
-                    <img src='https://pnggrid.com/wp-content/uploads/2021/12/Office-Phone-Icon-PNG-Transparent-Background.png' alt='phone icon for starting a call with friend' />
-                    <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend" />
-                  </StyledFriendIcons>
+                  <Link to="/messages">
+                      <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png'/>
+                  </Link>
+                  <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend"/>
+                    </StyledFriendIcons>
+                </StyledFriend>
+            )
+          }) :
+            filteredFriends.map((friend, index) => {
+              return (
+                <StyledFriend  id={friend} key={index}>
+                 <div style={{ fontWeight: 'bold' }} onClick={(onFriendClick)}>{friend}</div>
+                  {pickDateShow && <ScheduleModal onClose={(dateTime)=>{onCalendarClick(dateTime, friend, teacherId)}} pickDateShow={pickDateShow} friend={friend} user={teacherId}/>}
+                    <StyledFriendIcons>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call"  onClick={()=>{setPickDateShow(true)}}/>
+                  <Link to="/messages">
+                      <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png'/>
+                  </Link>
+                  <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend"/>
+                    </StyledFriendIcons>
                 </StyledFriend>
               )
             })}
