@@ -23,11 +23,10 @@ module.exports.findMeetings = (req_account) => {
   `);
 }
 
-module.exports.requestMeeting = (description, requesterId, receiverId, meetingDateTime) => {
-  console.log(description, requesterId, receiverId, meetingDateTime)
+module.exports.requestMeeting = (requesterId, receiverId, meetingDateTime) => {
+  console.log(requesterId, receiverId, meetingDateTime)
   return db.query(`
     INSERT INTO meetings(
-      description,
       req_account_id,
       rec_account_id,
       start_time

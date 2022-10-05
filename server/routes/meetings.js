@@ -12,10 +12,9 @@ router.get('/meetings', (req, res, next) => {
   .catch((error) => res.status(400).send(error))
 })
 
-//something isn't working.
+
 router.post('/meetings', (req, res, next) => {
   console.log(req.body)
-  let description = req.body.description;
   let requesterId = req.user.id;
   let receiverId = req.body.receiverId;
   let dateTime = req.body.dateTime;
@@ -23,7 +22,7 @@ router.post('/meetings', (req, res, next) => {
   // let requesterId = 2
   // let receiverId = 3;
   // let dateTime = 'October 15 04:05:06 2022 EST';
-  meetingsModel.requestMeeting(description, requesterId, receiverId, dateTime)
+  meetingsModel.requestMeeting(requesterId, receiverId, dateTime)
   .then(({rows}) => {
     console.log(rows);
     res.status(201).send(rows)
