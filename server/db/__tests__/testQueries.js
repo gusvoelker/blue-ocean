@@ -2,6 +2,7 @@ const query = require('../db.js').poolQuery;
 const accountModel = require('../../models/accountModel.js');
 const languageModel = require('../../models/languageModel.js');
 const chatModel = require('../../models/chatModel.js');
+const meetingsModel = require('../../models/meetingsModel.js');
 const friendModel = require('../../models/friendModel.js');
 
 // Will eventually replace this with jest testing in queries.test.js, but for now...
@@ -158,3 +159,15 @@ const friendModel = require('../../models/friendModel.js');
   let result = await friendModel.checkIfFriends(accountId1, accountId2);
   console.log(result.rows[0].exists);
 });
+
+//GET MEETINGS
+// (async () => {
+//   let accountId1 = 1;
+//   let accountId2 = 2;
+
+//   let result = await meetingsModel.createAccount(accountId1,accountId2);
+//   console.log(result);
+
+//   result = await accountModel.createAccount(userAccount);
+//   console.log(result);
+// });
