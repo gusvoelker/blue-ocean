@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from 'styled-components';
 import axios from 'axios';
 import {serverURL} from '../../../../src/config.js';
@@ -17,6 +17,7 @@ import {
 } from '../../StyledComponents/StyledComponents.jsx';
 
 import { Outlet, Link } from "react-router-dom";
+import { SocketContext } from '../../VideoComponents/SocketContext.jsx';
 
 const StyledloginSignUpBox = styled.div`
   background-image: url("https://images.unsplash.com/photo-1502602898657-3e91760cbb34?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1173&q=80");
@@ -35,6 +36,7 @@ const StyledloginSignUpBox = styled.div`
 `
 
 export default function Login (props) {
+  const { setUser} = useContext(SocketContext);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -51,8 +53,9 @@ export default function Login (props) {
   const handleSubmit = async(e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`${serverURL}/login`, formData);
-      console.log(res.data)
+      const res = await axios.post(`${serverURL}/login`, formData );
+      console.log(res.data);
+      setUser(res.data);
     } catch (err) {
       console.log(err);
     }
@@ -79,11 +82,11 @@ export default function Login (props) {
           <StyledRightAlignedForms>
             <StyledLabel>
               Email:
-              <StyledTextEmail placeholder='enter email here' name='email' onChange={props.onEmailChange}></StyledTextEmail>
+              <StyledTextEmail placeholder='enter email here' name='email' onChange={handleChange}></StyledTextEmail>
             </StyledLabel>
             <StyledLabel>
               Password:
-              <StyledTextInput placeholder='enter password here' name='password' onChange={props.onPasswordChange}></StyledTextInput>
+              <StyledTextInput placeholder='enter password here' name='password' onChange={handleChange}></StyledTextInput>
             </StyledLabel>
             <StyledLabel>
             teacher or student:

@@ -16,13 +16,14 @@ const removeUser = (socketId) => {
 };
 
 const getUser = (userId) => {
+  console.log(users);
   return users.find((user) => user.userId === userId);
 };
 
 io.on("connection", (socket) => {
   // socket.emit("chat-message", "Hello World");
-  console.log("a user connected");
-  console.log(socket.id);
+  console.log(`${socket.id} has just connected!`);
+  // io.emit("Hello users");
   socket.on("addUser", (userId) => {
     addUser(userId, socket.id);
     io.emit("getUsers", users);
@@ -30,8 +31,9 @@ io.on("connection", (socket) => {
 
   socket.on("sendMessage", ({ senderId, receiverId, text }) => {
     console.log(senderId, receiverId, text);
-    io.emit("receiveMessage", text);
-    // const user = getUser(receiverId);
+    // io.emit("receiveMessage", text);
+    const user = getUser(receiverId);
+    console.log(users);
     // io.to(user.socketId).emit("getMessage", {
     //   senderId,
     //   text,
@@ -39,7 +41,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log(" a user disconnected!");
+    console.log(" A user disconnected!");
     removeUser(socket.id);
     io.emit("getUsers", users);
   });

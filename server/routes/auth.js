@@ -62,7 +62,7 @@ router.post("/login", (req, res, next) => {
     req.logIn(user, function (err) {
       if (err) return next(err);
       console.log(req.session);
-      return res.status(200).send({ user: req.user });
+      return res.status(200).send(req.user);
     });
   })(req, res, next);
 });
@@ -80,6 +80,7 @@ router.post("/logout", (req, res, next) => {
 // Authenticate all user requests
 // Users should not be able to access any resources without being signed in
 router.use("/", (req, res, next) => {
+  console.log(req.isAuthenticated());
   if (!req.user) {
     res.status(403).send("Login required");
   } else {
