@@ -38,8 +38,6 @@ export default function SignUp (props) {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(false);
   let formData = {
     email: props.email,
     password: props.password,
