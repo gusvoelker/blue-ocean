@@ -32,6 +32,7 @@ const MainDiv = styled.div`
   color: white;
   flex-direction: column;
 `
+//const
 const AppBar = styled.div`
   display: flex;
   color: white;

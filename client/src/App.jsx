@@ -40,24 +40,33 @@ import ThemeToggleButton from './components/NavBar/DarkModeToggle.jsx'
 
 
 export default function App () {
-  const [darkTheme, setDarkTheme] = useState(true);
+  const [darkTheme, setDarkTheme] = useState(false);
   const [email, setEmail] = useState('hello@gmail.com');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('teacher');
+  const [teacherBoolean, setTeacherBoolean] = useState(false)
   const [firstName, setFirstName] = useState('Anthony');
   const [lastName, setLastName] = useState('Liang');
   // Teacher language levels
-  const [formData, setFormData] = useState({
-    level: '',
-  })
+  const [formData, setFormData] = useState({})
   const [checked, setChecked] = useState([]);
   const [friends, setFriends] = useState(['Adam', 'Bob', 'Charlie', 'Daniel', 'Emily', 'Florenza', 'Emily', 'Florenza']);
   const [profilePicture, setProfilePicture] = useState('https://i.postimg.cc/gkDMWvVY/photo-1615497001839-b0a0eac3274c.jpg');
+  const [languages, setLanguages] = useState([]);
   const [isTeacher, setTeacher] = useState(true);
   const [userId, setUserId] = useState('');
 
   const onIdChange = (value) => {
     setUserId(value);
+  }
+
+  const teacherInfoSubmit = async () => {
+    // try {
+    //   const res = axios.post('/languages/taught', formData)
+    //   console.log(res)
+    // } catch (err) {
+    //   console.log(err)
+    // }
   }
 
   const handleChange = (e) => {
@@ -163,6 +172,23 @@ export default function App () {
                 <TeacherInfo
                   handleCheck={handleCheck}
                   handleChange={handleChange}
+                  languages={languages}
+                  setLanguages={setLanguages}
+                  formData={formData}
+                  teacherInfoSubmit={teacherInfoSubmit}
+                />
+              </>
+            }>
+            </Route>
+            <Route path="/userInfo" element={
+              <>
+                <NavBar role={role} darkTheme={darkTheme}/>
+                <UserInfo
+                  handleCheck={handleCheck}
+                  handleChange={handleChange}
+                  languages={languages}
+                  setLanguages={setLanguages}
+                  formData={formData}
                 />
               </>
             }>
@@ -178,6 +204,11 @@ export default function App () {
                 email={email}
                 password={password}
                 role={role}
+                setFirstName={setFirstName}
+                setLastName={setLastName}
+                setEmail={setEmail}
+                setLanguages={setLanguages}
+                setFriends={setFriends}
                 userId={userId}
               />
             </>} >
@@ -193,26 +224,25 @@ export default function App () {
                 email={email}
                 password={password}
                 role={role}
-                userid={userId}
+                setFirstName={setFirstName}
+                setLastName={setLastName}
+                setEmail={setEmail}
+                setLanguages={setLanguages}
+                setFriends={setFriends}
+                userId={userId}
               />
             </>} >
             </Route>
-            <Route path="/messages" element={<><NavBar role={role}/><Messages /></>} ></Route>
+            <Route path="/messages" element={<><NavBar role={role} darkTheme={darkTheme}/><Messages /></>} ></Route>
+            <Route path="/videoplayer" element={<>
+              <NavBar role={role} darkTheme={darkTheme} />
+              <VideoChat darkTheme={darkTheme} />
+            </>} >
+            </Route>
           </Routes>
         </BrowserRouter>
       </StyledLogPage>
     </div>
   );
-    // {/* return (
-    //   <div>
-    //     {!darkTheme ? <LightTheme/> : <DarkTheme/>}
-    //     <ThemeToggleButton setDarkTheme={setDarkTheme} darkTheme={darkTheme}/>
-    //     <StyledLogPage>
-    //       <NavBar darkTheme={darkTheme}/>
-    //       <Messages darkTheme={darkTheme}/>
-    //       <TeacherProfile darkTheme={darkTheme} />
-    //     </StyledLogPage>
-    //   </div>
-    // ); */}
 }
 

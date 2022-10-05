@@ -950,6 +950,43 @@ const ClassListModalContent = styled.div`
   }
   }
 `
+const IconCircleDiv = styled.div`
+border-radius: 50%;
+backgroundColor: #ffffff
+height: 20px;
+`
+
+const ScheduleModalContainer = styled.div`
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+`
+
+const ScheduleModalContent = styled.div`
+  width: 80vw;
+  height: auto;
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  justify-content: center;
+  z-index: 4
+  h4 {
+    font-size: 30px;
+  }
+  div {
+    padding: 10px;
+  }
+  }
+`
+
 export {
   StyledNavBar,
   StyledNavBarIcon,
@@ -1011,4 +1048,7 @@ export {
   StyledEditProfileButton,
   ClassListModalContainer,
   ClassListModalContent,
+  IconCircleDiv,
+  ScheduleModalContainer,
+  ScheduleModalContent,
 }

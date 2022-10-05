@@ -97,6 +97,8 @@ router.get('/languages/desired', (req, res, next) => {
 //  taughtLevel - String in range ('1', '2', '3', '4', '5', 'AP')
 //  language - String
 // Meant for teachers, will 403 on request by a student account
+// { english: 5,
+// spanish: 2 }
 router.post('/languages/taught', (req, res, next) => {
   if (!req.user.isTeacher) {
     res.sendStatus(403);

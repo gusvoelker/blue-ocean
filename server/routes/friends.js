@@ -4,7 +4,7 @@ const friendModel = require('../models/friendModel.js');
 const accountModel = require('../models/accountModel.js');
 
 router.get('/friend', (req, res, next) => {
-  let requesterId = req.user.id;
+  let requesterId = req.query.accountId || req.user.id;
   friendModel.findFriendsInfo(requesterId)
     .then(({rows}) => {
       res.status(200).send(rows);

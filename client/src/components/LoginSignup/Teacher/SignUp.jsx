@@ -35,8 +35,9 @@ const StyledloginSignUpBox = styled.div`
 `
 
 export default function SignUp (props) {
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
-
   let formData = {
     email: props.email,
     password: props.password,
@@ -51,9 +52,11 @@ export default function SignUp (props) {
     const res = await axios.post(`${serverURL}/register`, formData)
     console.log(res)
     //props.onIdChange(res.data.user.id)
-    navigate('/login')
+    navigate('/userinfo')
     } catch (err) {
-      console.log(err)
+      console.log(err.response.data)
+      setErrorMessage(err.response.data)
+      setError(true);
     }
   }
 
@@ -61,20 +64,20 @@ export default function SignUp (props) {
     e.preventDefault();
     try{
     const res = await axios.post(`${serverURL}/register`, formData)
-    console.log(res)
+    console.log('res: ', res)
     //props.onIdChange(res.data.user.id)
     navigate('/teacherinfo')
     } catch (err) {
-      setErrorMessage(err.response.data.message)
+      console.log(err.response.data)
+      setErrorMessage(err.response.data)
       setError(true);
-      console.log(err);
     }
   }
 
   let button;
 
   if (props.role === 'user') {
-    button = <Link to="/profile">
+    button = <Link to="/userinfo">
               <StyledSubmitInput value='SUBMIT' onClick={handleClickStudent}></StyledSubmitInput>
             </Link>
   } else {
@@ -93,34 +96,28 @@ export default function SignUp (props) {
           <StyledLabel>
               First name:
 
-             <StyledTextInput placeholder='enter first name' name='firstName' onChange={handleChange}></StyledTextInput>
+             <StyledTextInput placeholder='enter first name' name='firstName' onChange={props.onFirstNameChange}></StyledTextInput>
             </StyledLabel>
             <StyledLabel>
               Last name:
               <StyledTextInput placeholder='enter last name' name='last' onChange={props.onLastNameChange}></StyledTextInput>
-             {/* <StyledTextInput placeholder='enter first name' name='firstName' onChange={handleChange}></StyledTextInput>
-            </StyledLabel>
-            <StyledLabel>
-              Last name:
-              <StyledTextInput placeholder='enter last name' name='lastName' onChange={handleChange}></StyledTextInput> */}
-
             </StyledLabel>
             <StyledLabel>
               <span>
                 Email:
               </span>
-              <StyledTextEmail placeholder='enter email' name='email' onChange={handleChange}></StyledTextEmail>
+              <StyledTextEmail placeholder='enter email' name='email' onChange={props.onEmailChange}></StyledTextEmail>
             </StyledLabel>
             <StyledLabel>
               <span>
                 Password:
               </span>
-              <StyledTextInput placeholder='enter password' name='password' onChange={handleChange}></StyledTextInput>
+              <StyledTextInput placeholder='enter password' name='password' onChange={props.onPasswordChange}></StyledTextInput>
             </StyledLabel>
             <StyledLabel>
             teacher or student:
 
-            <StyledSelectInput onChange={handleSelect} style={{height: '2rem', fontSize: '0.8rem'}}>
+            <StyledSelectInput onChange={props.onRoleChange} style={{height: '2rem', fontSize: '0.8rem'}}>
 
             {/* <StyledSelectInput onChange={handleSelect} style={{height: '2rem', fontSize: '0.8rem'}}> */}
 

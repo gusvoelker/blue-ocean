@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import styled from 'styled-components';
+import axios from 'axios';
+import { serverURL } from '../config.js';
 import {
   ProfileContainer,
   ProfilePicture,
@@ -95,8 +97,8 @@ export default function Profile (props) {
   const [currentFriend, setCurrentFriend] = useState('');
   const [friendSearch, setFriendSearch] = useState('');
 
-  //const {userId, setUserId} = useContext(SocketContext);
-  //console.log(userId);
+  // const {userId} = useContext(SocketContext);
+  // console.log(userId);
   console.log(props.userId);
   var [x, setx] = useState(0);
   // function for the image to expand on click
@@ -128,14 +130,49 @@ export default function Profile (props) {
   }
 
   const [filteredFriends, setFilteredFriends] = useState(props.friends);
+  const [filtering, setFiltering] = useState(false);
 
   const filterFriends = (e) => {
     setFilteredFriends(props.friends.filter(function (str) {
         var lowered = str.toLowerCase();
         return lowered.includes(e.target.value);
       }));
-    console.log(filteredFriends);
+    setFiltering(true);
   }
+
+    // api requests to retrieve all necessary data
+    const retrieveAccountInfo = axios.get(`${serverURL}/accounts/id`, {
+      params: {
+        accountId: props.userId
+      }
+    })
+
+    const retrieveFriends = axios.get(`${serverURL}/friend`, {
+      params: {
+        accountId: props.userId
+      }
+    })
+
+    const retrieveLanguages = axios.get(`${serverURL}/languages`);
+
+    useEffect(() => {
+      Promise.all([retrieveAccountInfo, retrieveFriends, retrieveLanguages])
+      .then((data) => {
+        var apiAccountInfo = data[0].data;
+        var apiFriends = data[1].data;
+        var apiLanguages = data[2].data;
+        // setting account info
+        props.setEmail(apiAccountInfo.email);
+        props.setFirstName(apiAccountInfo.first_name);
+        props.setLastName(apiAccountInfo.last_name);
+        // setting friends
+        props.setFriends(apiFriends);
+        // setting languages
+        props.setLanguages(apiLanguages);
+      }).catch((err) => {
+        console.log('error retrieving data', err);
+      });
+    }, []);
 
   return (
     <div>
@@ -180,27 +217,34 @@ export default function Profile (props) {
               <input name='friendfilter' type='text' placeholder='filter' onChange={filterFriends}></input>
             </StyledFriendSearch>
           </StyledFriendSearchSpan>
-          <p>
-            {filteredFriends.map(friend => {
-            return (
-              <StyledFriend  id={friend} onClick={onFriendClick}>
-                <div style={{fontWeight: 'bold'}}>{friend}</div>
-                <Link to="/messages">
-                  <StyledFriendIcons>
-                    <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png'/>
-                  </StyledFriendIcons>
-                </Link>
-              </StyledFriend>
+          <p>{!filtering ?
+            props.friends.map((friend, index) => {
+              return (
+                <StyledFriend  id={friend} key={index} onClick={onFriendClick}>
+                  <div style={{fontWeight: 'bold'}}>{friend}</div>
+                  <Link to="/messages">
+                    <StyledFriendIcons>
+                      <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png'/>
+                    </StyledFriendIcons>
+                  </Link>
+                </StyledFriend>
             )
-          })}
+          }) :
+            filteredFriends.map((friend, index) => {
+              return (
+                <StyledFriend  id={friend} key={index} onClick={onFriendClick}>
+                  <div style={{fontWeight: 'bold'}}>{friend}</div>
+                  <Link to="/messages">
+                    <StyledFriendIcons>
+                      <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png'/>
+                    </StyledFriendIcons>
+                  </Link>
+                </StyledFriend>
+              )
+            })}
           </p>
           <StyledButton style={{marginTop: '0rem'}} onClick={onAddFriendClick}>ADD FRIEND</StyledButton>
           <StyledButton>PENDING REQUESTS</StyledButton>
-
-            {/* //return (<div id={friend} onClick={onFriendClick}>{friend}</div>)
-          //})}
-          //</p>
-          //<LightGreyButton onClick={onAddFriendClick}>Add Friend +</LightGreyButton> */}
         </ProfileFriendsList>
       </ProfileContainer>
       <FriendsModal onClose={() => setShow(false)} show={show} friend={currentFriend} />
