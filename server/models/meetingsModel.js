@@ -1,11 +1,14 @@
-const query = require("../db/db.js").poolQuery;
+const db = require("../db/db.js")
+
 
 //simple
-module.exports.findMeetings = () => {
-  return query(`
+module.exports.findMeetings = (req_account) => {
+  console.log("account is this", req_account)
+  return db.query(`
     SELECT m.conn_id,
       m.req_account_id,
       m.rec_account_id,
+      m.start_time,
       a.first_name,
       a.last_name,
       m.status
@@ -14,39 +17,39 @@ module.exports.findMeetings = () => {
       LEFT JOIN accounts a
       ON m.rec_account_id = a.account_id
       WHERE
-        --req_account_id=${accountId1}
-        start_time > now()
-        AND status = true
+        req_account_id='${req_account}'
+        AND start_time > now()
       ORDER BY start_time
-    )
   `);
 }
 
-// module.exports.requestMeeting = (description, requesterId, receiverId, meetingDateTime) => {
-//   return query(`
-//     INSERT INTO meetings(
-//       description,
-//       req_account_id,
-//       rec_account_id,
-//       start_time
-//     ) VALUES (
-//       ${description},
-//       ${requesterId},
-//       ${receiverId},
-//       ${meetingDateTime}
-//     )
-//     RETURNING conn_id
-//   `)
-// };
+module.exports.requestMeeting = (description, requesterId, receiverId, meetingDateTime) => {
+  console.log(description, requesterId, receiverId, meetingDateTime)
+  return db.query(`
+    INSERT INTO meetings(
+      description,
+      req_account_id,
+      rec_account_id,
+      start_time
+    ) VALUES (
+      '${description}',
+      '${requesterId}',
+      '${receiverId}',
+      '${meetingDateTime}'
+    )
+    RETURNING conn_id
+  `)
+};
 
 
-// module.exports.acceptMeeting = (requesterId, receiverId, meetingDateTime) => {
-//   return query(`
-//   `)
-// };
+module.exports.acceptMeeting = () => {
+  return db.query(`
+
+  `)
+};
 
 
-// module.exports.deleteMeeting = (requesterId, receiverId, meetingDateTime) => {
-//   return query(`
-//   `)
-// };
+module.exports.deleteMeeting = (requesterId, receiverId, meetingDateTime) => {
+  return query(`
+  `)
+};
