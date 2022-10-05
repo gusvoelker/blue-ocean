@@ -1,8 +1,8 @@
-const query = require('../db/db.js').poolQuery;
+const db = require('../db/db.js');
 const friendModel = require('./friendModel.js');
 
 module.exports.getRoomsByAccountId = (accountId, sort='room_id DESC') => {
-  return query(`
+  return db.query(`
     SELECT room_id
       FROM participants
       WHERE part_account_id=${accountId}
@@ -13,7 +13,7 @@ module.exports.getRoomsByAccountId = (accountId, sort='room_id DESC') => {
 // Verifies that the requesting account (accountId) has permission to read from this room's messages
 // By only returning messages from rooms for which the accountId is a participant
 module.exports.getMessagesByRoomId = (roomId, accountId, sort='created_at DESC') => {
-  return query(`
+  return db.query(`
     SELECT
       account_message.message_id,
       account_message.account_id,
@@ -33,7 +33,7 @@ module.exports.createRoom = (participantOneId, participantTwoId) => {
       if (!result.rows[0].exists) {
         throw new Error('Can\'t create rooms between non-connected users'); // TODO: Ensure this is handled properly
       }
-      return query(`
+      return db.query(`
         INSERT INTO account_room
         VALUES (DEFAULT)
         RETURNING room_id
@@ -45,7 +45,7 @@ module.exports.createRoom = (participantOneId, participantTwoId) => {
       }
       let roomId = createRes.rows[0].room_id;
       return Promise.all([roomId,
-        query(`
+        db.query(`
           INSERT INTO participants(
             part_account_id,
             room_id
@@ -54,7 +54,7 @@ module.exports.createRoom = (participantOneId, participantTwoId) => {
             ${roomId}
           )
         `),
-        query(`
+        db.query(`
           INSERT INTO participants(
             part_account_id,
             room_id
@@ -72,7 +72,7 @@ module.exports.createRoom = (participantOneId, participantTwoId) => {
 };
 
 module.exports.postMessage = (roomId, accountId, message) => {
-  return query(`
+  return db.query(`
     INSERT INTO account_message(
       room_id,
       account_id,

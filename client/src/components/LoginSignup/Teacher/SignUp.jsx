@@ -16,7 +16,7 @@ import {
   StyledSelectInput
 } from '../../StyledComponents/StyledComponents.jsx'
 
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 
 const StyledloginSignUpBox = styled.div`
   background-image: url("https://images.unsplash.com/photo-1516545595035-b494dd0161e4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80");
@@ -35,53 +35,55 @@ const StyledloginSignUpBox = styled.div`
 `
 
 export default function SignUp (props) {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    firstName: '',
-    lastName: '',
-  })
-  const [isTeacher, setTeacher] = useState(true);
-  const handleChange = (e) => {
-    e.preventDefault();
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
-    console.log(e.target.value);
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
+  let formData = {
+    email: props.email,
+    password: props.password,
+    firstName: props.firstName,
+    lastName: props.lastName,
+    isTeacher: props.isTeacher
   }
 
-
-  const handleSelect = (e) => {
-    e.preventDefault();
-    if (e.target.value === 'teacher') {
-      setTeacher(true);
-    } else {
-      setTeacher(false);
-    }
-  }
-
-  const handleSubmit = async(e) => {
+  const handleClickStudent = async(e) => {
     e.preventDefault();
     try{
-    const res = await axios.post(`${serverURL}/register`, {...formData, isTeacher: isTeacher})
+    const res = await axios.post(`${serverURL}/register`, formData)
     console.log(res)
+    //props.onIdChange(res.data.user.id)
+    navigate('/userinfo')
     } catch (err) {
-      console.log(err)
+      console.log(err.response.data)
+      setErrorMessage(err.response.data)
+      setError(true);
     }
+  }
 
+  const handleClickTeacher = async(e) => {
+    e.preventDefault();
+    try{
+    const res = await axios.post(`${serverURL}/register`, formData)
+    console.log('res: ', res)
+    //props.onIdChange(res.data.user.id)
+    navigate('/teacherinfo')
+    } catch (err) {
+      console.log(err.response.data)
+      setErrorMessage(err.response.data)
+      setError(true);
+    }
   }
 
   let button;
 
   if (props.role === 'user') {
-    button = <Link to="/profile">
-                <StyledSubmitInput value='SUBMIT' onClick={handleSubmit}></StyledSubmitInput>
-              </Link>
+    button = <Link to="/userinfo">
+              <StyledSubmitInput value='SUBMIT' onClick={handleClickStudent}></StyledSubmitInput>
+            </Link>
   } else {
     button = <Link to="/teacherinfo">
-                <StyledSubmitInput value='SUBMIT' onClick={handleSubmit}></StyledSubmitInput>
-              </Link>
+              <StyledSubmitInput value='SUBMIT' onClick={handleClickTeacher}></StyledSubmitInput>
+            </Link>
   }
 
   return (
@@ -94,35 +96,28 @@ export default function SignUp (props) {
           <StyledLabel>
               First name:
 
-             <StyledTextInput placeholder='enter first name' name='first' onChange={handleChange}></StyledTextInput>
+             <StyledTextInput placeholder='enter first name' name='firstName' onChange={props.onFirstNameChange}></StyledTextInput>
             </StyledLabel>
             <StyledLabel>
               Last name:
-              <StyledTextInput placeholder='enter last name' name='last' onChange={handleChange}></StyledTextInput>
-
-             {/* <StyledTextInput placeholder='enter first name' name='firstName' onChange={handleChange}></StyledTextInput>
-            </StyledLabel>
-            <StyledLabel>
-              Last name:
-              <StyledTextInput placeholder='enter last name' name='lastName' onChange={handleChange}></StyledTextInput> */}
-
+              <StyledTextInput placeholder='enter last name' name='last' onChange={props.onLastNameChange}></StyledTextInput>
             </StyledLabel>
             <StyledLabel>
               <span>
                 Email:
               </span>
-              <StyledTextEmail placeholder='enter email' name='email' onChange={handleChange}></StyledTextEmail>
+              <StyledTextEmail placeholder='enter email' name='email' onChange={props.onEmailChange}></StyledTextEmail>
             </StyledLabel>
             <StyledLabel>
               <span>
                 Password:
               </span>
-              <StyledTextInput placeholder='enter password' name='password' onChange={handleChange}></StyledTextInput>
+              <StyledTextInput placeholder='enter password' name='password' onChange={props.onPasswordChange}></StyledTextInput>
             </StyledLabel>
             <StyledLabel>
             teacher or student:
 
-            <StyledSelectInput onChange={handleSelect} style={{height: '2rem', fontSize: '0.8rem'}}>
+            <StyledSelectInput onChange={props.onRoleChange} style={{height: '2rem', fontSize: '0.8rem'}}>
 
             {/* <StyledSelectInput onChange={handleSelect} style={{height: '2rem', fontSize: '0.8rem'}}> */}
 
@@ -131,6 +126,9 @@ export default function SignUp (props) {
             </StyledSelectInput>
             </StyledLabel>
           </StyledRightAlignedForms>
+          {error ? <p>
+            {errorMessage}
+          </p> : null}
           {button}
         </StyledLoginSignUpForm>
       </StyledloginSignUpBox>
