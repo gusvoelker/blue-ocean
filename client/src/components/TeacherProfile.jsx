@@ -87,14 +87,12 @@ export default function TeacherProfile(props) {
   const [currentFriend, setCurrentFriend] = useState('');
   const [friendSearch, setFriendSearch] = useState('');
   const [editInfoShow, setEditInfoShow] = useState(false);
+  const [teacherId, setTeacherId] = useState('10');
   const [classes, setClasses] = useState([]);
   const [students, setStudents] = useState([]);
   const [modalClassName, setModalClassName] = useState('')
   const [classShow, setClassShow] = useState(false)
   const [pickDateShow, setPickDateShow] = useState(false);
-  const [meetings, setMeetings] = useState([])
-
-
 
 
   var [x, setx] = useState(0);
@@ -109,9 +107,17 @@ export default function TeacherProfile(props) {
   }
 
   // api requests to retrieve all necessary data
-  const retrieveAccountInfo = axios.get(`${serverURL}/accounts/id`)
+  const retrieveAccountInfo = axios.get(`${serverURL}/accounts/id`, {
+    params: {
+      accountId: 10
+    }
+  })
 
-  const retrieveFriends = axios.get(`${serverURL}/friend`)
+  const retrieveFriends = axios.get(`${serverURL}/friend`, {
+    params: {
+      accountId: 10
+    }
+  })
 
   const retrieveLanguages = axios.get(`${serverURL}/languages`);
 
@@ -144,10 +150,11 @@ export default function TeacherProfile(props) {
       props.setFriends(apiFriends);
       // setting languages
       props.setLanguages(apiLanguages);
+      console.log(apiFriends);
     }).catch((err) => {
       console.log('error retrieving data', err);
     });
-  });
+  }, []);
 
   const onFriendClick = (e) => {
     setShow(true);
@@ -252,9 +259,9 @@ const onCalendarClick=( dateTime, friend, user) => {
           <p>{!filtering ?
             props.friends.map((friend, index) => {
               return (
-                <StyledFriend  id={friend} key={index} >
-           <div style={{ fontWeight: 'bold' }} onClick={(onFriendClick)}>{friend}</div>
-           {pickDateShow && <ScheduleModal onClose={(dateTime)=>{onCalendarClick(dateTime, friend, props.userid)}} pickDateShow={pickDateShow} friend={friend} user={props.userid}/>}
+                <StyledFriend  id={friend.account_id} key={friend.account_id} >
+           <div style={{ fontWeight: 'bold' }} onClick={(onFriendClick)}>{friend.first_name + ' ' + friend.last_name}</div>
+           {pickDateShow && <ScheduleModal onClose={(dateTime)=>{onCalendarClick(dateTime, friend.account_id, teacherId)}} pickDateShow={pickDateShow} friend={friend.account_id} user={teacherId}/>}
                     <StyledFriendIcons>
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call"  onClick={()=>{setPickDateShow(true)}}/>
                   <Link to="/messages">
@@ -308,7 +315,7 @@ const onCalendarClick=( dateTime, friend, user) => {
       </ProfileContainer>
       <FriendsModal onClose={() => setShow(false)} show={show} friend={currentFriend} />
       <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch} />
-      <TeacherClassListModal onClose={() => setTeacherShow(false)} show={teacherShow} onFriendSearch={onFriendSearch} />
+      <TeacherClassListModal onClose={() => setTeacherShow(false)} show={teacherShow} onFriendSearch={onFriendSearch} teacherId={teacherId}/>
       <EditInfoModal onClose={() => setEditInfoShow(false)} show={editInfoShow} />
     </div>
   )

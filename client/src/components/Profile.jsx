@@ -97,8 +97,8 @@ export default function Profile (props) {
   const [currentFriend, setCurrentFriend] = useState('');
   const [friendSearch, setFriendSearch] = useState('');
 
-  //const {userId, setUserId} = useContext(SocketContext);
-  //console.log(userId);
+  // const {userId} = useContext(SocketContext);
+  // console.log(userId);
   console.log(props.userId);
   var [x, setx] = useState(0);
   // function for the image to expand on click
@@ -143,13 +143,13 @@ export default function Profile (props) {
     // api requests to retrieve all necessary data
     const retrieveAccountInfo = axios.get(`${serverURL}/accounts/id`, {
       params: {
-        accountId: 1
+        accountId: props.userId
       }
     })
 
     const retrieveFriends = axios.get(`${serverURL}/friend`, {
       params: {
-        id: 1
+        accountId: props.userId
       }
     })
 
@@ -169,7 +169,6 @@ export default function Profile (props) {
         props.setFriends(apiFriends);
         // setting languages
         props.setLanguages(apiLanguages);
-        console.log('friends: ', []);
       }).catch((err) => {
         console.log('error retrieving data', err);
       });
@@ -246,11 +245,6 @@ export default function Profile (props) {
           </p>
           <StyledButton style={{marginTop: '0rem'}} onClick={onAddFriendClick}>ADD FRIEND</StyledButton>
           <StyledButton>PENDING REQUESTS</StyledButton>
-
-            {/* //return (<div id={friend} onClick={onFriendClick}>{friend}</div>)
-          //})}
-          //</p>
-          //<LightGreyButton onClick={onAddFriendClick}>Add Friend +</LightGreyButton> */}
         </ProfileFriendsList>
       </ProfileContainer>
       <FriendsModal onClose={() => setShow(false)} show={show} friend={currentFriend} />
