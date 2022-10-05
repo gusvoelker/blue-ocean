@@ -1,4 +1,4 @@
-const query = require('./db.js').poolQuery;
+const db = require('./db.js');
 
 // NOTE: Tables which have foreign keys must be created after the table they reference
 const tables = [
@@ -41,14 +41,16 @@ module.exports.setupTables = async () => {
       }
     }
     console.log(`CREATE TABLE IF NOT EXISTS ${table.name} (${fieldsParsed});`); // DEBUG
-    await query(`
+    await db.query(`
       CREATE TABLE IF NOT EXISTS ${table.name} (${fieldsParsed})
-    `);
+    `)
+      .catch((error) => error);
     for (let index of table.indexes) {
       indexPromises.push(
-        query(`
+        db.query(`
           CREATE INDEX ${table.name}_${index}_idx ON ${table.name} (${index})
         `)
+          .catch((error) => error)
       );
     }
   }
@@ -59,5 +61,6 @@ module.exports.setupTables = async () => {
 // NOTE: Relies on table to not be using a different schema (public is default)
 module.exports.dropTables = () => {
   return query('DROP SCHEMA public CASCADE')
-    .then(() => query('CREATE SCHEMA public'));
+    .then(() => query('CREATE SCHEMA public'))
+    .catch((error) => error);
 };

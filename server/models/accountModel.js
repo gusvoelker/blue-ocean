@@ -1,7 +1,7 @@
-const query = require("../db/db.js").poolQuery;
+const db = require("../db/db.js");
 
 module.exports.getAllAccountInfo = () => {
-  return query(`
+  return db.query(`
     SELECT
       account_id,
       email,
@@ -15,7 +15,7 @@ module.exports.getAllAccountInfo = () => {
 // Should be used by client to retrieve a list of teacher / student accounts on the website
 // Expects isTeacher - Boolean
 module.exports.getAccountsByType = (isTeacher) => {
-  return query(`
+  return db.query(`
     SELECT
       account_id,
       email,
@@ -27,7 +27,7 @@ module.exports.getAccountsByType = (isTeacher) => {
 };
 
 module.exports.getAccountTypeById = (accountId) => {
-  return query(`
+  return db.query(`
     SELECT
       is_teacher
     FROM accounts
@@ -36,7 +36,7 @@ module.exports.getAccountTypeById = (accountId) => {
 };
 
 module.exports.getPublicAccountInfoById = (accountId) => {
-  return query(`
+  return db.query(`
     SELECT
       email,
       first_name,
@@ -48,7 +48,7 @@ module.exports.getPublicAccountInfoById = (accountId) => {
 };
 
 module.exports.getAccountAuthByEmail = (email) => {
-  return query(`
+  return db.query(`
     SELECT
       account_id,
       pw_hash,
@@ -61,7 +61,7 @@ module.exports.getAccountAuthByEmail = (email) => {
 // TODO: Delete(?) Check if needed by auth
 // It is used in one place in auth.js but it could be replaced by getAccountAuthByEmail
 module.exports.getPasswordByEmail = (email) => {
-  return query(`
+  return db.query(`
     SELECT
       pw_hash
     FROM accounts
@@ -75,7 +75,7 @@ module.exports.getPasswordByEmail = (email) => {
 // account.lastName
 // account.isTeacher
 module.exports.createAccount = (account) => {
-  return query(`
+  return db.query(`
     INSERT INTO accounts(
       email,
       pw_hash,
@@ -90,10 +90,11 @@ module.exports.createAccount = (account) => {
       ${account.isTeacher}
     )
     RETURNING account_id
-  `).then((createRes) => {
-    if (createRes.name === "error") {
-      throw new Error(createRes.message);
-    }
-    return createRes.rows[0].account_id;
-  });
+  `)
+    .then((createRes) => {
+      if (createRes.name === "error") {
+        throw new Error(createRes.message);
+      }
+      return createRes.rows[0].account_id;
+    });
 };

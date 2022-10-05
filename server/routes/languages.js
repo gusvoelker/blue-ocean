@@ -5,6 +5,9 @@ const model = require('../models/languageModel.js');
 // GET REQUESTS //
 
 // Get all languages available
+// TODO(?): Instead of returning an array of objects with id & name keys,
+// return a singular JSON object with key = id, value = name
+// this will make it easier for the client to store and access this data
 router.get('/languages', (req, res, next) => {
   model.getAllLanguages()
     .then((result) => {
@@ -13,7 +16,7 @@ router.get('/languages', (req, res, next) => {
         res.status(200).send(languages) :
         res.sendStatus(404);
     })
-    .catch((error) => res.status(404).send(error));
+    .catch((error) => res.sendStatus(404));
 });
 
 // Get taught languages for a given accountId
@@ -29,7 +32,7 @@ router.get('/languages/taught', (req, res, next) => {
         res.status(200).send(languages) :
         res.sendStatus(404);
     })
-    .catch((error) => res.status(404).send(error));
+    .catch((error) => res.sendStatus(404));
 });
 
 // Get a list of accountIds for teachers who teach the provided language
@@ -53,7 +56,7 @@ router.get('/languages/taught/accounts', (req, res, next) => {
         res.status(200).send(accounts) :
         res.sendStatus(404);
     })
-    .catch((error) => res.status(404).send(error));
+    .catch((error) => res.sendStatus(404));
 });
 
 // Get known languages for a given accountId
@@ -69,7 +72,7 @@ router.get('/languages/known', (req, res, next) => {
         res.status(200).send(languages) :
         res.sendStatus(404);
     })
-    .catch((error) => res.status(404).send(error));
+    .catch((error) => res.sendStatus(404));
 });
 
 // Get desired languages for a given accountId
@@ -85,7 +88,7 @@ router.get('/languages/desired', (req, res, next) => {
         res.status(200).send(languages) :
         res.sendStatus(404);
     })
-    .catch((error) => res.status(404).send(error));
+    .catch((error) => res.sendStatus(400));
 });
 
 // POST REQUESTS //
@@ -102,7 +105,7 @@ router.post('/languages/taught', (req, res, next) => {
   // TODO: Figure out how to insert many rather than just one at a time
   model.insertTaughtLanguage(req.user.id, req.body.taughtLevel, req.body.language)
     .then((result) => res.sendStatus(201))
-    .catch((error) => res.status(400).send(error));
+    .catch((error) => res.sendStatus(400));
 });
 
 // Expects in req.body:
@@ -115,7 +118,7 @@ router.post('/languages/known', (req, res, next) => {
   }
   model.insertKnownLanguage(req.user.id, req.body.language)
     .then((result) => res.sendStatus(201))
-    .catch((error) => res.status(400).send(error));
+    .catch((error) => res.sendStatus(400));
 });
 
 // Expects in req.body:
@@ -128,7 +131,7 @@ router.post('/languages/desired', (req, res, next) => {
   }
   model.insertDesiredLanguage(req.user.id, req.body.language)
     .then((result) => res.sendStatus(201))
-    .catch((error) => res.status(400).send(error));
+    .catch((error) => res.sendStatus(400));
 });
 
 module.exports = router;

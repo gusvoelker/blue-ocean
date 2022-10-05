@@ -23,10 +23,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import FriendsModal from './FriendsModal.jsx';
 import AddFriendModal from './AddFriendModal.jsx';
 import EditInfoModal from './EditInfoModal.jsx';
-import TeacherCalendar from '../components/LoginSignup/Teacher/TeacherCalendar.jsx'
+import TeacherCalendar from '../components/LoginSignup/Teacher/TeacherCalendar.jsx';
+import { Outlet, Link } from "react-router-dom";
 import {serverURL} from '../config.js'
 import ClassListModal from '../components/LoginSignup/Teacher/ClassListModal.jsx'
 import { Outlet, Link } from "react-router-dom";
+
 
 
 const LeftButton = styled.button`
@@ -241,6 +243,7 @@ export default function TeacherProfile(props) {
                       <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png'/>
                     </StyledFriendIcons>
                   </Link>
+                  <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend"/>
                 </StyledFriend>
             )
           }) :
@@ -253,6 +256,7 @@ export default function TeacherProfile(props) {
                       <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png'/>
                     </StyledFriendIcons>
                   </Link>
+                  <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend"/>
                 </StyledFriend>
               )
             })}

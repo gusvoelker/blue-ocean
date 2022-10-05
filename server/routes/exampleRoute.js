@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const model = require('../models/exampleModel.js');
 
+// NOTE: Always handle errors on model functions
+
 // GET REQUESTS //
 
 router.get('/example', (req, res, next) => {
