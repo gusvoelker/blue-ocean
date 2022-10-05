@@ -31,33 +31,9 @@ const StyledloginSignUpBox = styled.div`
   border: 2px solid #383838;
 `
 
-export default function UserInfo () {
-  const [formData, setFormData] = useState({
-    primary: '',
-    tolearn: '',
-    videochat: ''
-  })
-  const [checked, setChecked] = useState([]);
+import { Outlet, Link } from "react-router-dom";
 
-  const handleChange = (e) => {
-    e.preventDefault();
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
-    console.log(e.target.value);
-  }
-
-  const handleCheck = (event) => {
-    var updatedList = [...checked];
-    if (event.target.checked) {
-      updatedList = [...checked, event.target.value];
-    } else {
-      updatedList.splice(checked.indexOf(event.target.value), 1);
-    }
-    setChecked(updatedList);
-    console.log(checked);
-  };
+export default function UserInfo ({handleCheck, handleChange}) {
 
   return (
       <StyledloginSignUpBox>
@@ -135,8 +111,9 @@ export default function UserInfo () {
               </label>
             </span>
           </StyledLabel>
-          <StyledSubmitInput value='SUBMIT'></StyledSubmitInput>
-          <StyledSubmitInput value='SKIP'></StyledSubmitInput>
+          <Link to="/login">
+            <StyledSubmitInput value='SUBMIT'></StyledSubmitInput>
+          </Link>
         </StyledLoginSignUpForm>
       </StyledloginSignUpBox>
   )

@@ -46,7 +46,7 @@ const TeacherLanguageLevel = styled.span`
   }
 `
 
-export default function TeacherInfo ({handleCheck, handleChange}) {
+export default function TeacherInfo ({handleCheck, handleChange, teacherInfoSubmit}) {
   // const [formData, setFormData] = useState({
   //   level: '',
   // })
@@ -191,7 +191,7 @@ export default function TeacherInfo ({handleCheck, handleChange}) {
         <StyledRightAlignedForms>
         </StyledRightAlignedForms>
         <Link to="/login">
-          <StyledSubmitInput value='SUBMIT'></StyledSubmitInput>
+          <StyledSubmitInput value='SUBMIT' onClick={teacherInfoSubmit}></StyledSubmitInput>
         </Link>
       </StyledLoginSignUpForm>
     </StyledloginSignUpBox>

@@ -35,6 +35,8 @@ const StyledloginSignUpBox = styled.div`
 `
 
 export default function SignUp (props) {
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
@@ -52,7 +54,7 @@ export default function SignUp (props) {
     const res = await axios.post(`${serverURL}/register`, formData)
     console.log(res)
     //props.onIdChange(res.data.user.id)
-    navigate('/login')
+    navigate('/userinfo')
     } catch (err) {
       console.log(err.response.data)
       setErrorMessage(err.response.data)
@@ -77,7 +79,7 @@ export default function SignUp (props) {
   let button;
 
   if (props.role === 'user') {
-    button = <Link to="/profile">
+    button = <Link to="/userinfo">
               <StyledSubmitInput value='SUBMIT' onClick={handleClickStudent}></StyledSubmitInput>
             </Link>
   } else {
@@ -101,12 +103,6 @@ export default function SignUp (props) {
             <StyledLabel>
               Last name:
               <StyledTextInput placeholder='enter last name' name='last' onChange={props.onLastNameChange}></StyledTextInput>
-             {/* <StyledTextInput placeholder='enter first name' name='firstName' onChange={handleChange}></StyledTextInput>
-            </StyledLabel>
-            <StyledLabel>
-              Last name:
-              <StyledTextInput placeholder='enter last name' name='lastName' onChange={handleChange}></StyledTextInput> */}
-
             </StyledLabel>
             <StyledLabel>
               <span>
