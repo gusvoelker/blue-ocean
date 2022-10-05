@@ -40,11 +40,17 @@ router.post("/register", (req, res, next) => {
                   .status(201)
                   .send("Account successfully created");
               })
-              .catch((err) => res.sendStatus(500));
+              .catch((err) => {
+                console.log("This is your login error:", err);
+                res.sendStatus(500)
+              });
           });
         }
       })
-      .catch((err) => res.sendStatus(500));
+      .catch((err) => {
+        console.log("This is your login error2:", err);
+        res.sendStatus(500)
+      });
   }
 });
 
@@ -79,6 +85,10 @@ router.post("/logout", (req, res, next) => {
 // Authenticate all user requests
 // Users should not be able to access any resources without being signed in
 router.use('/', (req, res, next) => {
+  // req.user = { // DEBUG: Uncomment this if testing routes without auth
+  //   id: 1,
+  //   isTeacher: false // Can set to true or false depending on which user is being tested
+  // }
   if (!req.user) {
     res.status(403).send('Login required');
   } else {
