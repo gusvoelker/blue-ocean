@@ -14,6 +14,7 @@ const ContextProvider = ({ children }) => {
   const [name, setName] = useState('');
   const [call, setCall] = useState({});
   const [me, setMe] = useState('');
+  const [userId, setUserId] = useState('hi');
 
   const myVideo = useRef();
   const userVideo = useRef();
@@ -94,6 +95,8 @@ const ContextProvider = ({ children }) => {
       callUser,
       leaveCall,
       answerCall,
+      userId,
+      setUserId,
     }}
     >
       {children}
