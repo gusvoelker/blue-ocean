@@ -52,9 +52,7 @@ router.get('/languages/taught/accounts', (req, res, next) => {
   model.getTeachersByTaughtLanguageId(req.query.languageId)
     .then((result) => {
       let accounts = result.rows;
-      accounts.length > 0 ?
-        res.status(200).send(accounts) :
-        res.sendStatus(404);
+      res.status(200).send(accounts);
     })
     .catch((error) => res.sendStatus(404));
 });
@@ -68,9 +66,7 @@ router.get('/languages/known', (req, res, next) => {
   model.getKnownLanguagesByUserId(accountId)
     .then((result) => {
       let languages = result.rows;
-      languages.length > 0 ?
-        res.status(200).send(languages) :
-        res.sendStatus(404);
+      res.status(200).send(languages);
     })
     .catch((error) => res.sendStatus(404));
 });
@@ -84,9 +80,7 @@ router.get('/languages/desired', (req, res, next) => {
   model.getDesiredLanguagesByUserId(accountId)
     .then((result) => {
       let languages = result.rows;
-      languages.length > 0 ?
-        res.status(200).send(languages) :
-        res.sendStatus(404);
+      res.status(200).send(languages);
     })
     .catch((error) => res.sendStatus(400));
 });
