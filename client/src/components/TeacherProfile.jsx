@@ -27,6 +27,8 @@ import TeacherCalendar from '../components/LoginSignup/Teacher/TeacherCalendar.j
 import { Outlet, Link } from "react-router-dom";
 import {serverURL} from '../config.js'
 import ClassListModal from '../components/LoginSignup/Teacher/ClassListModal.jsx'
+import { Outlet, Link } from "react-router-dom";
+
 
 
 const LeftButton = styled.button`
@@ -102,6 +104,21 @@ export default function TeacherProfile(props) {
     setx(x + 1);
   }
 
+  // api requests to retrieve all necessary data
+  const retrieveAccountInfo = axios.get(`${serverURL}/accounts/id`, {
+    params: {
+      accountId: 1
+    }
+  })
+
+  const retrieveFriends = axios.get(`${serverURL}/friend`, {
+    params: {
+      id: 1
+    }
+  })
+
+  const retrieveLanguages = axios.get(`${serverURL}/languages`);
+
   useEffect(()=>{
     // axios.get(`${serverURL}/friend`).then((friends)=>{
     //   console.log('friends ', friends)
@@ -110,6 +127,25 @@ export default function TeacherProfile(props) {
       setClasses(classData.data)
     }).catch((err)=>{console.log('error getting classes ', err)})
   }, [])
+
+  useEffect(() => {
+    Promise.all([retrieveAccountInfo, retrieveFriends, retrieveLanguages])
+    .then((data) => {
+      var apiAccountInfo = data[0].data;
+      var apiFriends = data[1].data;
+      var apiLanguages = data[2].data;
+      // setting account info
+      props.setEmail(apiAccountInfo.email);
+      props.setFirstName(apiAccountInfo.first_name);
+      props.setLastName(apiAccountInfo.last_name);
+      // setting friends
+      props.setFriends(apiFriends);
+      // setting languages
+      props.setLanguages(apiLanguages);
+    }).catch((err) => {
+      console.log('error retrieving data', err);
+    });
+  }, []);
 
   const onFriendClick = (e) => {
     setShow(true);
@@ -140,13 +176,14 @@ export default function TeacherProfile(props) {
   }
 
   const [filteredFriends, setFilteredFriends] = useState(props.friends);
+  const [filtering, setFiltering] = useState(false);
 
   const filterFriends = (e) => {
     setFilteredFriends(props.friends.filter(function (str) {
         var lowered = str.toLowerCase();
         return lowered.includes(e.target.value);
       }));
-    console.log(filteredFriends);
+    setFiltering(true);
   }
 
 
@@ -196,17 +233,30 @@ export default function TeacherProfile(props) {
               <input name='friendfilter' type='text' placeholder='filter' onChange={filterFriends}></input>
             </StyledFriendSearch>
           </StyledFriendSearchSpan>
-          <p>
-            {filteredFriends.map(friend => {
+          <p>{!filtering ?
+            props.friends.map((friend, index) => {
               return (
-                <StyledFriend id={friend} onClick={onFriendClick}>
-                  <div style={{ fontWeight: 'bold' }}>{friend}</div>
-                  <StyledFriendIcons>
-                    <Link to="/messages">
-                      <img src='https://pnggrid.com/wp-content/uploads/2021/12/Office-Phone-Icon-PNG-Transparent-Background.png' alt='phone icon for starting a call with friend' />
-                    </Link>
-                    <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend"/>
-                  </StyledFriendIcons>
+                <StyledFriend  id={friend} key={index} onClick={onFriendClick}>
+                  <div style={{fontWeight: 'bold'}}>{friend}</div>
+                  <Link to="/messages">
+                    <StyledFriendIcons>
+                      <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png'/>
+                    </StyledFriendIcons>
+                  </Link>
+                  <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend"/>
+                </StyledFriend>
+            )
+          }) :
+            filteredFriends.map((friend, index) => {
+              return (
+                <StyledFriend  id={friend} key={index} onClick={onFriendClick}>
+                  <div style={{fontWeight: 'bold'}}>{friend}</div>
+                  <Link to="/messages">
+                    <StyledFriendIcons>
+                      <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png'/>
+                    </StyledFriendIcons>
+                  </Link>
+                  <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend"/>
                 </StyledFriend>
               )
             })}
