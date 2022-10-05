@@ -21,7 +21,7 @@ export default function ScheduleModal({ onClose, friend, user_id }) {
           Invite your friend {friend} to video call!
         </h4>
         <div>
-          <DateTimePicker onChange={onChange} value={value} />
+          <DateTimePicker disableClock={true} onChange={onChange} value={value} />
         </div>
         <br></br>
         <StyledButton onClick={()=>{onClose(value)}}>Send Invite</StyledButton>
