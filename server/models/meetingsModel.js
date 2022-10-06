@@ -24,7 +24,7 @@ module.exports.findMeetings = (req_account) => {
 }
 
 module.exports.findMeetingsRequests = (rec_account) => {
-  console.log("account is this", rec_account)
+  console.log("RECEIVING ACCOUNT IS ", rec_account)
   return db.query(`
     SELECT m.conn_id,
       m.req_account_id,
@@ -40,7 +40,7 @@ module.exports.findMeetingsRequests = (rec_account) => {
       WHERE
         rec_account_id='${rec_account}'
         AND start_time > now()
-        AND m.status = false
+        --AND m.status = false
       ORDER BY start_time
   `);
 }
@@ -70,8 +70,8 @@ module.exports.createMeeting = (requesterId, receiverId, meetingDateTime) => {
       start_time,
       status
     ) VALUES (
-      '${requesterId}',
       '${receiverId}',
+      '${requesterId}',
       '${meetingDateTime}',
       true
     )
@@ -79,22 +79,33 @@ module.exports.createMeeting = (requesterId, receiverId, meetingDateTime) => {
   `)
 };
 
-module.exports.acceptMeeting = (requesterId, receiverId) => {
+module.exports.acceptMeeting = (requesterId, receiverId, meetingDateTime) => {
+  //console.log(requesterId, receiverId, meetingDateTime)
   return db.query(`
     UPDATE meetings
-    SET status = TRUE
-    WHERE req_account_id = ${requesterId}
-    AND rec_account_id = ${receiverId}
+    SET status = true
+    WHERE req_account_id = '${requesterId}'
+    AND rec_account_id = '${receiverId}'
+    AND start_time = '${meetingDateTime}'
+    RETURNING *
     ;
   `)
 };
 
-
-module.exports.deleteMeeting = (requesterId, receiverId, meetingDateTime) => {
+module.exports.deleteMeeting1 = (requesterId, receiverId, meetingDateTime) => {
   return db.query(`
   DELETE FROM meetings
   WHERE req_account_id = ${requesterId}
   AND rec_account_id = ${receiverId}
-  AND start_time = meetingDateTime
+  AND start_time = '${meetingDateTime}'
+  `)
+};
+
+module.exports.deleteMeeting2 = (requesterId, receiverId, meetingDateTime) => {
+  return db.query(`
+  DELETE FROM meetings
+  WHERE req_account_id = ${receiverId}
+  AND rec_account_id = ${requesterId}
+  AND start_time = '${meetingDateTime}'
   `)
 };
