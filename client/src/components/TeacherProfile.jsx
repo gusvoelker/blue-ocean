@@ -271,6 +271,7 @@ const selectFriend = (e) => {
     }
   }).then((data) => {
     console.log(data.data);
+    console.log(props.friends);
     setTaughtLanguages(data.data);
     setFriendSelected(true);
   }).catch((err) => {
@@ -279,10 +280,18 @@ const selectFriend = (e) => {
 
 }
 
+// useEffect(() => {
+//   if (selected !== null) {
+//     setTimeout(() => {
+//       setFriendSelected(true);
+//     }, 1000)
+//   }
+// }, [selected]);
+
 const unfilteredFriends = props.friends.map((friend, index) => {
     return (
       <StyledFriend key={friend.account_id} >
-          <div style={{ fontWeight: 'bold' }} id={index} onClick={selectFriend}>{friend.first_name + ' ' + friend.last_name}</div>
+          <div style={{ fontWeight: 'bold' }} id={index} onClick={selectFriend}>{friend.first_name + ' ' + friend.last_name} <FontAwesomeIcon icon={faChevronDown} /></div>
           {pickDateShow && <ScheduleModal onClose={(dateTime) => { onCalendarClick(dateTime, friend.account_id, props.userId) }} friend={friend}/>}
             <StyledFriendIcons>
               <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call" onClick={() => { setPickDateShow(true) }} />
@@ -298,7 +307,7 @@ const unfilteredFriends = props.friends.map((friend, index) => {
 const filteredFriendsList = filteredFriends.map((friend, index) => {
   return (
     <StyledFriend  id={friend.account_id} key={friend.account_id}>
-      <div style={{ fontWeight: 'bold' }} id={index} onClick={selectFriend}>{friend.first_name + ' ' + friend.last_name}</div>
+      <div style={{ fontWeight: 'bold' }} id={index} onClick={selectFriend}>{friend.first_name + ' ' + friend.last_name} <FontAwesomeIcon icon={faChevronDown} /></div>
       {pickDateShow && <ScheduleModal onClose={(dateTime) => { onCalendarClick(dateTime, friend.account_id, props.userId) }} friend={friend}/>}
         <StyledFriendIcons>
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call" onClick={() => { setPickDateShow(true) }} />
@@ -404,7 +413,9 @@ const filteredFriendsList = filteredFriends.map((friend, index) => {
           {!friendSelected ? <p>{!filtering ? unfilteredFriends : filteredFriendsList}</p> :
             <SelectedTeacherFriend>
               <span>
+                {selected &&
                 <h2>{props.friends[parseInt(selected)].first_name + ' ' + props.friends[parseInt(selected)].last_name}</h2>
+                }
                 <TeachingLanguageSpan>
                   <h4>
                     Languages Taught:
