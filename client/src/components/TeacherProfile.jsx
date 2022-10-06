@@ -128,14 +128,18 @@ export default function TeacherProfile(props) {
 
   const retrieveLanguages = axios.get(`${serverURL}/languages`);
 
-  useEffect(() => {
-
+  const getClasses = ()=>{
+    console.log('getClasses is running')
     axios.get(`${serverURL}/classes`, { params: { teacher_id: props.userId } })
       .then((classData) => {
         console.log('class Data ', classData)
         setClasses(classData.data)
       })
       .catch((err) => { console.log('error getting classes ', err) })
+  }
+
+  useEffect(() => {
+    getClasses()
 
     axios.get(`${serverURL}/meetings`, { params: { user_id: props.userId } })
       .then((meetingsRes) => {
@@ -248,21 +252,20 @@ export default function TeacherProfile(props) {
   }
   const acceptMeeting = (e, requesterId, receiverId, start_time) => {
     e.preventDefault()
-    onClose()
     var start_time = new Date(start_time)
     var GMTtime = start_time.toUTCString()
     axios.put(`${serverURL}/meetings`, { receiverId: receiverId, requesterId: requesterId, dateTime: GMTtime })
       .then(() => {
         axios.get(`${serverURL}/meetings`, { params: { user_id: props.userId } })
           .then((meetingsRes) => {
-            console.log('non pending meetings ', meetingsRes)
+            console.log('non pending meetings acceptMeeting', meetingsRes)
             setMeetings(meetingsRes.data)
           })
           .catch(err => { console.log('error getting meetings ', err) })
 
         axios.get(`${serverURL}/meetings/requests`, { params: { user_id: props.userId } })
           .then((pendingMeetings) => {
-            console.log('pending meetings ', pendingMeetings)
+            console.log('pending meetings acceptMeeting ', pendingMeetings)
             setPendingMeetings(pendingMeetings.data)
           })
 
@@ -273,7 +276,6 @@ export default function TeacherProfile(props) {
 
   const denyMeeting = (e, requesterId, receiverId, start_time) => {
     e.preventDefault()
-    onClose()
     var start_time = new Date(start_time)
     var GMTtime = start_time.toUTCString()
     axios.delete(`${serverURL}/meetings`, { params: { receiverId: receiverId, requesterId: requesterId, dateTime: GMTtime } })
@@ -383,7 +385,7 @@ export default function TeacherProfile(props) {
           </p>
 
           <StyledButton style={{ marginTop: '0rem', width: '12rem' }} onClick={onAddFriendClick}>ADD FRIEND</StyledButton>
-          {teacherShow && <TeacherClassListModal userId={teacherId} onClose={() => setTeacherShow(false)} show={teacherShow} />}
+          {teacherShow && <TeacherClassListModal userId={teacherId} onClose={() => setTeacherShow(false)} show={teacherShow} getClasses={getClasses}/>}
         </ProfileFriendsList>
         <ProfileFriendsList style={{ width: '23rem', left: '71%' }}>
           <StyledFriendSearchSpan style={{ justifyContent: 'center' }}>
@@ -408,7 +410,6 @@ export default function TeacherProfile(props) {
       </ProfileContainer>
       <FriendsModal onClose={() => setShow(false)} show={show} friend={currentFriend} />
       <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch} />
-      <TeacherClassListModal onClose={() => setTeacherShow(false)} show={teacherShow} teacherId={teacherId} />
       <EditInfoModal onClose={() => setEditInfoShow(false)} show={editInfoShow} />
     </div>
   )

@@ -88,7 +88,7 @@ module.exports.acceptMeeting = (requesterId, receiverId, meetingDateTime) => {
     SET status = true
     WHERE req_account_id = '${requesterId}'
     AND rec_account_id = '${receiverId}'
-    AND start_time = '${meetingDateTime}'
+    AND Date(start_time) = '${meetingDateTime}'
     RETURNING *
     ;
   `)

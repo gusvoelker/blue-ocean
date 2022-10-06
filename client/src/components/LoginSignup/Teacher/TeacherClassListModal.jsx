@@ -17,7 +17,7 @@ import { serverURL } from '../../../config.js'
 
 
 
-export default function TeacherClassListModal({ teacherId, onClose, show }) {
+export default function TeacherClassListModal({ teacherId, onClose, show, getClasses }) {
   //state for controlling whether loading spinner is visible
   const [spinner, setSpinner] = useState(false)
   const [className, setClassName] = useState('')
@@ -66,6 +66,7 @@ export default function TeacherClassListModal({ teacherId, onClose, show }) {
       })
         .then(() => {
           console.log('response from second query')
+          getClasses()
           setSpinner(false);
         })
         .catch((err) => {
