@@ -18,7 +18,7 @@ export default function ScheduleModal({ onClose, friend, user_id }) {
     <ScheduleModalContainer>
       <ScheduleModalContent>
         <h4>
-          Invite your friend {friend} to video call!
+          Invite your friend {friend.first_name} {friend.last_name} to video call!
         </h4>
         <div>
           <DateTimePicker disableClock={true} onChange={onChange} value={value} />

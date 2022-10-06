@@ -13,3 +13,11 @@
 abbr {
   color: black;
 }
+.react-calendar {
+  margin-bottom: 20px;
+}
+.highlight {
+  background-color: red !important;
+  border: 2px red;
+  color: red !important;
+}

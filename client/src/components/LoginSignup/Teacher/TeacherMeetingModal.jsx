@@ -1,31 +1,47 @@
 import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
 import {
-  ClassListModalContainer,
+  MeetingModalContainer,
+  MeetingModalContent,
   ClassListModalContent,
   LightGreyButton,
   StyledButton,
 } from '../../StyledComponents/StyledComponents.jsx';
+import axios from 'axios'
+import {serverURL} from '../../../config.js'
 
-export default function TeacherMeetingModal({ onClose, open, meetings, day }) {
+export default function TeacherMeetingModal({ onClose, open, meetingsOnDay, day, props }) {
+  console.log('day in modal ', typeof day, day)
+  var dateString = day
 
+  const handleDelete = (userId, start_time) => {
+    axios.put(`${serverURL}/meetings/delete`, {params: {receiverId: props.userId, requesterID: userId, start_time}})
+    .then((returnedPendingMeetings) =>{
+      // setPendingMeetings(returnedPendingMeetings.data)
+      onClose()
+    })
+    .catch(err=>{console.log('error deleting meeting ', err)})
+
+  }
 
   return (
-    <ClassListModalContainer>
-      <ClassListModalContent>
-        {/* <h4>
-          Students in {modalClassName}
+    <MeetingModalContainer>
+      <MeetingModalContent>
+        <h4>
+          Your Scheduled Meetings on {dateString}
         </h4>
-        <div style={{ marginBottom: "10px" }}>
-          {students.map(student => (
+        <div>
+          {meetingsOnDay.map(meeting => (
             <>
-              <span>{student.first_name} {student.last_name}</span><br></br>
+              <span>{meeting.first_name} {meeting.last_name} at {meeting.dateObj}   </span>
+              <StyledButton style={{marginLeft: '5px'}} onClick={handleDelete(meeting.receiver_id, meeting.start_time)}>Delete</StyledButton>
             </>
+
           ))}
-        </div> */}
+        </div>
 
         <StyledButton onClick={onClose}>Close</StyledButton>
-      </ClassListModalContent>
-    </ClassListModalContainer>
+      </MeetingModalContent>
+    </MeetingModalContainer>
   )
 }
