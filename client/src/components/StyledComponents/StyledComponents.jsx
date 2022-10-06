@@ -873,8 +873,10 @@ const ProfileCalendarInfo = styled.div`
   border-radius: 15px;
   left: 0%;
   display: flex;
+  padding: 2px;
+  flex-direction: column;
   justify-content: center;
-  padding: 10px;
+  align-items: center;
   background-color: #38698fef;
   color: #f5f5f5;
   box-shadow: 5px 5px 5px #383838;
@@ -894,7 +896,6 @@ const ProfileCalendarInfo = styled.div`
     text-align: center;
   };
   div{
-    padding:10px;
     color: #f5f5f5;
   };
 `
@@ -986,6 +987,66 @@ const ScheduleModalContent = styled.div`
   }
   }
 `
+const MeetingModalContainer = styled.div`
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+  h4{
+    color: black;
+  }
+  span {
+    color: black
+  }
+`
+
+const MeetingModalContent = styled.div`
+  width: 500px;
+  height: auto;
+  background-color: #ffffff;
+  color: black;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  justify-content: center;
+  z-index: 4
+  h4 {
+    font-size: 30px;
+    color: black;
+  }
+  div {
+    padding: 10px;
+  }
+  }
+`
+const ProfileCalendarContainer = styled.div`
+position: absolute;
+width: 20vw;
+height: 450px;
+border-radius: 15px;
+left:0%;
+padding: 10px;
+text-align: center;
+justify-content: space-between;
+background-color: #38698fe8;
+color: #f5f5f5;
+
+  img {
+    width: 1.5rem;
+    height: 1.5rem;
+    background-color: #f5f5f5;
+    border-radius: 50px;
+    padding: 2px;
+  }
+button {
+  width: 19vw;
+}`
 
 export {
   StyledNavBar,
@@ -1051,4 +1112,7 @@ export {
   IconCircleDiv,
   ScheduleModalContainer,
   ScheduleModalContent,
+  MeetingModalContainer,
+  MeetingModalContent,
+  ProfileCalendarContainer,
 }

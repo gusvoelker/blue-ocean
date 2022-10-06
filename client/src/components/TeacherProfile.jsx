@@ -14,7 +14,8 @@ import {
   StyledFriendSearchSpan,
   StyledFriendSearch,
   StyledEditProfileButton,
-  IconCircleDiv
+  IconCircleDiv,
+  ProfileCalendarInfo,
 } from './StyledComponents/StyledComponents.jsx'
 import axios from 'axios';
 import FormData from 'form-data'
@@ -26,10 +27,11 @@ import AddFriendModal from './AddFriendModal.jsx';
 import EditInfoModal from './EditInfoModal.jsx';
 import TeacherCalendar from '../components/LoginSignup/Teacher/TeacherCalendar.jsx';
 import { Outlet, Link } from "react-router-dom";
-import {serverURL} from '../config.js'
+import { serverURL } from '../config.js'
 import ClassListModal from '../components/LoginSignup/Teacher/ClassListModal.jsx'
 import DateTimePicker from 'react-datetime-picker';
-import ScheduleModal from '../components/LoginSignup/Teacher/ScheduleModal.jsx';
+import ScheduleModal from '../components/LoginSignup/Teacher/ScheduleModal.jsx'
+import PendingMeetingModal from './LoginSignup/Teacher/PendingMeetingModal'
 
 
 
@@ -87,12 +89,15 @@ export default function TeacherProfile(props) {
   const [currentFriend, setCurrentFriend] = useState('');
   const [friendSearch, setFriendSearch] = useState('');
   const [editInfoShow, setEditInfoShow] = useState(false);
-  const [teacherId, setTeacherId] = useState('10');
+  const [teacherId, setTeacherId] = useState(props.userid);
   const [classes, setClasses] = useState([]);
   const [students, setStudents] = useState([]);
   const [modalClassName, setModalClassName] = useState('')
   const [classShow, setClassShow] = useState(false)
   const [pickDateShow, setPickDateShow] = useState(false);
+  const [meetings, setMeetings] = useState([{receiver_id: 1, first_name: 'Greta', last_name: 'Grover', start_time: 'Wed, 05 Oct 2022 20:34:12 GMT', status: false }, { receiver_id: 2, first_name: 'Nick', last_name: 'Kozlarek', start_time: 'Thu, 06 Oct 2022 20:34:12 GMT', status: true },])
+  const [pendingMeetings, setPendingMeetings] = useState([{requester_id: 1, first_name: 'Andrew', last_name: 'Cho', start_time: 'Thu, 06 Oct 2022 20:34:12 GMT', status: false }])
+  const [pendingShow, setPendingShow] = useState(false)
 
 
   var [x, setx] = useState(0);
@@ -109,45 +114,56 @@ export default function TeacherProfile(props) {
   // api requests to retrieve all necessary data
   const retrieveAccountInfo = axios.get(`${serverURL}/accounts/id`, {
     params: {
-      accountId: 10
+      accountId: props.userid
     }
   })
 
   const retrieveFriends = axios.get(`${serverURL}/friend`, {
     params: {
-      accountId: 10
+      accountId: props.userid
     }
   })
 
   const retrieveLanguages = axios.get(`${serverURL}/languages`);
 
-  useEffect(()=>{
-    // axios.get(`${serverURL}/friend`).then((friends)=>{
-    //   console.log('friends ', friends)
-    // }).catch((err)=>{console.log('error getting friends ', err)})
-    axios.get(`${serverURL}/classes`, { params: { teacher_id: teacherId } }).then((classData) => {
-      setClasses(classData.data)
-    }).catch((err) => { console.log('error getting classes ', err) })
+  useEffect(() => {
+
+    axios.get(`${serverURL}/classes`, { params: { teacher_id: props.userid } })
+      .then((classData) => {
+        setClasses(classData.data)
+      })
+      .catch((err) => { console.log('error getting classes ', err) })
+
+    axios.get(`${serverURL}/meetings`, { params: { user_id: props.userid } })
+      .then((meetingsRes) => {
+        setMeetings(meetingsRes.data)
+      })
+      .catch(err => { console.log('error getting meetings ', err) })
+
+    axios.get(`${serverURL}/meetings/pending`, { params: { user_id: props.userid } })
+      .then((pendingMeetings) => {
+        setPendingMeetings(pendingMeetings.data)
+      })
   }, [])
 
   useEffect(() => {
     Promise.all([retrieveAccountInfo, retrieveFriends, retrieveLanguages])
-    .then((data) => {
-      var apiAccountInfo = data[0].data;
-      var apiFriends = data[1].data;
-      var apiLanguages = data[2].data;
-      // setting account info
-      props.setEmail(apiAccountInfo.email);
-      props.setFirstName(apiAccountInfo.first_name);
-      props.setLastName(apiAccountInfo.last_name);
-      // setting friends
-      props.setFriends(apiFriends);
-      // setting languages
-      props.setLanguages(apiLanguages);
-      console.log(apiFriends);
-    }).catch((err) => {
-      console.log('error retrieving data', err);
-    });
+      .then((data) => {
+        var apiAccountInfo = data[0].data;
+        var apiFriends = data[1].data;
+        var apiLanguages = data[2].data;
+        // setting account info
+        props.setEmail(apiAccountInfo.email);
+        props.setFirstName(apiAccountInfo.first_name);
+        props.setLastName(apiAccountInfo.last_name);
+        // setting friends
+        props.setFriends(apiFriends);
+        // setting languages
+        props.setLanguages(apiLanguages);
+        console.log(apiFriends);
+      }).catch((err) => {
+        console.log('error retrieving data', err);
+      });
   }, []);
 
   const onFriendClick = (e) => {
@@ -183,21 +199,26 @@ export default function TeacherProfile(props) {
 
   const filterFriends = (e) => {
     setFilteredFriends(props.friends.filter(function (str) {
-        var lowered = str.toLowerCase();
-        return lowered.includes(e.target.value);
-      }));
+      var lowered = str.toLowerCase();
+      return lowered.includes(e.target.value);
+    }));
     setFiltering(true);
   }
 
 
 
-const onCalendarClick=( dateTime, friend, user) => {
-  setPickDateShow(false)
-  console.log(dateTime.toUTCString())
-  var GMTTime = dateTime.toUTCString()
-  axios.post(`${serverURL}/addMeeting`, {params: {user_id: user_id, friend_id: friend}})
+  const onCalendarClick = (dateTime, friend, user) => {
+    setPickDateShow(false)
+    console.log(dateTime.toUTCString())
+    var GMTTime = dateTime.toUTCString()
+    axios.post(`${serverURL}/addMeeting`, { params: { req_account_id: props.userid, rec_account_id: friend, start_time: GMTTime } }).then((meetingsRes) => {
+      console.log('meetings ', meetingsRes.data)
+      setMeetings(meetingsRes.data)
+    }).catch((err) => {
+      console.log(err)
+    })
 
-}
+  }
 
   return (
     <div>
@@ -215,7 +236,12 @@ const onCalendarClick=( dateTime, friend, user) => {
             {x >= profileBackgroundDark.length - 1 ? null : <RightButton data-testid='right-arrow' onClick={goRight}><FontAwesomeIcon icon={faChevronRight} /></RightButton>}
           </ProfileBackground>
         }
-        <TeacherCalendar />
+        <ProfileCalendarInfo>
+
+          <TeacherCalendar props={props} meetings={meetings} />
+          {pendingMeetings.length > 0 && <StyledButton style={{ marginTop: '0rem', width: '12rem' }} onClick={() => { setPendingShow(true) }}>Pending Meetings</StyledButton>}
+          {pendingShow && <PendingMeetingModal onClose={() => { setPendingShow(false) }} pendingMeetings={pendingMeetings} props={props} />}
+        </ProfileCalendarInfo>
         {/* <ProfileAccountInfo>
           <h3><strong>Account Info</strong></h3>
           <h4><strong>Teacher</strong></h4>
@@ -248,31 +274,31 @@ const onCalendarClick=( dateTime, friend, user) => {
           <p>{!filtering ?
             props.friends.map((friend, index) => {
               return (
-                <StyledFriend  id={friend.account_id} key={friend.account_id} >
-           <div style={{ fontWeight: 'bold' }} onClick={(onFriendClick)}>{friend.first_name + ' ' + friend.last_name}</div>
-           {pickDateShow && <ScheduleModal onClose={(dateTime)=>{onCalendarClick(dateTime, friend.account_id, teacherId)}} pickDateShow={pickDateShow} friend={friend.account_id} user={teacherId}/>}
-                    <StyledFriendIcons>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call"  onClick={()=>{setPickDateShow(true)}}/>
-                  <Link to="/messages">
-                      <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png'/>
-                  </Link>
-                  <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend"/>
-                    </StyledFriendIcons>
+                <StyledFriend id={friend.account_id} key={friend.account_id} >
+                  <div style={{ fontWeight: 'bold' }} onClick={(onFriendClick)}>{friend.first_name + ' ' + friend.last_name}</div>
+                  {pickDateShow && <ScheduleModal onClose={(dateTime) => { onCalendarClick(dateTime, friend.account_id, teacherId) }} pickDateShow={pickDateShow} friend={friend} user={teacherId} />}
+                  <StyledFriendIcons>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call" onClick={() => { setPickDateShow(true) }} />
+                    <Link to="/messages">
+                      <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' />
+                    </Link>
+                    <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend" />
+                  </StyledFriendIcons>
                 </StyledFriend>
-            )
-          }) :
+              )
+            }) :
             filteredFriends.map((friend, index) => {
               return (
-                <StyledFriend  id={friend} key={index}>
-                 <div style={{ fontWeight: 'bold' }} onClick={(onFriendClick)}>{friend}</div>
-                  {pickDateShow && <ScheduleModal onClose={(dateTime)=>{onCalendarClick(dateTime, friend, teacherId)}} pickDateShow={pickDateShow} friend={friend} user={teacherId}/>}
-                    <StyledFriendIcons>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call"  onClick={()=>{setPickDateShow(true)}}/>
-                  <Link to="/messages">
-                      <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png'/>
-                  </Link>
-                  <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend"/>
-                    </StyledFriendIcons>
+                <StyledFriend id={friend} key={index}>
+                  <div style={{ fontWeight: 'bold' }} onClick={(onFriendClick)}>{friend}</div>
+                  {pickDateShow && <ScheduleModal onClose={(dateTime) => { onCalendarClick(dateTime, friend.account_id, props.userid) }} pickDateShow={pickDateShow} friend={friend} user={props.userid} />}
+                  <StyledFriendIcons>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call" onClick={() => { setPickDateShow(true) }} />
+                    <Link to="/messages">
+                      <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' />
+                    </Link>
+                    <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend" />
+                  </StyledFriendIcons>
                 </StyledFriend>
               )
             })}
@@ -304,7 +330,7 @@ const onCalendarClick=( dateTime, friend, user) => {
       </ProfileContainer>
       <FriendsModal onClose={() => setShow(false)} show={show} friend={currentFriend} />
       <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch} />
-      <TeacherClassListModal onClose={() => setTeacherShow(false)} show={teacherShow} onFriendSearch={onFriendSearch} teacherId={teacherId}/>
+      <TeacherClassListModal onClose={() => setTeacherShow(false)} show={teacherShow} onFriendSearch={onFriendSearch} teacherId={teacherId} />
       <EditInfoModal onClose={() => setEditInfoShow(false)} show={editInfoShow} />
     </div>
   )
