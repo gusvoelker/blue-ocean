@@ -1,6 +1,7 @@
 const accountModel = require('../../models/accountModel.js');
 const languageModel = require('../../models/languageModel.js');
 const chatModel = require('../../models/chatModel.js');
+const meetingsModel = require('../../models/meetingsModel.js');
 const friendModel = require('../../models/friendModel.js');
 const ratingsModel = require('../../models/ratingsModel.js');
 
@@ -205,22 +206,14 @@ const ratingsModel = require('../../models/ratingsModel.js');
   console.log(result.rows[0].exists);
 });
 
-// RATINGS //
+//GET MEETINGS
+// (async () => {
+//   let accountId1 = 1;
+//   let accountId2 = 2;
 
-// ADD RATING
-(() => {
-  let ratingStudentId = 1;
-  let ratedStudentId = 2;
-  let languageId = 1;
-  let rating = 4;
-  ratingsModel.addRating(ratingStudentId, ratedStudentId, languageId, 5)
-    .then((result) => console.log(result))
-    .catch((error) => console.log(error));
-});
+//   let result = await meetingsModel.createAccount(accountId1,accountId2);
+//   console.log(result);
 
-// GET RATINGS
-(async () => {
-  let ratedStudentId = 2;
-  let result = await ratingsModel.getRatingsAvgByStudentId(ratedStudentId)
-  console.log(result.rows);
-});
+//   result = await accountModel.createAccount(userAccount);
+//   console.log(result);
+// });

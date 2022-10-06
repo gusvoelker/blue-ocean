@@ -17,13 +17,13 @@ import { serverURL } from '../../../config.js'
 
 
 
-export default function TeacherClassListModal(props) {
+export default function TeacherClassListModal({ teacherId, onClose, show }) {
   //state for controlling whether loading spinner is visible
   const [spinner, setSpinner] = useState(false)
   const [className, setClassName] = useState('')
   const hiddenFileInput = useRef(null);
 
-  if (!props.show) {
+  if (!show) {
     return null;
   }
 
@@ -100,7 +100,7 @@ export default function TeacherClassListModal(props) {
           </StyledCSVButton>
 
 
-          <StyledCSVCloseButton onClick={props.onClose} style={{ marginright: '2rem' }}>CLOSE</StyledCSVCloseButton>
+          <StyledCSVCloseButton onClick={onClose} style={{ marginright: '2rem' }}>CLOSE</StyledCSVCloseButton>
 
         </StyledButtonDiv>
 
