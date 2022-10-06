@@ -12,13 +12,14 @@ import { differenceInCalendarDays } from 'date-fns';
 import TeacherMeetingModal from './TeacherMeetingModal.jsx'
 
 
-export default function TeacherCalendar({ props, meetings }) {
+export default function TeacherCalendar({ teacherId, meetings }) {
   const [value, onChange] = useState(new Date());
   const datesToAddContentTo = [new Date('Wed, 05 Oct 2022 20:34:12 GMT')];
   const [open, setOpen] = useState(false)
   const [meetingsOnDay, setMeetingsOnDay] = useState([])
   const [daysToHighlight, setDaysToHighlight] = useState([])
   const [calendarClickedDay, setCalendarClickedDay] = useState({})
+  const [allMeetings, setAllMeetings] = useState(meetings)
 
   function isSameDay(a, b) {
     return differenceInCalendarDays(a, b) === 0;
@@ -29,7 +30,7 @@ export default function TeacherCalendar({ props, meetings }) {
     setOpen(true)
     setCalendarClickedDay(value)
     var meetingsOnDayArray = []
-    meetings.forEach(meeting => {
+    allMeetings.forEach(meeting => {
       var dateObj = new Date(meeting.start_time)
       if (isSameDay(dateObj, value)) {
         meeting.dateObj = dateObj.toLocaleTimeString();
@@ -37,13 +38,14 @@ export default function TeacherCalendar({ props, meetings }) {
       }
 
     })
+    console.log('meetingsOnDay ', meetingsOnDayArray)
     setMeetingsOnDay(meetingsOnDayArray)
 
   }
 
   useEffect(()=>{
     var highlight = []
-    meetings.forEach(meeting =>{
+    allMeetings.forEach(meeting =>{
       var dateObj = new Date(meeting.start_time)
       highlight.push(dateObj)
     })
@@ -59,7 +61,7 @@ export default function TeacherCalendar({ props, meetings }) {
           }
         }
       }}/>
-      {open && <TeacherMeetingModal onClose={() => { setOpen(false) }} open={open} meetingsOnDay={meetingsOnDay} day={value} props={props}/>}
+      {open && <TeacherMeetingModal onClose={() => { setOpen(false) }} open={open} meetingsOnDay={meetingsOnDay} day={value} teacherId={teacherId}/>}
 
     </>
 
