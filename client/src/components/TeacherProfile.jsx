@@ -161,6 +161,7 @@ export default function TeacherProfile(props) {
   useEffect(() => {
     Promise.all([retrieveAccountInfo, retrieveFriends, retrieveLanguages])
     .then((data) => {
+      console.log(data);
       var apiAccountInfo = data[0].data;
       var apiFriends = data[1].data;
       var apiLanguages = data[2].data;
@@ -234,7 +235,6 @@ export default function TeacherProfile(props) {
 
 const selectFriend = (e) => {
   setSelected(e.target.id);
-  console.log(props.friends[e.target.id]);
   axios.get(`${serverURL}/languages/taught`, {
     params: {
       accountId: 6
@@ -251,8 +251,8 @@ const selectFriend = (e) => {
 
 const unfilteredFriends = props.friends.map((friend, index) => {
     return (
-      <StyledFriend id={index} onClick={selectFriend} key={friend.account_id} >
-          <div style={{ fontWeight: 'bold' }}>{friend.first_name + ' ' + friend.last_name}</div>
+      <StyledFriend key={friend.account_id} >
+          <div style={{ fontWeight: 'bold' }} id={index} onClick={selectFriend}>{friend.first_name + ' ' + friend.last_name}</div>
           {pickDateShow && <ScheduleModal onClose={(dateTime) => { onCalendarClick(dateTime, friend.account_id, props.userId) }} friend={friend}/>}
             <StyledFriendIcons>
               <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call" onClick={() => { setPickDateShow(true) }} />
@@ -267,8 +267,8 @@ const unfilteredFriends = props.friends.map((friend, index) => {
 
 const filteredFriendsList = filteredFriends.map((friend, index) => {
   return (
-    <StyledFriend  id={friend.account_id} onClick={selectFriend} key={friend.account_id}>
-      <div style={{ fontWeight: 'bold' }}>{friend.first_name + ' ' + friend.last_name}</div>
+    <StyledFriend  id={friend.account_id} key={friend.account_id}>
+      <div style={{ fontWeight: 'bold' }} id={index} onClick={selectFriend}>{friend.first_name + ' ' + friend.last_name}</div>
       {pickDateShow && <ScheduleModal onClose={(dateTime) => { onCalendarClick(dateTime, friend.account_id, props.userId) }} friend={friend}/>}
         <StyledFriendIcons>
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call" onClick={() => { setPickDateShow(true) }} />
