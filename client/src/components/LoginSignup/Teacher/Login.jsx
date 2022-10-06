@@ -15,9 +15,9 @@ import {
   StyledImage,
   StyledSelectInput
 } from '../../StyledComponents/StyledComponents.jsx';
-// import { SocketContext } from '../../VideoComponents/SocketContext.jsx';
-
+import { SocketContext } from '../../VideoComponents/SocketContext.jsx';
 import { Outlet, Link, useNavigate } from "react-router-dom";
+
 
 const StyledloginSignUpBox = styled.div`
   background-image: url("https://images.unsplash.com/photo-1502602898657-3e91760cbb34?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1173&q=80");
@@ -36,7 +36,7 @@ const StyledloginSignUpBox = styled.div`
 `
 
 export default function Login (props) {
-  //const { setUserId } = useContext(SocketContext);
+  const { setUser} = useContext(SocketContext);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('hello');
   const navigate = useNavigate();
@@ -48,24 +48,49 @@ export default function Login (props) {
 
   const handleSubmitStudent = async(e) => {
     e.preventDefault();
-    try {
-      const res = await axios.post(`${serverURL}/login`, formData);
-      console.log(res)
-      props.onIdChange(res.data.user.id)
-      navigate("/profile");
-    } catch (err) {
+    fetch(`${serverURL}/login`, {
+      method: 'post',
+      credentials: "include",
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Access-Control-Allow-Origin': 'http://localhost:5173/'
+      },
+      body: JSON.stringify(formData)
+    })
+    .then((res) => {
+      return res.json()
+      .then((jsonResponse) => {
+        console.log(jsonResponse)
+        props.onIdChange(jsonResponse.id)
+        setUser(jsonResponse)
+        navigate("/profile");
+      })
+    }).catch((err) => {
       console.log(err);
-      setErrorMessage(err.response.data);
+      // setErrorMessage(err.response.data);
       setError(true);
-    }
+    });
+
+    // try {
+    //   const res = await axios.post(`${serverURL}/login`, formData);
+    //   console.log(res)
+    //   props.onIdChange(res.data.user.id)
+    //   navigate("/profile");
+    // } catch (err) {
+    //   console.log(err);
+    //   setErrorMessage(err.response.data);
+    //   setError(true);
+    // }
   }
 
   const handleSubmitTeacher = async(e) => {
     e.preventDefault();
     try {
       const res = await axios.post(`${serverURL}/login`, formData);
-      console.log(res)
-      props.onIdChange(res.data.user.id);
+      console.log(res.data.id)
+      props.onIdChange(res.data.id);
+      setUser(res.data);
       navigate("/teacherprofile")
     } catch (err) {
       console.log(err);
