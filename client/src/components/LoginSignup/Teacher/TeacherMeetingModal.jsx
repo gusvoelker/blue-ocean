@@ -11,7 +11,6 @@ import axios from 'axios'
 import {serverURL} from '../../../config.js'
 
 export default function TeacherMeetingModal({ onClose, open, meetingsOnDay, day, teacherId, handleDelete }) {
-  console.log('day in modal ', typeof day, day)
   var dateString = day.toLocaleDateString()
 
 
