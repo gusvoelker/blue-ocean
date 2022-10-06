@@ -136,7 +136,7 @@ export default function App () {
             </Route>
             <Route path="/SignUp" element={
               <>
-                <NavBar role={role} darkTheme={darkTheme}/>
+                <AboutNavBar role={role} darkTheme={darkTheme}/>
                 <SignUp
                   onFirstNameChange={onFirstNameChange}
                   onLastNameChange={onLastNameChange}
@@ -156,7 +156,7 @@ export default function App () {
             </Route>
             <Route path="/Login" element={
               <>
-                <NavBar role={role} darkTheme={darkTheme}/>
+                <AboutNavBar role={role} darkTheme={darkTheme}/>
                   <Login
                     onEmailChange={onEmailChange}
                     onPasswordChange={onPasswordChange}
@@ -171,7 +171,7 @@ export default function App () {
             </Route>
             <Route path="/teacherInfo" element={
               <>
-                <NavBar role={role} darkTheme={darkTheme}/>
+                <AboutNavBar role={role} darkTheme={darkTheme}/>
                 <TeacherInfo
                   handleCheck={handleCheck}
                   handleChange={handleChange}
@@ -185,7 +185,7 @@ export default function App () {
             </Route>
             <Route path="/userInfo" element={
               <>
-                <NavBar role={role} darkTheme={darkTheme}/>
+                <AboutNavBar role={role} darkTheme={darkTheme}/>
                 <UserInfo
                   handleCheck={handleCheck}
                   handleChange={handleChange}
