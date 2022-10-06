@@ -14,11 +14,29 @@ module.exports.checkIfFriends = (accountId1, accountId2) => {
   `);
 };
 
+module.exports.findFriendRequests = (requesterId) => {
+  return db.query(`
+  SELECT req_account_id AS account_id FROM connections
+    WHERE rec_account_id=${requesterId}
+      AND status = false
+  `);
+};
+
 module.exports.findFriends = (requesterId) => {
   return db.query(`
-  SELECT rec_account_id FROM connections
+  SELECT rec_account_id AS account_id FROM connections
     WHERE req_account_id=${requesterId}
       AND status = true
+  `);
+};
+
+module.exports.findFriendsInfo = (requesterId) => {
+  return db.query(`
+  SELECT rec_account_id AS account_id, first_name, last_name, email, avatar_url, is_teacher
+  FROM connections, accounts
+    WHERE req_account_id=${requesterId}
+      AND status = true
+      AND rec_account_id = accounts.account_id
   `);
 };
 

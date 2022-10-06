@@ -29,7 +29,7 @@ module.exports = (passport) => {
             })
             .catch((err) => done(err));
         })
-        .catch((err) => console.log(err));
+        .catch((err) => done(err));
     })
   );
   passport.serializeUser((user, done) => {

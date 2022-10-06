@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
+import axios from 'axios';
+import { serverURL } from '../../../config.js';
 import {
   StyledButton,
   StyledLogPage,
@@ -46,7 +48,17 @@ const TeacherLanguageLevel = styled.span`
   }
 `
 
-export default function TeacherInfo ({handleCheck, handleChange}) {
+export default function TeacherInfo ({handleCheck, handleChange, languages, setLanguages, teacherInfoSubmit }) {
+  useEffect(() => {
+    axios.get(`${serverURL}/languages`)
+      .then((data) => {
+        var apiLanguages = data.data
+        setLanguages(apiLanguages);
+        console.log(apiLanguages);
+      }).catch((err) => {
+        console.log('err: ', err)
+      })
+  }, [])
   // const [formData, setFormData] = useState({
   //   level: '',
   // })
@@ -72,6 +84,25 @@ export default function TeacherInfo ({handleCheck, handleChange}) {
   //   setChecked(updatedList);
   //   console.log(checked);
   // };
+  var languageList = languages.map(language => {
+    return (
+      <label  key={language.lang_id}>
+        {language.lang_name}
+        <input value={language.lang_name} type="checkbox" onChange={handleCheck} />
+        <StyledLabel>
+          Level:
+          <StyledSelectInput name='english' onChange={handleChange} style={{height: '2rem', fontSize: '0.8rem', width: '4rem'}}>
+            <option value='1'>1</option>
+            <option value='2'>2</option>
+            <option value='3'>3</option>
+            <option value='4'>4</option>
+            <option value='5'>5</option>
+            <option value='AP'>AP</option>
+          </StyledSelectInput>
+        </StyledLabel>
+      </label>
+    )
+  })
 
   return (
     <StyledloginSignUpBox style={{height: '50rem', width: '50rem'}}>
@@ -81,117 +112,13 @@ export default function TeacherInfo ({handleCheck, handleChange}) {
         </h1>
           <StyledLabel style={{display: 'flex', flexDirection: 'column'}}>
             <TeacherLanguageLevel>
-              <label>
-                English:
-                <input value='english' type="checkbox" onChange={handleCheck} />
-                <StyledLabel>
-                  Level:
-                  <StyledSelectInput name='english' onChange={handleChange} style={{height: '2rem', fontSize: '0.8rem', width: '4rem'}}>
-                    <option value='1'>1</option>
-                    <option value='2'>2</option>
-                    <option value='3'>3</option>
-                    <option value='4'>4</option>
-                    <option value='5'>5</option>
-                    <option value='AP'>AP</option>
-                  </StyledSelectInput>
-                </StyledLabel>
-              </label>
-              <label>
-                Spanish:
-                <input value='spanish' type="checkbox" onChange={handleCheck} />
-                <StyledLabel>
-                  Level:
-                  <StyledSelectInput onChange={handleChange} name='spanish' style={{height: '2rem', fontSize: '0.8rem', width: '4rem'}}>
-                    <option value='1'>1</option>
-                    <option value='2'>2</option>
-                    <option value='3'>3</option>
-                    <option value='4'>4</option>
-                    <option value='5'>5</option>
-                    <option value='AP'>AP</option>
-                  </StyledSelectInput>
-                </StyledLabel>
-              </label>
-              <label>
-                Romanian:
-                <input value='romanian' type="checkbox" onChange={handleCheck} />
-                <StyledLabel>
-                  Level:
-                  <StyledSelectInput onChange={handleChange} name='romanian' style={{height: '2rem', fontSize: '0.8rem', width: '4rem'}}>
-                    <option value='1'>1</option>
-                    <option value='2'>2</option>
-                    <option value='3'>3</option>
-                    <option value='4'>4</option>
-                    <option value='5'>5</option>
-                    <option value='AP'>AP</option>
-                  </StyledSelectInput>
-                </StyledLabel>
-              </label>
-              <label>
-                French:
-                <input value='french' type="checkbox" onChange={handleCheck} />
-                <StyledLabel>
-                  Level:
-                  <StyledSelectInput onChange={handleChange} name='french' style={{height: '2rem', fontSize: '0.8rem', width: '4rem'}}>
-                    <option value='1'>1</option>
-                    <option value='2'>2</option>
-                    <option value='3'>3</option>
-                    <option value='4'>4</option>
-                    <option value='5'>5</option>
-                    <option value='AP'>AP</option>
-                  </StyledSelectInput>
-                </StyledLabel>
-              </label>
-              <label>
-                Portuguese:
-                <input value='portuguese' type="checkbox" onChange={handleCheck} />
-                <StyledLabel>
-                  Level:
-                  <StyledSelectInput onChange={handleChange} name='portuguese' style={{height: '2rem', fontSize: '0.8rem', width: '4rem'}}>
-                    <option value='1'>1</option>
-                    <option value='2'>2</option>
-                    <option value='3'>3</option>
-                    <option value='4'>4</option>
-                    <option value='5'>5</option>
-                    <option value='AP'>AP</option>
-                  </StyledSelectInput>
-                </StyledLabel>
-              </label>
-              <label>
-                Latin:
-                <input value='Latin' type="checkbox" onChange={handleCheck} />
-                <StyledLabel>
-                  Level:
-                  <StyledSelectInput onChange={handleChange} name='latin' style={{height: '2rem', fontSize: '0.8rem', width: '4rem'}}>
-                    <option value='1'>1</option>
-                    <option value='2'>2</option>
-                    <option value='3'>3</option>
-                    <option value='4'>4</option>
-                    <option value='5'>5</option>
-                    <option value='AP'>AP</option>
-                  </StyledSelectInput>
-                </StyledLabel>
-              </label>
-              <label>
-                Greek:
-                <input value='greek' type="checkbox" onChange={handleCheck} />
-                <StyledLabel>
-                  Level:
-                  <StyledSelectInput onChange={handleChange} name='greek' style={{height: '2rem', fontSize: '0.8rem', width: '4rem'}}>
-                    <option value='1'>1</option>
-                    <option value='2'>2</option>
-                    <option value='3'>3</option>
-                    <option value='4'>4</option>
-                    <option value='5'>5</option>
-                    <option value='AP'>AP</option>
-                  </StyledSelectInput>
-                </StyledLabel>
-              </label>
+              {languageList}
             </TeacherLanguageLevel>
           </StyledLabel>
         <StyledRightAlignedForms>
         </StyledRightAlignedForms>
-        <Link to="/teacherprofile">
-          <StyledSubmitInput value='SUBMIT'></StyledSubmitInput>
+        <Link to="/login">
+          <StyledSubmitInput value='SUBMIT' onClick={teacherInfoSubmit}></StyledSubmitInput>
         </Link>
       </StyledLoginSignUpForm>
     </StyledloginSignUpBox>

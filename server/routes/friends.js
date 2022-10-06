@@ -3,15 +3,29 @@ const router = express.Router();
 const friendModel = require('../models/friendModel.js');
 const accountModel = require('../models/accountModel.js');
 
+// GET REQUESTS //
+
+// Get desired languages for a given accountId
+// If accountId is not provided, retrieves info for requesting user
 router.get('/friend', (req, res, next) => {
-  let requesterId = req.user.id;
-  friendModel.findFriends(requesterId)
+  let requesterId = req.query.accountId || req.user.id;
+  friendModel.findFriendsInfo(requesterId)
     .then(({rows}) => {
       res.status(200).send(rows);
     })
-    .catch((error) => res.sendStatus(400));
+    .catch((error) => res.sendStatus(404));
 });
 
+router.get('/friend/requests', (req, res, next) => {
+  let requesterId = req.user.id;
+  friendModel.findFriendRequests(requesterId)
+    .then(({rows}) => {
+      res.status(200).send(rows);
+    })
+    .catch((error) => res.sendStatus(404));
+});
+
+// POST REQUESTS //
 
 // req.body.requestedId - Integer (receiver account id)
 router.post('/friend', (req, res, next) => {
@@ -43,6 +57,8 @@ router.post('/friend', (req, res, next) => {
 
 });
 
+// PUT / PATCH REQUESTS //
+
 //accept friend status
 //req.query.idToAccept
 router.put('/friend', (req, res, next) => {
@@ -52,6 +68,8 @@ router.put('/friend', (req, res, next) => {
     .then((connectionID) => res.status(202).send(connectionID))
     .catch((error) => res.sendStatus(400));
 });
+
+// DELETE REQUESTS //
 
 //delete friend or deny friend request
 //req.query.friend_id

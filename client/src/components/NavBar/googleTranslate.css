@@ -11,7 +11,7 @@
 }
 
 .skiptranslate {
-  color: #386A8F;
+  color: transparent;
   text-shadow: none;
 }
 
@@ -20,7 +20,7 @@
   margin-top: 1rem;
   color: #f5f5f5;
   font-size: 2rem;
-  background-color: #386A8F;
+  background-color: transparent;
   height: 2.5rem;
   border: none;
   text-shadow: 2px 2px #383838;
