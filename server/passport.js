@@ -33,7 +33,6 @@ module.exports = (passport) => {
     })
   );
   passport.serializeUser((user, done) => {
-    console.log("called");
     done(null, user);
   });
   passport.deserializeUser((user, done) => {
