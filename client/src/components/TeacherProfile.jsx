@@ -16,13 +16,14 @@ import {
   StyledEditProfileButton,
   IconCircleDiv,
   ProfileCalendarInfo,
+  SelectedTeacherFriend,
+  TeachingLanguageSpan
 } from './StyledComponents/StyledComponents.jsx'
 import axios from 'axios';
 import FormData from 'form-data'
 import TeacherClassListModal from './LoginSignup/Teacher/TeacherClassListModal.jsx';
 import { faChevronLeft, faChevronRight, faChevronUp, faChevronDown, faCalendar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import FriendsModal from './FriendsModal.jsx';
 import AddFriendModal from './AddFriendModal.jsx';
 import EditInfoModal from './EditInfoModal.jsx';
 import TeacherCalendar from '../components/LoginSignup/Teacher/TeacherCalendar.jsx';
@@ -86,10 +87,10 @@ export default function TeacherProfile(props) {
   const [teacherShow, setTeacherShow] = useState(false);
   const [show, setShow] = useState(false);
   const [addShow, setAddShow] = useState(false);
-  const [currentFriend, setCurrentFriend] = useState('');
+  const [currentFriend, setCurrentFriend] = useState(0);
   const [friendSearch, setFriendSearch] = useState('');
   const [editInfoShow, setEditInfoShow] = useState(false);
-  const [teacherId, setTeacherId] = useState(props.userid);
+  const [teacherId, setTeacherId] = useState('6');
   const [classes, setClasses] = useState([]);
   const [students, setStudents] = useState([]);
   const [modalClassName, setModalClassName] = useState('')
@@ -98,6 +99,11 @@ export default function TeacherProfile(props) {
   const [meetings, setMeetings] = useState([{receiver_id: 1, first_name: 'Greta', last_name: 'Grover', start_time: 'Wed, 05 Oct 2022 20:34:12 GMT', status: false }, { receiver_id: 2, first_name: 'Nick', last_name: 'Kozlarek', start_time: 'Thu, 06 Oct 2022 20:34:12 GMT', status: true },])
   const [pendingMeetings, setPendingMeetings] = useState([{requester_id: 1, first_name: 'Andrew', last_name: 'Cho', start_time: 'Thu, 06 Oct 2022 20:34:12 GMT', status: false }])
   const [pendingShow, setPendingShow] = useState(false)
+  const [selected, setSelected] = useState(null);
+  const [filteredFriends, setFilteredFriends] = useState(props.friends);
+  const [filtering, setFiltering] = useState(false);
+  const [friendSelected, setFriendSelected] = useState(false);
+  const [taughtLanguages, setTaughtLanguages] = useState([])
 
 
   var [x, setx] = useState(0);
@@ -114,13 +120,13 @@ export default function TeacherProfile(props) {
   // api requests to retrieve all necessary data
   const retrieveAccountInfo = axios.get(`${serverURL}/accounts/id`, {
     params: {
-      accountId: props.userid
+      accountId: 6
     }
   })
 
   const retrieveFriends = axios.get(`${serverURL}/friend`, {
     params: {
-      accountId: props.userid
+      accountId: 6
     }
   })
 
@@ -130,7 +136,7 @@ export default function TeacherProfile(props) {
 
     axios.get(`${serverURL}/classes`, { params: { teacher_id: props.userid } })
       .then((classData) => {
-        setClasses(classData.data)
+      setClasses(classData.data)
       })
       .catch((err) => { console.log('error getting classes ', err) })
 
@@ -148,29 +154,31 @@ export default function TeacherProfile(props) {
 
   useEffect(() => {
     Promise.all([retrieveAccountInfo, retrieveFriends, retrieveLanguages])
-      .then((data) => {
-        var apiAccountInfo = data[0].data;
-        var apiFriends = data[1].data;
-        var apiLanguages = data[2].data;
-        // setting account info
-        props.setEmail(apiAccountInfo.email);
-        props.setFirstName(apiAccountInfo.first_name);
-        props.setLastName(apiAccountInfo.last_name);
-        // setting friends
-        props.setFriends(apiFriends);
-        // setting languages
-        props.setLanguages(apiLanguages);
-        console.log(apiFriends);
-      }).catch((err) => {
-        console.log('error retrieving data', err);
-      });
+    .then((data) => {
+      var apiAccountInfo = data[0].data;
+      var apiFriends = data[1].data;
+      var apiLanguages = data[2].data;
+      // setting account info
+      props.setEmail(apiAccountInfo.email);
+      props.setFirstName(apiAccountInfo.first_name);
+      props.setLastName(apiAccountInfo.last_name);
+      // setting friends
+      props.setFriends(apiFriends);
+      // setting languages
+      props.setLanguages(apiLanguages);
+    }).catch((err) => {
+      console.log('error retrieving data', err);
+    });
   }, []);
 
   const onFriendClick = (e) => {
-    setShow(true);
-    setCurrentFriend(e.target.id);
-    console.log('clicking on friend')
+    setCurrentFriend(parseInt(e.target.id))
   }
+  // useEffect(() => {
+  //   if (currentFriend !== '') {
+  //     setShow(true);
+  //   }
+  // }, [currentFriend])
 
   const onAddFriendClick = () => {
     setAddShow(true);
@@ -178,7 +186,6 @@ export default function TeacherProfile(props) {
   const onClassListClick = (e, class_name) => {
     e.preventDefault()
     axios.get(`${serverURL}/classes/students`, { params: { class_id: e.target.id } }).then((students) => {
-      console.log(students.data)
       setStudents(students.data)
       setModalClassName(class_name)
       setClassShow(true)
@@ -194,12 +201,10 @@ export default function TeacherProfile(props) {
     setEditInfoShow(true);
   }
 
-  const [filteredFriends, setFilteredFriends] = useState(props.friends);
-  const [filtering, setFiltering] = useState(false);
+
 
   const filterFriends = (e) => {
     setFilteredFriends(props.friends.filter(function (str) {
-        console.log(str)
         var fullName = str.first_name + ' ' + str.last_name
         var lowered = fullName.toLowerCase();
         return lowered.includes(e.target.value);
@@ -210,9 +215,9 @@ export default function TeacherProfile(props) {
 
 
   const onCalendarClick = (dateTime, friend, user) => {
-    setPickDateShow(false)
-    console.log(dateTime.toUTCString())
-    var GMTTime = dateTime.toUTCString()
+  setPickDateShow(false)
+  console.log(dateTime.toUTCString())
+  var GMTTime = dateTime.toUTCString()
     axios.post(`${serverURL}/addMeeting`, { params: { req_account_id: props.userid, rec_account_id: friend, start_time: GMTTime } }).then((meetingsRes) => {
       console.log('meetings ', meetingsRes.data)
       setMeetings(meetingsRes.data)
@@ -220,7 +225,56 @@ export default function TeacherProfile(props) {
       console.log(err)
     })
 
-  }
+}
+
+const selectFriend = (e) => {
+  setSelected(e.target.id);
+  console.log(props.friends[e.target.id]);
+  axios.get(`${serverURL}/languages/taught`, {
+    params: {
+      accountId: 6
+    }
+  }).then((data) => {
+    console.log(data.data);
+    setTaughtLanguages(data.data);
+    setFriendSelected(true);
+  }).catch((err) => {
+    console.log(err);
+  })
+
+}
+
+const unfilteredFriends = props.friends.map((friend, index) => {
+    return (
+      <StyledFriend id={index} onClick={selectFriend} key={friend.account_id} >
+          <div style={{ fontWeight: 'bold' }}>{friend.first_name + ' ' + friend.last_name}</div>
+          {pickDateShow && <ScheduleModal onClose={(dateTime) => { onCalendarClick(dateTime, friend.account_id, teacherId) }} pickDateShow={pickDateShow} friend={friend} user={teacherId} />}
+            <StyledFriendIcons>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call" onClick={() => { setPickDateShow(true) }} />
+              <Link to="/messages">
+                <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend"/>
+              </Link>
+              <img src='https://i.pinimg.com/originals/1f/6f/48/1f6f482d8e1da80055ded006df4728e3.jpg' alt="message icon for starting a video chat"/>
+            </StyledFriendIcons>
+        </StyledFriend>
+    )
+})
+
+const filteredFriendsList = filteredFriends.map((friend, index) => {
+  return (
+    <StyledFriend  id={friend.account_id} onClick={selectFriend} key={friend.account_id}>
+      <div style={{ fontWeight: 'bold' }}>{friend.first_name + ' ' + friend.last_name}</div>
+      {pickDateShow && <ScheduleModal onClose={(dateTime) => { onCalendarClick(dateTime, friend.account_id, props.userid) }} pickDateShow={pickDateShow} friend={friend} user={props.userid} />}
+        <StyledFriendIcons>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call" onClick={() => { setPickDateShow(true) }} />
+          <Link to="/messages">
+              <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' />
+          </Link>
+          <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend" />
+        </StyledFriendIcons>
+    </StyledFriend>
+  )
+})
 
   return (
     <div>
@@ -244,28 +298,7 @@ export default function TeacherProfile(props) {
           {pendingMeetings.length > 0 && <StyledButton style={{ marginTop: '0rem', width: '12rem' }} onClick={() => { setPendingShow(true) }}>Pending Meetings</StyledButton>}
           {pendingShow && <PendingMeetingModal onClose={() => { setPendingShow(false) }} pendingMeetings={pendingMeetings} props={props} />}
         </ProfileCalendarInfo>
-        {/* <ProfileAccountInfo>
-          <h3><strong>Account Info</strong></h3>
-          <h4><strong>Teacher</strong></h4>
-          <table>
-            <tr>
-              <td>Name:</td>
-              <td>{props.firstName} {props.lastName}</td>
-            </tr>
-            <tr>
-              <td>E-mail:</td>
-              <td>{props.email}</td>
-            </tr>
-            <tr>
-              <td>Password:</td>
-              <td>*********</td>
-            </tr>
-          </table>
-          <StyledButton onClick={onEditInfo} style={{marginTop: '1rem'}}>EDIT INFO</StyledButton>
-        </ProfileAccountInfo>
-          </table> */}
 
-        {/* </ProfileAccountInfo> */}
         <ProfileFriendsList style={{ width: '30rem', left: '32%' }}>
           <StyledFriendSearchSpan>
             <h3><strong>Friends List</strong></h3>
@@ -273,38 +306,33 @@ export default function TeacherProfile(props) {
               <input name='friendfilter' type='text' placeholder='filter' onChange={filterFriends}></input>
             </StyledFriendSearch>
           </StyledFriendSearchSpan>
-          <p>{!filtering ?
-            props.friends.map((friend, index) => {
-              return (
-                <StyledFriend id={friend.account_id} key={friend.account_id} >
-                  <div style={{ fontWeight: 'bold' }} onClick={(onFriendClick)}>{friend.first_name + ' ' + friend.last_name}</div>
-                  {pickDateShow && <ScheduleModal onClose={(dateTime) => { onCalendarClick(dateTime, friend.account_id, teacherId) }} pickDateShow={pickDateShow} friend={friend} user={teacherId} />}
-                  <StyledFriendIcons>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call" onClick={() => { setPickDateShow(true) }} />
-                    <Link to="/messages">
-                      <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend"/>
-                    </Link>
-                    <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend" />
-                  </StyledFriendIcons>
-                </StyledFriend>
-              )
-            }) :
-            filteredFriends.map((friend, index) => {
-              return (
-                <StyledFriend id={friend.account_id} key={friend.account_id}>
-                 <div style={{ fontWeight: 'bold' }} onClick={(onFriendClick)}>{friend.first_name + ' ' + friend.last_name}</div>
-                  {pickDateShow && <ScheduleModal onClose={(dateTime) => { onCalendarClick(dateTime, friend.account_id, props.userid) }} pickDateShow={pickDateShow} friend={friend} user={props.userid} />}
-                  <StyledFriendIcons>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call" onClick={() => { setPickDateShow(true) }} />
-                    <Link to="/messages">
-                      <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' />
-                    </Link>
-                    <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend" />
-                  </StyledFriendIcons>
-                </StyledFriend>
-              )
-            })}
-          </p>
+          {!friendSelected ? <p>{!filtering ? unfilteredFriends : filteredFriendsList}</p> :
+            <SelectedTeacherFriend>
+              <span>
+                <h2>{props.friends[parseInt(selected)].first_name + ' ' + props.friends[parseInt(selected)].last_name}</h2>
+                <TeachingLanguageSpan>
+                  <h4>
+                    Languages Taught:
+                  </h4>
+                  <ul>
+                    {taughtLanguages.map((language, index) => {
+                      return (
+                        <li>
+                          {language.lang_name}
+                          <br/>
+                          Level Taught: {language.taught_level}
+                        </li>
+                      )
+                    })}
+                  </ul>
+                </TeachingLanguageSpan>
+              </span>
+              <StyledButton onClick={() => {
+                setFriendSelected(false);
+              }}>Back to Friends List</StyledButton>
+            </SelectedTeacherFriend>
+          }
+
 
           <StyledButton style={{ marginTop: '0rem', width: '12rem' }} onClick={onAddFriendClick}>ADD FRIEND</StyledButton>
           {teacherShow && <TeacherClassListModal onClose={() => setTeacherShow(false)} />}
@@ -330,7 +358,6 @@ export default function TeacherProfile(props) {
 
         </ProfileFriendsList>
       </ProfileContainer>
-      <FriendsModal onClose={() => setShow(false)} show={show} friend={currentFriend} />
       <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch} />
       <TeacherClassListModal onClose={() => setTeacherShow(false)} show={teacherShow} onFriendSearch={onFriendSearch} teacherId={teacherId} />
       <EditInfoModal onClose={() => setEditInfoShow(false)} show={editInfoShow} />
