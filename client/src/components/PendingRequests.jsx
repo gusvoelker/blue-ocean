@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
+import axios from 'axios';
+import { serverURL } from '../config.js';
 import {
   FriendsModalContainer,
   FriendsModalContent,
@@ -17,6 +19,7 @@ export default function PendingRequests (props) {
   }
 
   useEffect(() => {
+
     let nameArray = props.pendingRequests.map(user => {
       let obj = {
         friend_name: `${user.first_name} ${user.last_name}`,
@@ -29,6 +32,17 @@ export default function PendingRequests (props) {
 
   const [searchedFriends, setSearchedFriends] = useState(['Frodo', 'Gandalf', 'Legolas', 'Bilbo']);
 
+  const addFriend = (e) => {
+    axios.put(`${serverURL}/friend`, null, { params: {
+      idToAccept: e.target.id
+    }})
+    .then(response => console.log(response))
+  }
+
+  const removeFriend = (e) => {
+    console.log(e.target.id);
+  }
+
   return (
     <FriendsModalContainer>
       <ProfileFriendsList style={{position: 'relative', left: '0%'}}>
@@ -39,8 +53,8 @@ export default function PendingRequests (props) {
               <StyledFriend >
                 <div style={{ fontWeight: 'bold', height: '1rem' }}>{friend.friend_name}</div>
                 <StyledFriendIcons>
-                  <StyledButton style={{width: '6rem'}} id={friend.account_id}>ACCEPT</StyledButton>
-                  <StyledButton style={{width: '6rem'}} id={friend.account_id}>DECLINE</StyledButton>
+                  <StyledButton style={{width: '6rem'}} id={friend.id} onClick={addFriend}>ACCEPT</StyledButton>
+                  <StyledButton style={{width: '6rem'}} id={friend.id} onClick={removeFriend}>DECLINE</StyledButton>
                 </StyledFriendIcons>
               </StyledFriend>
             )
