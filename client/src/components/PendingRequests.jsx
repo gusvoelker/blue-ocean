@@ -25,6 +25,8 @@ export default function PendingRequests (props) {
 
   const [searchedFriends, setSearchedFriends] = useState(['Frodo', 'Gandalf', 'Legolas', 'Bilbo']);
 
+  const [test, setTest] = useState(['Frodo', 'Gandalf', 'Legolas', 'Bilbo']);
+
   return (
     <FriendsModalContainer>
       <ProfileFriendsList style={{position: 'relative', left: '0%'}}>

@@ -340,6 +340,7 @@ export default function TeacherProfile(props) {
           </p>
 
           <StyledButton style={{ marginTop: '0rem', width: '12rem' }} onClick={onAddFriendClick}>ADD FRIEND</StyledButton>
+          <StyledButton onClick={onPendingRequestsClick}>PENDING REQUESTS</StyledButton>
           {teacherShow && <TeacherClassListModal userId={teacherId} onClose={() => setTeacherShow(false)} show={teacherShow} />}
         </ProfileFriendsList>
         <ProfileFriendsList style={{width: '23rem', left: '71%'}}>
