@@ -90,6 +90,7 @@ export default function Login (props) {
       const res = await axios.post(`${serverURL}/login`, formData);
       console.log(res)
       props.onIdChange(res.data.id);
+      setUser(res.data.id)
       navigate("/teacherprofile")
     } catch (err) {
       console.log(err);
