@@ -11,7 +11,7 @@ import {
 import DateTimePicker from 'react-datetime-picker';
 
 
-export default function ScheduleModal({ onClose, friend, user_id }) {
+export default function ScheduleModal({ onClose, friend}) {
   const [value, onChange] = useState(new Date());
 
   return (

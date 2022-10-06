@@ -36,11 +36,11 @@ module.exports.findMeetingsRequests = (rec_account) => {
       FROM
         meetings m
       LEFT JOIN accounts a
-      ON m.rec_account_id = a.account_id
+      ON m.req_account_id = a.account_id
       WHERE
         rec_account_id='${rec_account}'
         AND start_time > now()
-        --AND m.status = false
+        AND m.status = false
       ORDER BY start_time
   `);
 }
@@ -106,8 +106,8 @@ module.exports.deleteMeeting1 = (requesterId, receiverId, meetingDateTime) => {
 module.exports.deleteMeeting2 = (requesterId, receiverId, meetingDateTime) => {
   return db.query(`
   DELETE FROM meetings
-  WHERE req_account_id = ${receiverId}
-  AND rec_account_id = ${requesterId}
+  WHERE req_account_id = '${receiverId}'
+  AND rec_account_id = '${requesterId}'
   AND Date(start_time) = '${meetingDateTime}'
   `)
 };

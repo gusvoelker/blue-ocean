@@ -139,12 +139,14 @@ export default function TeacherProfile(props) {
 
     axios.get(`${serverURL}/meetings`, { params: { user_id: props.userId } })
       .then((meetingsRes) => {
+        console.log('non pending meetings ', meetingsRes)
         setMeetings(meetingsRes.data)
       })
       .catch(err => { console.log('error getting meetings ', err) })
 
     axios.get(`${serverURL}/meetings/requests`, { params: { user_id: props.userId } })
       .then((pendingMeetings) => {
+        console.log('pending meetings 148 teacher profile', pendingMeetings)
         setPendingMeetings(pendingMeetings.data)
       })
   }, [])
@@ -165,7 +167,6 @@ export default function TeacherProfile(props) {
         props.setFriends(apiFriends);
         // setting languages
         props.setLanguages(apiLanguages);
-        console.log(apiFriends);
       }).catch((err) => {
         console.log('error retrieving data', err);
       });
@@ -217,13 +218,79 @@ export default function TeacherProfile(props) {
     setPickDateShow(false)
     console.log(dateTime.toUTCString())
     var GMTTime = dateTime.toUTCString()
-    axios.post(`${serverURL}/meetings`, { requesterId: props.userId, receiverId: friend, start_time: GMTTime  })
-    .then((meetingsRes) => {
-      console.log('meetings ', meetingsRes.data)
-      setMeetings(meetingsRes.data)
-    }).catch((err) => {
-      console.log(err)
-    })
+    axios.post(`${serverURL}/meetings`, { requesterId: props.userId, receiverId: friend, start_time: GMTTime })
+      .then((meetingsRes) => {
+        console.log('meetings ', meetingsRes.data)
+        setMeetings(meetingsRes.data)
+      }).catch((err) => {
+        console.log(err)
+      })
+
+  }
+
+  const handleDelete = (e, receiverId, requesterId, start_time) => {
+    e.preventDefault()
+    var start_time = new Date(start_time)
+    var GMTTime = start_time.toUTCString()
+    console.log('GMT time teacher meeting modal', GMTTime)
+    axios.delete(`${serverURL}/meetings`, { params: { receiverId: receiverId, requesterId: requesterId, dateTime: GMTTime } })
+      .then(() => {
+        axios.get(`${serverURL}/meetings`, { params: { user_id: props.userId } })
+          .then((meetingsRes) => {
+            console.log('non pending meetings ', meetingsRes)
+            setMeetings(meetingsRes.data)
+          })
+          .catch(err => { console.log('error getting meetings ', err) })
+      })
+      .catch(err => { console.log('error deleting meeting ', err) })
+  }
+  const acceptMeeting = (e, requesterId, receiverId, start_time) => {
+    e.preventDefault()
+    onClose()
+    var start_time = new Date(start_time)
+    var GMTtime = start_time.toUTCString()
+    axios.put(`${serverURL}/meetings`, { receiverId: receiverId, requesterId: requesterId, dateTime: GMTtime })
+      .then(() => {
+        axios.get(`${serverURL}/meetings`, { params: { user_id: props.userId } })
+          .then((meetingsRes) => {
+            console.log('non pending meetings ', meetingsRes)
+            setMeetings(meetingsRes.data)
+          })
+          .catch(err => { console.log('error getting meetings ', err) })
+
+        axios.get(`${serverURL}/meetings/requests`, { params: { user_id: props.userId } })
+          .then((pendingMeetings) => {
+            console.log('pending meetings ', pendingMeetings)
+            setPendingMeetings(pendingMeetings.data)
+          })
+
+      })
+      .catch(err => { console.log('error accepting meeting ', err) })
+
+  }
+
+  const denyMeeting = (e, requesterId, receiverId, start_time) => {
+    e.preventDefault()
+    onClose()
+    var start_time = new Date(start_time)
+    var GMTtime = start_time.toUTCString()
+    axios.delete(`${serverURL}/meetings`, { params: { receiverId: receiverId, requesterId: requesterId, dateTime: GMTtime } })
+      .then(() => {
+        axios.get(`${serverURL}/meetings`, { params: { user_id: props.userId } })
+          .then((meetingsRes) => {
+            console.log('non pending meetings ', meetingsRes)
+            setMeetings(meetingsRes.data)
+          })
+          .catch(err => { console.log('error getting meetings ', err) })
+
+        axios.get(`${serverURL}/meetings/requests`, { params: { user_id: props.userId } })
+          .then((pendingMeetings) => {
+            console.log('pending meetings ', pendingMeetings)
+            setPendingMeetings(pendingMeetings.data)
+          })
+
+      })
+      .catch(err => { console.log('error denying meeting ', err) })
 
   }
 
@@ -245,9 +312,9 @@ export default function TeacherProfile(props) {
         }
         <ProfileCalendarInfo>
 
-          <TeacherCalendar teacherId={teacherId} meetings={meetings} />
+          <TeacherCalendar teacherId={teacherId} meetings={meetings} handleDelete={handleDelete} />
           {pendingMeetings.length > 0 && <StyledButton style={{ marginTop: '0rem', width: '12rem' }} onClick={() => { setPendingShow(true) }}>Pending Meetings</StyledButton>}
-          {pendingShow && <PendingMeetingModal onClose={() => { setPendingShow(false) }} pendingMeetings={pendingMeetings} teacherId={teacherId} />}
+          {pendingShow && <PendingMeetingModal onClose={() => { setPendingShow(false) }} pendingMeetings={pendingMeetings} teacherId={teacherId} acceptMeeting={acceptMeeting} denyMeeting={denyMeeting} />}
         </ProfileCalendarInfo>
         {/* <ProfileAccountInfo>
           <h3><strong>Account Info</strong></h3>
@@ -298,7 +365,7 @@ export default function TeacherProfile(props) {
               return (
                 <StyledFriend id={friend} key={index}>
                   <div style={{ fontWeight: 'bold' }} onClick={(onFriendClick)}>{friend}</div>
-                  {pickDateShow && <ScheduleModal onClose={(dateTime) => { onCalendarClick(dateTime, friend.account_id, props.userId) }} friend={friend}/>}
+                  {pickDateShow && <ScheduleModal onClose={(dateTime) => { onCalendarClick(dateTime, friend.account_id, props.userId) }} friend={friend} />}
                   <StyledFriendIcons>
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call" onClick={() => { setPickDateShow(true) }} />
                     <Link to="/messages">
@@ -314,14 +381,14 @@ export default function TeacherProfile(props) {
           <StyledButton style={{ marginTop: '0rem', width: '12rem' }} onClick={onAddFriendClick}>ADD FRIEND</StyledButton>
           {teacherShow && <TeacherClassListModal userId={teacherId} onClose={() => setTeacherShow(false)} show={teacherShow} />}
         </ProfileFriendsList>
-        <ProfileFriendsList style={{width: '23rem', left: '71%'}}>
-          <StyledFriendSearchSpan style={{justifyContent: 'center'}}>
+        <ProfileFriendsList style={{ width: '23rem', left: '71%' }}>
+          <StyledFriendSearchSpan style={{ justifyContent: 'center' }}>
             <h3><strong>Class List</strong></h3>
           </StyledFriendSearchSpan>
           <p>
             {classes.map(teacherClass => {
               return (
-                <StyledFriend key={teacherClass.class_id} id={teacherClass.class_id} onClick={(e)=>{onClassListClick(e, teacherClass.class_name)}} >
+                <StyledFriend key={teacherClass.class_id} id={teacherClass.class_id} onClick={(e) => { onClassListClick(e, teacherClass.class_name) }} >
                   <div style={{ fontWeight: 'bold' }} >{teacherClass.class_name}</div>
                   <StyledFriendIcons>
                   </StyledFriendIcons>
@@ -329,8 +396,8 @@ export default function TeacherProfile(props) {
               )
             })}
           </p>
-          {classShow && <ClassListModal onClose={()=>setClassShow(false)} classShow={classShow} modalClassName={modalClassName} students={students}/>}
-          <StyledButton style={{ marginTop: '0rem', marginLeft: '1rem', width: '12rem'}} onClick={()=> {setTeacherShow(true)}}>ADD CLASS LIST</StyledButton>
+          {classShow && <ClassListModal onClose={() => setClassShow(false)} classShow={classShow} modalClassName={modalClassName} students={students} />}
+          <StyledButton style={{ marginTop: '0rem', marginLeft: '1rem', width: '12rem' }} onClick={() => { setTeacherShow(true) }}>ADD CLASS LIST</StyledButton>
 
 
         </ProfileFriendsList>
