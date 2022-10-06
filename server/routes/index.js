@@ -5,5 +5,6 @@ module.exports = {
   chats: require("./chats.js"),
   friends: require("./friends.js"),
   classes: require("./classes.js"),
-  ratings: require("./ratings.js")
+  ratings: require("./ratings.js"),
+  meetings: require("./meetings.js")
 };
