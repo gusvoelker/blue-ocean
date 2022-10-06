@@ -86,8 +86,8 @@ router.post("/logout", (req, res, next) => {
 // Users should not be able to access any resources without being signed in
 router.use('/', (req, res, next) => {
   req.user = { // DEBUG: Uncomment this if testing routes without auth
-    id: 5,
-    isTeacher: false // Can set to true or false depending on which user is being tested
+    id: 6,
+    isTeacher: true // Can set to true or false depending on which user is being tested
   }
   if (!req.user) {
     res.status(403).send('Login required');

@@ -8,6 +8,7 @@ import {
   ProfileFriendsList,
   StyledSelectInput,
   StyledFriend,
+  StyledFriendIcons,
 } from './StyledComponents/StyledComponents.jsx';
 
 export default function PendingRequests (props) {
@@ -24,39 +25,19 @@ export default function PendingRequests (props) {
 
   const [searchedFriends, setSearchedFriends] = useState(['Frodo', 'Gandalf', 'Legolas', 'Bilbo']);
 
-  const handleSelect = (e) => {
-    var accounts = []
-    var language = e.target.value;
-    axios.get(`${serverURL}/accounts`)
-      .then((data) => {
-        accounts = data
-      }).catch((err) => {
-        console.log(err);
-      })
-    // function to filter out all users that aren't learning that language
-  }
-
   return (
     <FriendsModalContainer>
-      {/* <FriendsModalContent>
-        <h4>
-          ADD FRIEND
-        </h4>
-        <input type="text" onChange={props.onFriendClick}></input>
-        <br></br>
-        <br></br>
-        <StyledButton onClick={props.onClose}>Close</StyledButton>
-      </FriendsModalContent> */}
       <ProfileFriendsList style={{position: 'relative', left: '0%'}}>
         <h3 style={{marginTop: '-0.5rem'}}><strong>Pending Requests</strong></h3>
         <p style={{height: '15rem'}}>
-          {searchedFriends.map((friend) => {
+          {test.map((friend) => {
             return (
               <StyledFriend >
                 <div style={{ fontWeight: 'bold', height: '1rem' }}>{friend}</div>
-                <StyledButton style={{ marginTop: '0rem', marginLeft: '24rem', position: 'absolute', width: '6rem'}}>ACCEPT</StyledButton>
-                {/*TODO: fix position of accept button*/}
-                <StyledButton style={{ marginTop: '0rem', position: 'relative', width: '6rem'}}>DECLINE</StyledButton>
+                <StyledFriendIcons>
+                  <StyledButton style={{width: '6rem'}}>ACCEPT</StyledButton>
+                  <StyledButton style={{width: '6rem'}}>DECLINE</StyledButton>
+                </StyledFriendIcons>
               </StyledFriend>
             )
           })}
