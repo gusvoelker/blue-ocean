@@ -1,0 +1,46 @@
+.goog-logo-link {
+  display:none !important;
+}
+
+/* .goog-te-gadget{
+  color: transparent !important;
+  padding-left: 50px;
+} */
+.goog-te-banner-frame{
+  display:none !important;
+}
+
+.skiptranslate {
+  color: transparent;
+  text-shadow: none;
+}
+
+#translate2 select {
+  display: block;
+  margin-top: 1rem;
+  color: #383838;
+  font-size: 2rem;
+  background-color: transparent;
+  height: 2.5rem;
+  border: none;
+  text-shadow: 2px 2px #383838;
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  margin-right: 0rem;
+  appearance: none;
+  text-align: right;
+  overflow: hidden;
+  padding: 0px;
+  outline:0px;
+  text-shadow: 2px 2px #383838;
+    transition: 0.3s;
+    color: #f5f5f5;
+  }
+
+  #translate2 select:hover {
+    text-shadow: 4px 4px 4px #383838;
+  }
+/* .links {
+  height: 60px;
+
+} */

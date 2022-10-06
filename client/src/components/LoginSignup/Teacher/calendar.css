@@ -1,0 +1,23 @@
+.react-calendar__viewContainer {
+  padding-top: 0px;
+}
+.react-calendar__month-view{
+  padding-top: 0px;
+}
+.react-calendar__month-view__weekdays {
+  padding: 0px !important;
+}
+.react-calendar__navigation {
+  margin-bottom: 0px !important;
+}
+abbr {
+  color: black;
+}
+.react-calendar {
+  margin-bottom: 20px;
+}
+.highlight {
+  background-color: red !important;
+  border: 2px red;
+  color: red !important;
+}

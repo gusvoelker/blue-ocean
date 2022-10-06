@@ -16,21 +16,6 @@ pool.on('error', (err, client) => {
   process.exit(-1);
 });
 
-console.log('Connected to PostgreSQL pool @ host ', process.env.PG_HOST);
+console.log('Connected to PostgreSQL pool @ host', process.env.PG_HOST);
 
-module.exports.poolQuery = (query) => {
-  return pool
-    .connect()
-    .then(client => {
-      return client
-        .query(query)
-        .then(res => {
-          client.release();
-          return res;
-        })
-        .catch(err => {
-          client.release();
-          return err;
-        });
-    });
-};
+module.exports = pool;

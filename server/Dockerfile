@@ -8,6 +8,7 @@ COPY package*.json ./
 
 # Installs dependencies for production
 RUN npm install --omit=dev
+#RUN psql postgres < schema.sql
 
 # Bundle app source
 COPY . .
