@@ -18,20 +18,19 @@ export default function TeacherCalendar({ props, meetings }) {
   const [open, setOpen] = useState(false)
   const [meetingsOnDay, setMeetingsOnDay] = useState([])
   const [daysToHighlight, setDaysToHighlight] = useState([])
+  const [calendarClickedDay, setCalendarClickedDay] = useState({})
 
   function isSameDay(a, b) {
     return differenceInCalendarDays(a, b) === 0;
   }
 
   const onCalendarClick = () => {
-    onChange()
     console.log('click', value)
-    console.log('is same day ', isSameDay(value, datesToAddContentTo[0]))
     setOpen(true)
+    setCalendarClickedDay(value)
     var meetingsOnDayArray = []
     meetings.forEach(meeting => {
       var dateObj = new Date(meeting.start_time)
-      console.log(typeof dateObj, dateObj.toLocaleTimeString())
       if (isSameDay(dateObj, value)) {
         meeting.dateObj = dateObj.toLocaleTimeString();
         meetingsOnDayArray.push(meeting)
@@ -39,6 +38,7 @@ export default function TeacherCalendar({ props, meetings }) {
 
     })
     setMeetingsOnDay(meetingsOnDayArray)
+
   }
 
   useEffect(()=>{
@@ -52,14 +52,14 @@ export default function TeacherCalendar({ props, meetings }) {
 
   return (
     <>
-      <Calendar onChange={onCalendarClick} value={value} tileClassName={({date, view}) => {
+      <Calendar onChange={onChange} onClickDay={onCalendarClick} value={value} tileClassName={({date, view}) => {
         for (var i=0; i<daysToHighlight.length; i++) {
           if (isSameDay(daysToHighlight[i], date)) {
             return 'highlight'
           }
         }
       }}/>
-      {open && <TeacherMeetingModal onClose={() => { setOpen(false) }} open={open} meetingsOnDay={meetingsOnDay} value={value} props={props}/>}
+      {open && <TeacherMeetingModal onClose={() => { setOpen(false) }} open={open} meetingsOnDay={meetingsOnDay} day={value} props={props}/>}
 
     </>
 

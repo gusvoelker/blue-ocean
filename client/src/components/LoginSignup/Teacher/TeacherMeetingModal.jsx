@@ -12,7 +12,7 @@ import {serverURL} from '../../../config.js'
 
 export default function TeacherMeetingModal({ onClose, open, meetingsOnDay, day, props }) {
   console.log('day in modal ', typeof day, day)
-  var dateString = day
+  var dateString = day.toLocaleDateString()
 
   const handleDelete = (userId, start_time) => {
     axios.put(`${serverURL}/meetings/delete`, {params: {receiverId: props.userId, requesterID: userId, start_time}})
