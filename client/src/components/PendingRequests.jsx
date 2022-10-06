@@ -48,17 +48,15 @@ export default function PendingRequests (props) {
         <StyledButton onClick={props.onClose}>Close</StyledButton>
       </FriendsModalContent> */}
       <ProfileFriendsList style={{position: 'relative', left: '0%'}}>
-        <h3 style={{marginTop: '-0.5rem'}}><strong>Add Friends</strong></h3>
-        <StyledSelectInput style={{marginTop: '-2rem'}}>
-          <option value='teacher'>Teacher</option>
-          <option value='user'>User</option>
-        </StyledSelectInput>
+        <h3 style={{marginTop: '-0.5rem'}}><strong>Pending Requests</strong></h3>
         <p style={{height: '15rem'}}>
           {searchedFriends.map((friend) => {
             return (
               <StyledFriend >
                 <div style={{ fontWeight: 'bold', height: '1rem' }}>{friend}</div>
-                <StyledButton style={{ marginTop: '0rem', width: '8rem'}}>ADD FRIEND</StyledButton>
+                <StyledButton style={{ marginTop: '0rem', marginLeft: '24rem', position: 'absolute', width: '6rem'}}>ACCEPT</StyledButton>
+                {/*TODO: fix position of accept button*/}
+                <StyledButton style={{ marginTop: '0rem', position: 'relative', width: '6rem'}}>DECLINE</StyledButton>
               </StyledFriend>
             )
           })}
