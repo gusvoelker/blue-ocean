@@ -51,11 +51,13 @@ module.exports.requestMeeting = (requesterId, receiverId, meetingDateTime) => {
     INSERT INTO meetings(
       req_account_id,
       rec_account_id,
-      start_time
+      start_time,
+      status
     ) VALUES (
       '${requesterId}',
       '${receiverId}',
-      '${meetingDateTime}'
+      '${meetingDateTime}',
+      false
     )
     RETURNING conn_id
   `)
@@ -97,7 +99,7 @@ module.exports.deleteMeeting1 = (requesterId, receiverId, meetingDateTime) => {
   DELETE FROM meetings
   WHERE req_account_id = ${requesterId}
   AND rec_account_id = ${receiverId}
-  AND start_time = '${meetingDateTime}'
+  AND Date(start_time) = '${meetingDateTime}'
   `)
 };
 
@@ -106,6 +108,6 @@ module.exports.deleteMeeting2 = (requesterId, receiverId, meetingDateTime) => {
   DELETE FROM meetings
   WHERE req_account_id = ${receiverId}
   AND rec_account_id = ${requesterId}
-  AND start_time = '${meetingDateTime}'
+  AND Date(start_time) = '${meetingDateTime}'
   `)
 };
