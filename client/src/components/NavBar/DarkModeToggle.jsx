@@ -13,18 +13,18 @@ export default function ThemeToggleButton ({ setDarkTheme, darkTheme }) {
   }
   if (!darkTheme) {
     return (
-      <ThemeToggle onClick={handleThemeToggle} style={{backgroundColor: '#386A8F', boxShadow: '0px 5px 5px #383838'}}>
-        Change Theme
-        <OuterToggle><InnerToggle></InnerToggle></OuterToggle>
+      <ThemeToggle onClick={handleThemeToggle}>
+        <img src='https://cdn.iconscout.com/icon/free/png-256/moon-1522720-1289406.png'/>
       </ThemeToggle>
     )
   } else {
     return (
       <ThemeToggle onClick={handleThemeToggle}>
-        <span>
+        {/* <span>
           Change Theme:
         </span>
-        <OuterToggle><InnerToggle style={{float: 'right', backgroundColor: '#386A8F'}}></InnerToggle></OuterToggle>
+        <OuterToggle><InnerToggle style={{float: 'right', backgroundColor: '#386A8F'}}></InnerToggle></OuterToggle> */}
+        <img src='https://www.nicepng.com/png/full/121-1215503_sun-icon-white-sun-blue-background.png'/>
       </ThemeToggle>
     )
   }

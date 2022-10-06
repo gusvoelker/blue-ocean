@@ -10,37 +10,11 @@ import {
 import {serverURL} from '../../../config.js'
 import axios from 'axios'
 
-export default function PendingMeetingModal({ onClose, pendingMeetings, teacherId }) {
+export default function PendingMeetingModal({ onClose, pendingMeetings, teacherId, acceptMeeting, denyMeeting }) {
   const [allPendingMeetings, setAllPendingMeetings] = useState(pendingMeetings)
-  const [updatedPendingMeeting, setUpdatedPendingMeeting] = useState([])
+  const [updatedPendingMeeting, setUpdatedPendingMeeting] = useState(null)
 
-  const acceptMeeting = (e, requesterId, receiverId, start_time) => {
-    e.preventDefault()
-    onClose()
-    var start_time = new Date(start_time)
-    var GMTtime = start_time.toUTCString()
-    axios.put(`${serverURL}/meetings`, {receiverId: receiverId, requesterId: requesterId, dateTime: GMTtime})
-    .then((returnedPendingMeetings) =>{
-      // setPendingMeetings(returnedPendingMeetings.data)
 
-    })
-    .catch(err=>{console.log('error accepting meeting ', err)})
-
-  }
-
-  const denyMeeting = (e, requesterId, receiverId,  start_time) => {
-    e.preventDefault()
-    onClose()
-    var start_time = new Date(start_time)
-    var GMTtime = start_time.toUTCString()
-    axios.delete(`${serverURL}/meetings`, {params: {receiverId: receiverId, requesterId: requesterId, dateTime: GMTtime}})
-    .then((returnedPendingMeetings) =>{
-      // setPendingMeetings(returnedPendingMeetings.data)
-
-    })
-    .catch(err=>{console.log('error denying meeting ', err)})
-
-  }
   useEffect(() => {
     var pendingMeetingsArray = []
     allPendingMeetings.forEach(meeting => {
@@ -49,7 +23,6 @@ export default function PendingMeetingModal({ onClose, pendingMeetings, teacherI
       meeting.dateObj = dateObj.toLocaleDateString();
       pendingMeetingsArray.push(meeting)
     })
-    console.log('pending meetings ', pendingMeetingsArray)
     setUpdatedPendingMeeting(pendingMeetingsArray)
   }, [allPendingMeetings])
 
@@ -60,11 +33,17 @@ export default function PendingMeetingModal({ onClose, pendingMeetings, teacherI
           Your Pending Meeting Requests
         </h4>
         <div>
-          {updatedPendingMeeting.map((pending, index) => (
+          {updatedPendingMeeting && updatedPendingMeeting.map((pending, index) => (
             <div key={index}>
               <span>{pending.first_name} {pending.last_name} on {pending.dateObj} at {pending.timeObj}</span> <br></br>
-              <StyledButton onClick={(e)=>{acceptMeeting(e, pending.req_account_id, pending.rec_account_id, pending.start_time)}}>Accept</StyledButton>
-              <StyledButton onClick={(e)=>{denyMeeting(e, pending.req_account_id, pending.rec_account_id, pending.start_time)}}>Deny</StyledButton>
+              <StyledButton onClick={(e)=>{
+                acceptMeeting(e, pending.req_account_id, pending.rec_account_id, pending.start_time);
+                onClose();
+                }}>Accept</StyledButton>
+              <StyledButton onClick={(e)=>{
+                denyMeeting(e, pending.req_account_id, pending.rec_account_id, pending.start_time);
+                onClose();
+                }}>Deny</StyledButton>
             </div>
           ))}
         </div>

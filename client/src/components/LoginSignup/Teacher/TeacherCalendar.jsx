@@ -12,13 +12,11 @@ import { differenceInCalendarDays } from 'date-fns';
 import TeacherMeetingModal from './TeacherMeetingModal.jsx'
 
 
-export default function TeacherCalendar({ teacherId, meetings }) {
+export default function TeacherCalendar({ teacherId, meetings, handleDelete }) {
   const [value, onChange] = useState(new Date());
-  const datesToAddContentTo = [new Date('Wed, 05 Oct 2022 20:34:12 GMT')];
   const [open, setOpen] = useState(false)
   const [meetingsOnDay, setMeetingsOnDay] = useState([])
   const [daysToHighlight, setDaysToHighlight] = useState([])
-  const [calendarClickedDay, setCalendarClickedDay] = useState({})
   const [allMeetings, setAllMeetings] = useState(meetings)
 
   function isSameDay(a, b) {
@@ -26,11 +24,8 @@ export default function TeacherCalendar({ teacherId, meetings }) {
   }
 
   const onCalendarClick = () => {
-    console.log('click', value)
-    setOpen(true)
-    setCalendarClickedDay(value)
     var meetingsOnDayArray = []
-    allMeetings.forEach(meeting => {
+    meetings.forEach(meeting => {
       var dateObj = new Date(meeting.start_time)
       if (isSameDay(dateObj, value)) {
         meeting.dateObj = dateObj.toLocaleTimeString();
@@ -38,19 +33,21 @@ export default function TeacherCalendar({ teacherId, meetings }) {
       }
 
     })
-    console.log('meetingsOnDay ', meetingsOnDayArray)
     setMeetingsOnDay(meetingsOnDayArray)
+      setOpen(true)
+
 
   }
 
+
   useEffect(()=>{
     var highlight = []
-    allMeetings.forEach(meeting =>{
+    meetings.forEach(meeting =>{
       var dateObj = new Date(meeting.start_time)
       highlight.push(dateObj)
     })
     setDaysToHighlight(highlight)
-  }, [])
+  }, [meetings])
 
   return (
     <>
@@ -61,7 +58,7 @@ export default function TeacherCalendar({ teacherId, meetings }) {
           }
         }
       }}/>
-      {open && <TeacherMeetingModal onClose={() => { setOpen(false) }} open={open} meetingsOnDay={meetingsOnDay} day={value} teacherId={teacherId}/>}
+      {open && <TeacherMeetingModal onClose={() => { setOpen(false) }} open={open} meetingsOnDay={meetingsOnDay} day={value} teacherId={teacherId} handleDelete={handleDelete}/>}
 
     </>
 
