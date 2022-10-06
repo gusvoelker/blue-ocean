@@ -10,25 +10,33 @@ import {
 import {serverURL} from '../../../config.js'
 import axios from 'axios'
 
-export default function PendingMeetingModal({ onClose, pendingMeetings, props }) {
+export default function PendingMeetingModal({ onClose, pendingMeetings, teacherId }) {
   const [allPendingMeetings, setAllPendingMeetings] = useState(pendingMeetings)
   const [updatedPendingMeeting, setUpdatedPendingMeeting] = useState([])
 
-  const acceptMeeting = (userId, start_time) => {
-    axios.put(`${serverURL}/meetings`, {params: {receiverId: props.userId, requesterID: userId, start_time}})
+  const acceptMeeting = (e, requesterId, receiverId, start_time) => {
+    e.preventDefault()
+    onClose()
+    var start_time = new Date(start_time)
+    var GMTtime = start_time.toUTCString()
+    axios.put(`${serverURL}/meetings`, {receiverId: receiverId, requesterId: requesterId, dateTime: GMTtime})
     .then((returnedPendingMeetings) =>{
-      setPendingMeetings(returnedPendingMeetings.data)
-      onClose()
+      // setPendingMeetings(returnedPendingMeetings.data)
+
     })
     .catch(err=>{console.log('error accepting meeting ', err)})
 
   }
 
-  const denyMeeting = (userId, start_time) => {
-    axios.put(`${serverURL}/meetings/delete`, {params: {receiverId: props.userId, requesterID: userId, start_time}})
+  const denyMeeting = (e, requesterId, receiverId,  start_time) => {
+    e.preventDefault()
+    onClose()
+    var start_time = new Date(start_time)
+    var GMTtime = start_time.toUTCString()
+    axios.delete(`${serverURL}/meetings`, {params: {receiverId: receiverId, requesterId: requesterId, dateTime: GMTtime}})
     .then((returnedPendingMeetings) =>{
-      setPendingMeetings(returnedPendingMeetings.data)
-      onClose()
+      // setPendingMeetings(returnedPendingMeetings.data)
+
     })
     .catch(err=>{console.log('error denying meeting ', err)})
 
@@ -37,9 +45,11 @@ export default function PendingMeetingModal({ onClose, pendingMeetings, props })
     var pendingMeetingsArray = []
     allPendingMeetings.forEach(meeting => {
       var dateObj = new Date(meeting.start_time)
-      meeting.dateObj = dateObj.toLocaleTimeString();
+      meeting.timeObj = dateObj.toLocaleTimeString();
+      meeting.dateObj = dateObj.toLocaleDateString();
       pendingMeetingsArray.push(meeting)
     })
+    console.log('pending meetings ', pendingMeetingsArray)
     setUpdatedPendingMeeting(pendingMeetingsArray)
   }, [allPendingMeetings])
 
@@ -50,12 +60,12 @@ export default function PendingMeetingModal({ onClose, pendingMeetings, props })
           Your Pending Meeting Requests
         </h4>
         <div>
-          {updatedPendingMeeting.map(pending => (
-            <>
-              <span>{pending.first_name} {pending.last_name} at {pending.dateObj}</span> <br></br>
-              <StyledButton onClick={acceptMeeting(pending.requester_id, pending.start_time)}>Accept</StyledButton>
-              <StyledButton onClick={denyMeeting}>Deny</StyledButton>
-            </>
+          {updatedPendingMeeting.map((pending, index) => (
+            <div key={index}>
+              <span>{pending.first_name} {pending.last_name} on {pending.dateObj} at {pending.timeObj}</span> <br></br>
+              <StyledButton onClick={(e)=>{acceptMeeting(e, pending.req_account_id, pending.rec_account_id, pending.start_time)}}>Accept</StyledButton>
+              <StyledButton onClick={(e)=>{denyMeeting(e, pending.req_account_id, pending.rec_account_id, pending.start_time)}}>Deny</StyledButton>
+            </div>
           ))}
         </div>
 
