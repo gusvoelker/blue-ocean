@@ -146,6 +146,10 @@ export default function Profile (props) {
   }
 
   const onPendingRequestsClick = () => {
+    axios.get(`${serverURL}/friend/requests`)
+    .then(({data}) => {
+      console.log(data);
+    })
     setShowPending(true);
   }
   const onFriendSearch = (e) => {
