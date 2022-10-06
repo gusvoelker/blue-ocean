@@ -23,6 +23,28 @@ module.exports.findMeetings = (req_account) => {
   `);
 }
 
+module.exports.findMeetingsRequests = (rec_account) => {
+  console.log("account is this", rec_account)
+  return db.query(`
+    SELECT m.conn_id,
+      m.req_account_id,
+      m.rec_account_id,
+      m.start_time,
+      a.first_name,
+      a.last_name,
+      m.status
+      FROM
+        meetings m
+      LEFT JOIN accounts a
+      ON m.rec_account_id = a.account_id
+      WHERE
+        rec_account_id='${rec_account}'
+        AND start_time > now()
+        AND m.status = false
+      ORDER BY start_time
+  `);
+}
+
 module.exports.requestMeeting = (requesterId, receiverId, meetingDateTime) => {
   console.log(requesterId, receiverId, meetingDateTime)
   return db.query(`
@@ -31,7 +53,6 @@ module.exports.requestMeeting = (requesterId, receiverId, meetingDateTime) => {
       rec_account_id,
       start_time
     ) VALUES (
-      '${description}',
       '${requesterId}',
       '${receiverId}',
       '${meetingDateTime}'
@@ -41,14 +62,39 @@ module.exports.requestMeeting = (requesterId, receiverId, meetingDateTime) => {
 };
 
 
-module.exports.acceptMeeting = () => {
+module.exports.createMeeting = (requesterId, receiverId, meetingDateTime) => {
   return db.query(`
+    INSERT INTO meetings(
+      req_account_id,
+      rec_account_id,
+      start_time,
+      status
+    ) VALUES (
+      '${requesterId}',
+      '${receiverId}',
+      '${meetingDateTime}',
+      true
+    )
+    RETURNING conn_id
+  `)
+};
 
+module.exports.acceptMeeting = (requesterId, receiverId) => {
+  return db.query(`
+    UPDATE meetings
+    SET status = TRUE
+    WHERE req_account_id = ${requesterId}
+    AND rec_account_id = ${receiverId}
+    ;
   `)
 };
 
 
 module.exports.deleteMeeting = (requesterId, receiverId, meetingDateTime) => {
-  return query(`
+  return db.query(`
+  DELETE FROM meetings
+  WHERE req_account_id = ${requesterId}
+  AND rec_account_id = ${receiverId}
+  AND start_time = meetingDateTime
   `)
 };
