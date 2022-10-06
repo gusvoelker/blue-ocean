@@ -90,14 +90,16 @@ export default function TeacherProfile(props) {
   const [currentFriend, setCurrentFriend] = useState(0);
   const [friendSearch, setFriendSearch] = useState('');
   const [editInfoShow, setEditInfoShow] = useState(false);
-  const [teacherId, setTeacherId] = useState('6');
+  const [teacherId, setTeacherId] = useState(props.userId);
   const [classes, setClasses] = useState([]);
   const [students, setStudents] = useState([]);
   const [modalClassName, setModalClassName] = useState('')
   const [classShow, setClassShow] = useState(false)
   const [pickDateShow, setPickDateShow] = useState(false);
-  const [meetings, setMeetings] = useState([{receiver_id: 1, first_name: 'Greta', last_name: 'Grover', start_time: 'Wed, 05 Oct 2022 20:34:12 GMT', status: false }, { receiver_id: 2, first_name: 'Nick', last_name: 'Kozlarek', start_time: 'Thu, 06 Oct 2022 20:34:12 GMT', status: true },])
-  const [pendingMeetings, setPendingMeetings] = useState([{requester_id: 1, first_name: 'Andrew', last_name: 'Cho', start_time: 'Thu, 06 Oct 2022 20:34:12 GMT', status: false }])
+  const [meetings, setMeetings] = useState([])
+  // const [meetings, setMeetings] = useState([{receiver_id: 1, first_name: 'Greta', last_name: 'Grover', start_time: 'Wed, 05 Oct 2022 20:34:12 GMT', status: false }, { receiver_id: 2, first_name: 'Nick', last_name: 'Kozlarek', start_time: 'Thu, 06 Oct 2022 20:34:12 GMT', status: true },])
+  const [pendingMeetings, setPendingMeetings] = useState([])
+  // const [pendingMeetings, setPendingMeetings] = useState([{requester_id: 1, first_name: 'Andrew', last_name: 'Cho', start_time: 'Thu, 06 Oct 2022 20:34:12 GMT', status: false }])
   const [pendingShow, setPendingShow] = useState(false)
   const [selected, setSelected] = useState(null);
   const [filteredFriends, setFilteredFriends] = useState(props.friends);
@@ -120,33 +122,37 @@ export default function TeacherProfile(props) {
   // api requests to retrieve all necessary data
   const retrieveAccountInfo = axios.get(`${serverURL}/accounts/id`, {
     params: {
-      accountId: 6
+      accountId: props.userId
     }
   })
 
   const retrieveFriends = axios.get(`${serverURL}/friend`, {
     params: {
-      accountId: 6
+      accountId: props.userId
     }
   })
 
   const retrieveLanguages = axios.get(`${serverURL}/languages`);
 
-  useEffect(() => {
-
-    axios.get(`${serverURL}/classes`, { params: { teacher_id: props.userid } })
+  const getClasses = ()=>{
+    console.log('getClasses is running')
+    axios.get(`${serverURL}/classes`, { params: { teacher_id: props.userId } })
       .then((classData) => {
       setClasses(classData.data)
       })
       .catch((err) => { console.log('error getting classes ', err) })
+  }
 
-    axios.get(`${serverURL}/meetings`, { params: { user_id: props.userid } })
+  useEffect(() => {
+    getClasses()
+
+    axios.get(`${serverURL}/meetings`, { params: { user_id: props.userId } })
       .then((meetingsRes) => {
         setMeetings(meetingsRes.data)
       })
       .catch(err => { console.log('error getting meetings ', err) })
 
-    axios.get(`${serverURL}/meetings/pending`, { params: { user_id: props.userid } })
+    axios.get(`${serverURL}/meetings/requests`, { params: { user_id: props.userId } })
       .then((pendingMeetings) => {
         setPendingMeetings(pendingMeetings.data)
       })
@@ -215,15 +221,14 @@ export default function TeacherProfile(props) {
 
 
   const onCalendarClick = (dateTime, friend, user) => {
-  setPickDateShow(false)
-  console.log(dateTime.toUTCString())
-  var GMTTime = dateTime.toUTCString()
-    axios.post(`${serverURL}/addMeeting`, { params: { req_account_id: props.userid, rec_account_id: friend, start_time: GMTTime } }).then((meetingsRes) => {
-      console.log('meetings ', meetingsRes.data)
-      setMeetings(meetingsRes.data)
-    }).catch((err) => {
-      console.log(err)
-    })
+    setPickDateShow(false)
+    var GMTTime = dateTime.toUTCString()
+    axios.post(`${serverURL}/meetings`, { requesterId: props.userId, receiverId: friend, start_time: GMTTime })
+      .then((meetingsRes) => {
+        setMeetings(meetingsRes.data)
+      }).catch((err) => {
+        console.log(err)
+      })
 
 }
 
@@ -248,7 +253,7 @@ const unfilteredFriends = props.friends.map((friend, index) => {
     return (
       <StyledFriend id={index} onClick={selectFriend} key={friend.account_id} >
           <div style={{ fontWeight: 'bold' }}>{friend.first_name + ' ' + friend.last_name}</div>
-          {pickDateShow && <ScheduleModal onClose={(dateTime) => { onCalendarClick(dateTime, friend.account_id, teacherId) }} pickDateShow={pickDateShow} friend={friend} user={teacherId} />}
+          {pickDateShow && <ScheduleModal onClose={(dateTime) => { onCalendarClick(dateTime, friend.account_id, props.userId) }} friend={friend}/>}
             <StyledFriendIcons>
               <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call" onClick={() => { setPickDateShow(true) }} />
               <Link to="/messages">
@@ -264,7 +269,7 @@ const filteredFriendsList = filteredFriends.map((friend, index) => {
   return (
     <StyledFriend  id={friend.account_id} onClick={selectFriend} key={friend.account_id}>
       <div style={{ fontWeight: 'bold' }}>{friend.first_name + ' ' + friend.last_name}</div>
-      {pickDateShow && <ScheduleModal onClose={(dateTime) => { onCalendarClick(dateTime, friend.account_id, props.userid) }} pickDateShow={pickDateShow} friend={friend} user={props.userid} />}
+      {pickDateShow && <ScheduleModal onClose={(dateTime) => { onCalendarClick(dateTime, friend.account_id, props.userId) }} friend={friend}/>}
         <StyledFriendIcons>
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call" onClick={() => { setPickDateShow(true) }} />
           <Link to="/messages">
@@ -275,6 +280,66 @@ const filteredFriendsList = filteredFriends.map((friend, index) => {
     </StyledFriend>
   )
 })
+
+  const handleDelete = (e, receiverId, requesterId, start_time) => {
+    e.preventDefault()
+    var start_time = new Date(start_time)
+    var GMTTime = start_time.toUTCString()
+    axios.delete(`${serverURL}/meetings`, { params: { receiverId: receiverId, requesterId: requesterId, dateTime: GMTTime } })
+      .then(() => {
+        axios.get(`${serverURL}/meetings`, { params: { user_id: props.userId } })
+          .then((meetingsRes) => {
+            setMeetings(meetingsRes.data)
+          })
+          .catch(err => { console.log('error getting meetings ', err) })
+      })
+      .catch(err => { console.log('error deleting meeting ', err) })
+  }
+  const acceptMeeting = (e, requesterId, receiverId, start_time) => {
+    e.preventDefault()
+    var start_time = new Date(start_time)
+    var GMTtime = start_time.toUTCString()
+    axios.put(`${serverURL}/meetings`, { receiverId: receiverId, requesterId: requesterId, dateTime: GMTtime })
+      .then(() => {
+        axios.get(`${serverURL}/meetings`, { params: { user_id: props.userId } })
+          .then((meetingsRes) => {
+            setMeetings(meetingsRes.data)
+          })
+          .catch(err => { console.log('error getting meetings ', err) })
+
+        axios.get(`${serverURL}/meetings/requests`, { params: { user_id: props.userId } })
+          .then((pendingMeetings) => {
+            setPendingMeetings(pendingMeetings.data)
+          })
+
+      })
+      .catch(err => { console.log('error accepting meeting ', err) })
+
+  }
+
+  const denyMeeting = (e, requesterId, receiverId, start_time) => {
+    e.preventDefault()
+    var start_time = new Date(start_time)
+    var GMTtime = start_time.toUTCString()
+    axios.delete(`${serverURL}/meetings`, { params: { receiverId: receiverId, requesterId: requesterId, dateTime: GMTtime } })
+      .then(() => {
+        axios.get(`${serverURL}/meetings`, { params: { user_id: props.userId } })
+          .then((meetingsRes) => {
+            console.log('non pending meetings ', meetingsRes)
+            setMeetings(meetingsRes.data)
+          })
+          .catch(err => { console.log('error getting meetings ', err) })
+
+        axios.get(`${serverURL}/meetings/requests`, { params: { user_id: props.userId } })
+          .then((pendingMeetings) => {
+            console.log('pending meetings ', pendingMeetings)
+            setPendingMeetings(pendingMeetings.data)
+          })
+
+      })
+      .catch(err => { console.log('error denying meeting ', err) })
+
+  }
 
   return (
     <div>
@@ -294,9 +359,9 @@ const filteredFriendsList = filteredFriends.map((friend, index) => {
         }
         <ProfileCalendarInfo>
 
-          <TeacherCalendar props={props} meetings={meetings} />
+          <TeacherCalendar teacherId={teacherId} meetings={meetings} handleDelete={handleDelete} />
           {pendingMeetings.length > 0 && <StyledButton style={{ marginTop: '0rem', width: '12rem' }} onClick={() => { setPendingShow(true) }}>Pending Meetings</StyledButton>}
-          {pendingShow && <PendingMeetingModal onClose={() => { setPendingShow(false) }} pendingMeetings={pendingMeetings} props={props} />}
+          {pendingShow && <PendingMeetingModal onClose={() => { setPendingShow(false) }} pendingMeetings={pendingMeetings} teacherId={teacherId} acceptMeeting={acceptMeeting} denyMeeting={denyMeeting} />}
         </ProfileCalendarInfo>
 
         <ProfileFriendsList style={{ width: '30rem', left: '32%' }}>
@@ -335,16 +400,16 @@ const filteredFriendsList = filteredFriends.map((friend, index) => {
 
 
           <StyledButton style={{ marginTop: '0rem', width: '12rem' }} onClick={onAddFriendClick}>ADD FRIEND</StyledButton>
-          {teacherShow && <TeacherClassListModal onClose={() => setTeacherShow(false)} />}
+          {teacherShow && <TeacherClassListModal userId={teacherId} onClose={() => setTeacherShow(false)} show={teacherShow} getClasses={getClasses}/>}
         </ProfileFriendsList>
-        <ProfileFriendsList style={{width: '23rem', left: '71%'}}>
-          <StyledFriendSearchSpan style={{justifyContent: 'center'}}>
+        <ProfileFriendsList style={{ width: '23rem', left: '71%' }}>
+          <StyledFriendSearchSpan style={{ justifyContent: 'center' }}>
             <h3><strong>Class List</strong></h3>
           </StyledFriendSearchSpan>
           <p>
             {classes.map(teacherClass => {
               return (
-                <StyledFriend key={teacherClass.class_id} id={teacherClass.class_id} onClick={(e)=>{onClassListClick(e, teacherClass.class_name)}} >
+                <StyledFriend key={teacherClass.class_id} id={teacherClass.class_id} onClick={(e) => { onClassListClick(e, teacherClass.class_name) }} >
                   <div style={{ fontWeight: 'bold' }} >{teacherClass.class_name}</div>
                   <StyledFriendIcons>
                   </StyledFriendIcons>
@@ -352,14 +417,13 @@ const filteredFriendsList = filteredFriends.map((friend, index) => {
               )
             })}
           </p>
-          {classShow && <ClassListModal onClose={()=>setClassShow(false)} classShow={classShow} modalClassName={modalClassName} students={students}/>}
-          <StyledButton style={{ marginTop: '0rem', marginLeft: '1rem', width: '12rem'}} onClick={()=> {setTeacherShow(true)}}>ADD CLASS LIST</StyledButton>
-          {teacherShow && <TeacherClassListModal onClose={()=>setTeacherShow(false)} show={teacherShow} onFriendSearch={onFriendSearch}/>}
+          {classShow && <ClassListModal onClose={() => setClassShow(false)} classShow={classShow} modalClassName={modalClassName} students={students} />}
+          <StyledButton style={{ marginTop: '0rem', marginLeft: '1rem', width: '12rem' }} onClick={() => { setTeacherShow(true) }}>ADD CLASS LIST</StyledButton>
+
 
         </ProfileFriendsList>
       </ProfileContainer>
       <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch} />
-      <TeacherClassListModal onClose={() => setTeacherShow(false)} show={teacherShow} onFriendSearch={onFriendSearch} teacherId={teacherId} />
       <EditInfoModal onClose={() => setEditInfoShow(false)} show={editInfoShow} />
     </div>
   )

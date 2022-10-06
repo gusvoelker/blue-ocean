@@ -10,19 +10,10 @@ import {
 import axios from 'axios'
 import {serverURL} from '../../../config.js'
 
-export default function TeacherMeetingModal({ onClose, open, meetingsOnDay, day, props }) {
-  console.log('day in modal ', typeof day, day)
+export default function TeacherMeetingModal({ onClose, open, meetingsOnDay, day, teacherId, handleDelete }) {
   var dateString = day.toLocaleDateString()
 
-  const handleDelete = (userId, start_time) => {
-    axios.put(`${serverURL}/meetings/delete`, {params: {receiverId: props.userId, requesterID: userId, start_time}})
-    .then((returnedPendingMeetings) =>{
-      // setPendingMeetings(returnedPendingMeetings.data)
-      onClose()
-    })
-    .catch(err=>{console.log('error deleting meeting ', err)})
 
-  }
 
   return (
     <MeetingModalContainer>
@@ -31,11 +22,14 @@ export default function TeacherMeetingModal({ onClose, open, meetingsOnDay, day,
           Your Scheduled Meetings on {dateString}
         </h4>
         <div>
-          {meetingsOnDay.map(meeting => (
-            <>
-              <span>{meeting.first_name} {meeting.last_name} at {meeting.dateObj}   </span>
-              <StyledButton style={{marginLeft: '5px'}} onClick={handleDelete(meeting.receiver_id, meeting.start_time)}>Delete</StyledButton>
-            </>
+          {meetingsOnDay.map((meeting, index )=> (
+            <div key={index}>
+              {meeting.status ? <span>{meeting.first_name} {meeting.last_name} at {meeting.dateObj}   </span> : <span>{meeting.first_name} {meeting.last_name} at {meeting.dateObj} (pending)  </span>}
+              <StyledButton style={{marginLeft: '5px'}} onClick={(e)=>{
+                handleDelete(e, meeting.rec_account_id, meeting.req_account_id, meeting.start_time);
+                onClose()
+              }}>Delete</StyledButton>
+            </div>
 
           ))}
         </div>
