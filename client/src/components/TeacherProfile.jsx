@@ -34,6 +34,7 @@ import ClassListModal from '../components/LoginSignup/Teacher/ClassListModal.jsx
 import DateTimePicker from 'react-datetime-picker';
 import ScheduleModal from '../components/LoginSignup/Teacher/ScheduleModal.jsx'
 import PendingMeetingModal from './LoginSignup/Teacher/PendingMeetingModal'
+import FriendsModal from './FriendsModal.jsx'
 
 
 
