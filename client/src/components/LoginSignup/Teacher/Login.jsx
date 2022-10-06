@@ -62,10 +62,10 @@ export default function Login (props) {
       return res.json()
       .then((jsonResponse) => {
         console.log(jsonResponse)
-        // props.onIdChange(jsonResponse.data.user.id)
+        props.onIdChange(jsonResponse.id)
+        setUser(jsonResponse)
         navigate("/profile");
       })
-      // setUser(res.data)
     }).catch((err) => {
       console.log(err);
       // setErrorMessage(err.response.data);
