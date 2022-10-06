@@ -146,7 +146,7 @@ CREATE TABLE meetings (
 	req_account_id INT NOT NULL REFERENCES accounts(account_id),
 	rec_account_id INT NOT NULL REFERENCES accounts(account_id),
 	start_time TIMESTAMP NOT NULL,
-	status BOOLEAN
+	status BOOLEAN DEFAULT false
 );
 
 CREATE INDEX meetings_req_account_id_idx ON meetings (req_account_id);
