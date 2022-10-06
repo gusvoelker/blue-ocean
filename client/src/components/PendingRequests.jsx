@@ -36,11 +36,12 @@ export default function PendingRequests (props) {
     axios.put(`${serverURL}/friend`, null, { params: {
       idToAccept: e.target.id
     }})
-    .then(response => console.log(response))
   }
 
   const removeFriend = (e) => {
-    console.log(e.target.id);
+    axios.delete(`${serverURL}/friend/request`, null, { params: {
+      friend_id: e.target.id
+    }})
   }
 
   return (

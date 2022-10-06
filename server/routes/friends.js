@@ -81,6 +81,14 @@ router.delete('/friend', (req, res, next) => {
     .catch((error) => res.sendStatus(400));
 });
 
+//req.query.friend_id
+router.delete('/friend/request', (req, res, next) => {
+  let requesterId = req.user.id;
+  friendModel.deletePendingFriend(requesterId, req.query.friend_id)
+    .then(res.sendStatus(204))
+    .catch((error) => res.sendStatus(400));
+});
+
 module.exports = router;
 
 

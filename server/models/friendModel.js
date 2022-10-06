@@ -96,3 +96,11 @@ module.exports.deleteFriend = (requesterId, friend_id) => {
     AND rec_account_id = ${friend_id}
   `);
 };
+
+module.exports.deletePendingFriend = (requesterId, friend_id) => {
+  return db.query(`
+    DELETE FROM connections
+    WHERE req_account_id = ${friend_id}
+    AND rec_account_id = ${requesterId}
+  `);
+};
