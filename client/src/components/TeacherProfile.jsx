@@ -90,7 +90,7 @@ export default function TeacherProfile(props) {
   const [currentFriend, setCurrentFriend] = useState('');
   const [friendSearch, setFriendSearch] = useState('');
   const [editInfoShow, setEditInfoShow] = useState(false);
-  const [teacherId, setTeacherId] = useState(props.userid);
+  const [teacherId, setTeacherId] = useState(props.userId);
   const [classes, setClasses] = useState([]);
   const [students, setStudents] = useState([]);
   const [modalClassName, setModalClassName] = useState('')
@@ -98,9 +98,10 @@ export default function TeacherProfile(props) {
   const [usersWithSameLanguage, setUsersWithSameLanguage] = useState([]);
   const [pickDateShow, setPickDateShow] = useState(false);
   const [showPending, setShowPending] = useState(false);
-
-  const [meetings, setMeetings] = useState([{receiver_id: 1, first_name: 'Greta', last_name: 'Grover', start_time: 'Wed, 05 Oct 2022 20:34:12 GMT', status: false }, { receiver_id: 2, first_name: 'Nick', last_name: 'Kozlarek', start_time: 'Thu, 06 Oct 2022 20:34:12 GMT', status: true },])
-  const [pendingMeetings, setPendingMeetings] = useState([{requester_id: 1, first_name: 'Andrew', last_name: 'Cho', start_time: 'Thu, 06 Oct 2022 20:34:12 GMT', status: false }])
+  const [meetings, setMeetings] = useState([])
+  // const [meetings, setMeetings] = useState([{receiver_id: 1, first_name: 'Greta', last_name: 'Grover', start_time: 'Wed, 05 Oct 2022 20:34:12 GMT', status: false }, { receiver_id: 2, first_name: 'Nick', last_name: 'Kozlarek', start_time: 'Thu, 06 Oct 2022 20:34:12 GMT', status: true },])
+  const [pendingMeetings, setPendingMeetings] = useState([])
+  // const [pendingMeetings, setPendingMeetings] = useState([{requester_id: 1, first_name: 'Andrew', last_name: 'Cho', start_time: 'Thu, 06 Oct 2022 20:34:12 GMT', status: false }])
   const [pendingShow, setPendingShow] = useState(false)
 
 
@@ -118,13 +119,13 @@ export default function TeacherProfile(props) {
   // api requests to retrieve all necessary data
   const retrieveAccountInfo = axios.get(`${serverURL}/accounts/id`, {
     params: {
-      accountId: props.userid
+      accountId: props.userId
     }
   })
 
   const retrieveFriends = axios.get(`${serverURL}/friend`, {
     params: {
-      accountId: props.userid
+      accountId: props.userId
     }
   })
 
@@ -132,27 +133,30 @@ export default function TeacherProfile(props) {
 
   useEffect(() => {
 
-    axios.get(`${serverURL}/classes`, { params: { teacher_id: props.userid } })
+    axios.get(`${serverURL}/classes`, { params: { teacher_id: props.userId } })
       .then((classData) => {
+        console.log('class Data ', classData)
         setClasses(classData.data)
       })
       .catch((err) => { console.log('error getting classes ', err) })
 
-    axios.get(`${serverURL}/meetings`, { params: { user_id: props.userid } })
+    axios.get(`${serverURL}/meetings`, { params: { user_id: props.userId } })
       .then((meetingsRes) => {
         setMeetings(meetingsRes.data)
       })
       .catch(err => { console.log('error getting meetings ', err) })
 
-    axios.get(`${serverURL}/meetings/pending`, { params: { user_id: props.userid } })
+    axios.get(`${serverURL}/meetings/requests`, { params: { user_id: props.userId } })
       .then((pendingMeetings) => {
         setPendingMeetings(pendingMeetings.data)
       })
   }, [])
 
   useEffect(() => {
+    console.log('Teacher Profile useEffect props.userid', props.userId)
     Promise.all([retrieveAccountInfo, retrieveFriends, retrieveLanguages])
       .then((data) => {
+        console.log('account info, friends, languages', data)
         var apiAccountInfo = data[0].data;
         var apiFriends = data[1].data;
         var apiLanguages = data[2].data;
@@ -202,6 +206,7 @@ export default function TeacherProfile(props) {
 
   const onClassListClick = (e, class_name) => {
     e.preventDefault()
+    console.log('class id ', e.target.id)
     axios.get(`${serverURL}/classes/students`, { params: { class_id: e.target.id } }).then((students) => {
       console.log(students.data)
       setStudents(students.data)
@@ -224,9 +229,11 @@ export default function TeacherProfile(props) {
 
   const filterFriends = (e) => {
     setFilteredFriends(props.friends.filter(function (str) {
-      var lowered = str.toLowerCase();
-      return lowered.includes(e.target.value);
-    }));
+        console.log(str)
+        var fullName = str.first_name + ' ' + str.last_name
+        var lowered = fullName.toLowerCase();
+        return lowered.includes(e.target.value);
+      }));
     setFiltering(true);
   }
 
@@ -236,7 +243,8 @@ export default function TeacherProfile(props) {
     setPickDateShow(false)
     console.log(dateTime.toUTCString())
     var GMTTime = dateTime.toUTCString()
-    axios.post(`${serverURL}/addMeeting`, { params: { req_account_id: props.userid, rec_account_id: friend, start_time: GMTTime } }).then((meetingsRes) => {
+    axios.post(`${serverURL}/meetings`, { requesterId: props.userId, receiverId: friend, start_time: GMTTime  })
+    .then((meetingsRes) => {
       console.log('meetings ', meetingsRes.data)
       setMeetings(meetingsRes.data)
     }).catch((err) => {
@@ -263,9 +271,9 @@ export default function TeacherProfile(props) {
         }
         <ProfileCalendarInfo>
 
-          <TeacherCalendar props={props} meetings={meetings} />
+          <TeacherCalendar teacherId={teacherId} meetings={meetings} />
           {pendingMeetings.length > 0 && <StyledButton style={{ marginTop: '0rem', width: '12rem' }} onClick={() => { setPendingShow(true) }}>Pending Meetings</StyledButton>}
-          {pendingShow && <PendingMeetingModal onClose={() => { setPendingShow(false) }} pendingMeetings={pendingMeetings} props={props} />}
+          {pendingShow && <PendingMeetingModal onClose={() => { setPendingShow(false) }} pendingMeetings={pendingMeetings} teacherId={teacherId} />}
         </ProfileCalendarInfo>
         {/* <ProfileAccountInfo>
           <h3><strong>Account Info</strong></h3>
@@ -305,7 +313,7 @@ export default function TeacherProfile(props) {
                   <StyledFriendIcons>
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call" onClick={() => { setPickDateShow(true) }} />
                     <Link to="/messages">
-                      <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' />
+                      <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend"/>
                     </Link>
                     <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend" />
                   </StyledFriendIcons>
@@ -314,9 +322,11 @@ export default function TeacherProfile(props) {
             }) :
             filteredFriends.map((friend, index) => {
               return (
-                <StyledFriend id={friend} key={index}>
-                  <div style={{ fontWeight: 'bold' }} onClick={(onFriendClick)}>{friend}</div>
-                  {pickDateShow && <ScheduleModal onClose={(dateTime) => { onCalendarClick(dateTime, friend.account_id, props.userid) }} pickDateShow={pickDateShow} friend={friend} user={props.userid} />}
+
+                <StyledFriend id={friend.account_id} key={friend.account_id}>
+                 <div style={{ fontWeight: 'bold' }} onClick={(onFriendClick)}>{friend.first_name + ' ' + friend.last_name}</div>
+                  {pickDateShow && <ScheduleModal onClose={(dateTime) => { onCalendarClick(dateTime, friend.account_id, props.userId) }} friend={friend}/>}
+
                   <StyledFriendIcons>
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call" onClick={() => { setPickDateShow(true) }} />
                     <Link to="/messages">
@@ -330,8 +340,7 @@ export default function TeacherProfile(props) {
           </p>
 
           <StyledButton style={{ marginTop: '0rem', width: '12rem' }} onClick={onAddFriendClick}>ADD FRIEND</StyledButton>
-          <StyledButton onClick={onPendingRequestsClick}>PENDING REQUESTS</StyledButton>
-          {teacherShow && <TeacherClassListModal onClose={() => setTeacherShow(false)} />}
+          {teacherShow && <TeacherClassListModal userId={teacherId} onClose={() => setTeacherShow(false)} show={teacherShow} />}
         </ProfileFriendsList>
         <ProfileFriendsList style={{width: '23rem', left: '71%'}}>
           <StyledFriendSearchSpan style={{justifyContent: 'center'}}>
@@ -350,14 +359,14 @@ export default function TeacherProfile(props) {
           </p>
           {classShow && <ClassListModal onClose={()=>setClassShow(false)} classShow={classShow} modalClassName={modalClassName} students={students}/>}
           <StyledButton style={{ marginTop: '0rem', marginLeft: '1rem', width: '12rem'}} onClick={()=> {setTeacherShow(true)}}>ADD CLASS LIST</StyledButton>
-          {teacherShow && <TeacherClassListModal onClose={()=>setTeacherShow(false)} show={teacherShow} onFriendSearch={onFriendSearch}/>}
+
 
         </ProfileFriendsList>
       </ProfileContainer>
       <FriendsModal onClose={() => setShow(false)} show={show} friend={currentFriend} />
       <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch} usersWithSameLanguage={usersWithSameLanguage} languages={props.languages}/>
       <PendingRequests onClose={() => setShowPending(false)} show={showPending} usersWithSameLanguage={usersWithSameLanguage}/>
-      <TeacherClassListModal onClose={()=>setTeacherShow(false)} show={teacherShow} onFriendSearch={onFriendSearch}/>
+      <TeacherClassListModal onClose={() => setTeacherShow(false)} show={teacherShow} teacherId={teacherId} />
       <EditInfoModal onClose={() => setEditInfoShow(false)} show={editInfoShow} />
     </div>
   )

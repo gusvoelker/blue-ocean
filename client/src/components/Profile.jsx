@@ -114,10 +114,14 @@ export default function Profile (props) {
   }
 
   const onFriendClick = (e) => {
-    setShow(true);
-    setCurrentFriend(e.target.id);
-    console.log('clicking on friend')
+    e.preventDefault();
+    setCurrentFriend(parseInt(e.target.id))
   }
+  useEffect(() => {
+    if (currentFriend !== '') {
+      setShow(true);
+    }
+  }, [currentFriend])
 
   const onAddFriendClick = () => {
     axios.get(`${serverURL}/accounts`)
@@ -161,7 +165,8 @@ export default function Profile (props) {
 
   const filterFriends = (e) => {
     setFilteredFriends(props.friends.filter(function (str) {
-        var lowered = str.toLowerCase();
+        var fullName = str.first_name + ' ' + str.last_name
+        var lowered = fullName.toLowerCase();
         return lowered.includes(e.target.value);
       }));
     setFiltering(true);
@@ -170,13 +175,13 @@ export default function Profile (props) {
     // api requests to retrieve all necessary data
     const retrieveAccountInfo = axios.get(`${serverURL}/accounts/id`, {
       params: {
-        accountId: props.userId
+        accountId: 1
       }
     })
 
     const retrieveFriends = axios.get(`${serverURL}/friend`, {
       params: {
-        accountId: props.userId
+        accountId: 1
       }
     })
 
@@ -230,10 +235,6 @@ export default function Profile (props) {
               <td>E-mail:</td>
               <td>{props.email}</td>
             </tr>
-            <tr>
-              <td>Language:</td>
-              <td>Elvish</td>
-            </tr>
           </table>
           <StyledButton onClick={onEditInfo} style={{marginTop: '1rem'}}>EDIT INFO</StyledButton>
         </ProfileAccountInfo>
@@ -246,10 +247,9 @@ export default function Profile (props) {
           </StyledFriendSearchSpan>
           <p>{!filtering ?
             props.friends.map((friend, index) => {
-              //TODO: this was broken
               return (
-                <StyledFriend  id={friend.account_id} key={index} onClick={onFriendClick}>
-                  <div style={{fontWeight: 'bold'}}>{`${friend.first_name} ${friend.last_name}`}</div>
+                <StyledFriend  id={index} key={friend.account_id} onClick={onFriendClick}>
+                  <div style={{fontWeight: 'bold'}}>{friend.first_name + ' ' + friend.last_name}</div>
                   <Link to="/messages">
                     <StyledFriendIcons>
                       <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png'/>
@@ -260,8 +260,8 @@ export default function Profile (props) {
           }) :
             filteredFriends.map((friend, index) => {
               return (
-                <StyledFriend  id={friend} key={index} onClick={onFriendClick}>
-                  <div style={{fontWeight: 'bold'}}>{friend}</div>
+                <StyledFriend  id={index} key={friend.account_id} onClick={onFriendClick}>
+                  <div style={{fontWeight: 'bold'}}>{friend.first_name + ' ' + friend.last_name}</div>
                   <Link to="/messages">
                     <StyledFriendIcons>
                       <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png'/>
@@ -275,9 +275,9 @@ export default function Profile (props) {
           <StyledButton onClick={onPendingRequestsClick}>PENDING REQUESTS</StyledButton>
         </ProfileFriendsList>
       </ProfileContainer>
-      <FriendsModal onClose={() => setShow(false)} show={show} friend={currentFriend} />
       <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch} usersWithSameLanguage={usersWithSameLanguage} languages={props.languages}/>
       <PendingRequests onClose={() => setShowPending(false)} show={showPending} usersWithSameLanguage={usersWithSameLanguage}/>
+      <FriendsModal onClose={() => setShow(false)} show={show} friend={props.friends[currentFriend]} />
       <EditInfoModal onClose={() => setEditInfoShow(false)} show={editInfoShow} />
       </Dark>
     </div>

@@ -34,6 +34,7 @@ export default function TeacherClassListModal({ teacherId, onClose, show }) {
   }
 
   const handleFileClick = e => {
+    console.log('in handleFileClick userId', teacherId)
     hiddenFileInput.current.click();
   }
 
