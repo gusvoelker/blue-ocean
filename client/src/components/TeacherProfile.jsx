@@ -22,6 +22,7 @@ import {
 import axios from 'axios';
 import FormData from 'form-data'
 import TeacherClassListModal from './LoginSignup/Teacher/TeacherClassListModal.jsx';
+import PendingRequests from './PendingRequests.jsx';
 import { faChevronLeft, faChevronRight, faChevronUp, faChevronDown, faCalendar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AddFriendModal from './AddFriendModal.jsx';
@@ -33,6 +34,7 @@ import ClassListModal from '../components/LoginSignup/Teacher/ClassListModal.jsx
 import DateTimePicker from 'react-datetime-picker';
 import ScheduleModal from '../components/LoginSignup/Teacher/ScheduleModal.jsx'
 import PendingMeetingModal from './LoginSignup/Teacher/PendingMeetingModal'
+import FriendsModal from './FriendsModal.jsx'
 
 
 
@@ -95,8 +97,11 @@ export default function TeacherProfile(props) {
   const [students, setStudents] = useState([]);
   const [modalClassName, setModalClassName] = useState('')
   const [classShow, setClassShow] = useState(false)
+  const [usersWithSameLanguage, setUsersWithSameLanguage] = useState([]);
   const [pickDateShow, setPickDateShow] = useState(false);
+  const [showPending, setShowPending] = useState(false);
   const [meetings, setMeetings] = useState([])
+  const [pendingRequests, setPendingRequests] = useState([])
   // const [meetings, setMeetings] = useState([{receiver_id: 1, first_name: 'Greta', last_name: 'Grover', start_time: 'Wed, 05 Oct 2022 20:34:12 GMT', status: false }, { receiver_id: 2, first_name: 'Nick', last_name: 'Kozlarek', start_time: 'Thu, 06 Oct 2022 20:34:12 GMT', status: true },])
   const [pendingMeetings, setPendingMeetings] = useState([])
   // const [pendingMeetings, setPendingMeetings] = useState([{requester_id: 1, first_name: 'Andrew', last_name: 'Cho', start_time: 'Thu, 06 Oct 2022 20:34:12 GMT', status: false }])
@@ -188,8 +193,33 @@ export default function TeacherProfile(props) {
   // }, [currentFriend])
 
   const onAddFriendClick = () => {
+    axios.get(`${serverURL}/accounts`)
+    .then(({data}) => {
+      return data.map(account => {
+        axios.get(`${serverURL}/languages/taught`, {
+          params: {
+            accountId: account.account_id
+          }
+        })
+        .then(({data}) => account.language = data)
+      return account;
+      })
+    })
+    .then(accounts => setUsersWithSameLanguage(accounts))
+    .catch((err) => {
+      console.log(err);
+    })
     setAddShow(true);
   }
+
+  const onPendingRequestsClick = () => {
+    axios.get(`${serverURL}/friend/requests`)
+    .then(({data}) => {
+      setPendingRequests(data);
+    })
+    setShowPending(true);
+  }
+
   const onClassListClick = (e, class_name) => {
     e.preventDefault()
     axios.get(`${serverURL}/classes/students`, { params: { class_id: e.target.id } }).then((students) => {
@@ -400,6 +430,7 @@ const filteredFriendsList = filteredFriends.map((friend, index) => {
 
 
           <StyledButton style={{ marginTop: '0rem', width: '12rem' }} onClick={onAddFriendClick}>ADD FRIEND</StyledButton>
+          <StyledButton onClick={onPendingRequestsClick}>PENDING REQUESTS</StyledButton>
           {teacherShow && <TeacherClassListModal userId={teacherId} onClose={() => setTeacherShow(false)} show={teacherShow} getClasses={getClasses}/>}
         </ProfileFriendsList>
         <ProfileFriendsList style={{ width: '23rem', left: '71%' }}>
@@ -423,7 +454,9 @@ const filteredFriendsList = filteredFriends.map((friend, index) => {
 
         </ProfileFriendsList>
       </ProfileContainer>
-      <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch} />
+      <FriendsModal onClose={() => setShow(false)} show={show} friend={currentFriend} />
+      <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch} usersWithSameLanguage={usersWithSameLanguage} languages={props.languages}/>
+      <PendingRequests onClose={() => setShowPending(false)} show={showPending} pendingRequests={pendingRequests}/>
       <EditInfoModal onClose={() => setEditInfoShow(false)} show={editInfoShow} />
     </div>
   )
