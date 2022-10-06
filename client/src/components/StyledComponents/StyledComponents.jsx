@@ -711,32 +711,44 @@ const FriendsModalContainer = styled.div`
 `
 
 const FriendsModalContent = styled.div`
-  width: 500px;
-  height: 200px;
-  background-color: #ffffff;
+  width: 35rem;
+  height: 25rem;
+  background-color: #383838c1;
+  border: 1px solid #f5f5f5;
   border-radius: 10px;
   padding: 10px;
   text-align: center;
   justify-content: center;
+  color: #f5f5f5;
   h4 {
-    font-size: 20px;
+    font-size: 2rem;
+    margin-bottom: 0rem;
+    color: #f5f5f5
   }
   div {
     padding: 10px;
+    color: #f5f5f5
   }
   input{
     position: relative;
-    width: 350px;
+    width: 20rem;
     border-radius: 10px;
     border: 1px solid black;
     height: 40px;
     font-size: 20px;
-    background-color: white;
+    background-color: #f5f5f5;
+    color: #383838 !important;
     &:focus {
       border: none;
     };
   }
 `
+
+const FriendsModalInfoLine = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
 const StyledSpinner = styled.svg`
   animation: rotate 1s linear infinite;
   margin: 0px
@@ -1111,6 +1123,7 @@ export {
   IconCircleDiv,
   ScheduleModalContainer,
   ScheduleModalContent,
+  FriendsModalInfoLine,
   MeetingModalContainer,
   MeetingModalContent,
   ProfileCalendarContainer,

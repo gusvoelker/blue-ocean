@@ -199,9 +199,11 @@ export default function TeacherProfile(props) {
 
   const filterFriends = (e) => {
     setFilteredFriends(props.friends.filter(function (str) {
-      var lowered = str.toLowerCase();
-      return lowered.includes(e.target.value);
-    }));
+        console.log(str)
+        var fullName = str.first_name + ' ' + str.last_name
+        var lowered = fullName.toLowerCase();
+        return lowered.includes(e.target.value);
+      }));
     setFiltering(true);
   }
 
@@ -280,7 +282,7 @@ export default function TeacherProfile(props) {
                   <StyledFriendIcons>
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call" onClick={() => { setPickDateShow(true) }} />
                     <Link to="/messages">
-                      <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' />
+                      <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend"/>
                     </Link>
                     <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend" />
                   </StyledFriendIcons>
@@ -289,8 +291,8 @@ export default function TeacherProfile(props) {
             }) :
             filteredFriends.map((friend, index) => {
               return (
-                <StyledFriend id={friend} key={index}>
-                  <div style={{ fontWeight: 'bold' }} onClick={(onFriendClick)}>{friend}</div>
+                <StyledFriend id={friend.account_id} key={friend.account_id}>
+                 <div style={{ fontWeight: 'bold' }} onClick={(onFriendClick)}>{friend.first_name + ' ' + friend.last_name}</div>
                   {pickDateShow && <ScheduleModal onClose={(dateTime) => { onCalendarClick(dateTime, friend.account_id, props.userid) }} pickDateShow={pickDateShow} friend={friend} user={props.userid} />}
                   <StyledFriendIcons>
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call" onClick={() => { setPickDateShow(true) }} />
