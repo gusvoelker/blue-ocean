@@ -307,7 +307,7 @@ export default function TeacherProfile(props) {
           <StyledButton style={{ marginTop: '0rem', width: '12rem' }} onClick={onAddFriendClick}>ADD FRIEND</StyledButton>
           {teacherShow && <TeacherClassListModal onClose={() => setTeacherShow(false)} />}
         </ProfileFriendsList>
-        {/* <ProfileFriendsList style={{width: '23rem', left: '71%'}}>
+        <ProfileFriendsList style={{width: '23rem', left: '71%'}}>
           <StyledFriendSearchSpan style={{justifyContent: 'center'}}>
             <h3><strong>Class List</strong></h3>
           </StyledFriendSearchSpan>
@@ -326,7 +326,7 @@ export default function TeacherProfile(props) {
           <StyledButton style={{ marginTop: '0rem', marginLeft: '1rem', width: '12rem'}} onClick={()=> {setTeacherShow(true)}}>ADD CLASS LIST</StyledButton>
           {teacherShow && <TeacherClassListModal onClose={()=>setTeacherShow(false)} show={teacherShow} onFriendSearch={onFriendSearch}/>}
 
-        </ProfileFriendsList> */}
+        </ProfileFriendsList>
       </ProfileContainer>
       <FriendsModal onClose={() => setShow(false)} show={show} friend={currentFriend} />
       <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch} />
