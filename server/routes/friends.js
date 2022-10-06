@@ -62,10 +62,11 @@ router.post('/friend', (req, res, next) => {
 //accept friend status
 //req.query.idToAccept
 router.put('/friend', (req, res, next) => {
+  console.log('here', req.query)
   let requesterId = req.user.id;
   friendModel.acceptFriend(requesterId, req.query.idToAccept)
     .then(() => friendModel.createFriend(requesterId, req.query.idToAccept))
-    .then((connectionID) => res.status(202).send(connectionID))
+    .then((connectionID) => res.status(202).send(`${connectionID}`))
     .catch((error) => res.sendStatus(400));
 });
 
@@ -76,6 +77,14 @@ router.put('/friend', (req, res, next) => {
 router.delete('/friend', (req, res, next) => {
   let requesterId = req.user.id;
   friendModel.deleteFriend(requesterId, req.query.friend_id)
+    .then(res.sendStatus(204))
+    .catch((error) => res.sendStatus(400));
+});
+
+//req.query.friend_id
+router.delete('/friend/request', (req, res, next) => {
+  let requesterId = req.user.id;
+  friendModel.deletePendingFriend(requesterId, req.query.friend_id)
     .then(res.sendStatus(204))
     .catch((error) => res.sendStatus(400));
 });

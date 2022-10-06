@@ -16,7 +16,9 @@ module.exports.checkIfFriends = (accountId1, accountId2) => {
 
 module.exports.findFriendRequests = (requesterId) => {
   return db.query(`
-  SELECT req_account_id AS account_id FROM connections
+  SELECT c.req_account_id AS account_id, a.first_name, a.last_name
+  FROM connections c
+  INNER JOIN accounts a ON c.req_account_id = a.account_id
     WHERE rec_account_id=${requesterId}
       AND status = false
   `);
@@ -92,5 +94,13 @@ module.exports.deleteFriend = (requesterId, friend_id) => {
     DELETE FROM connections
     WHERE req_account_id = ${requesterId}
     AND rec_account_id = ${friend_id}
+  `);
+};
+
+module.exports.deletePendingFriend = (requesterId, friend_id) => {
+  return db.query(`
+    DELETE FROM connections
+    WHERE req_account_id = ${friend_id}
+    AND rec_account_id = ${requesterId}
   `);
 };

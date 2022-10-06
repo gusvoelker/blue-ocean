@@ -50,9 +50,10 @@ export default function App () {
   // Teacher language levels
   const [formData, setFormData] = useState({})
   const [checked, setChecked] = useState([]);
-  const [friends, setFriends] = useState([
-    {account_id: 9, first_name: 'galadriel', last_name: 'from lotr', email: 'galad@gmail.edu', avatar_url: null},
-    {account_id: 11, first_name: 'Frodo', last_name: 'Baggins', email: 'frodo@gmail.edu', avatar_url: null}]);
+  // const [friends, setFriends] = useState([
+  //   {account_id: 9, first_name: 'galadriel', last_name: 'from lotr', email: 'galad@gmail.edu', avatar_url: null},
+  //   {account_id: 11, first_name: 'Frodo', last_name: 'Baggins', email: 'frodo@gmail.edu', avatar_url: null}]);
+  const [friends, setFriends] = useState([])
   const [profilePicture, setProfilePicture] = useState('https://i.postimg.cc/gkDMWvVY/photo-1615497001839-b0a0eac3274c.jpg');
   const [languages, setLanguages] = useState([]);
   const [isTeacher, setTeacher] = useState(true);
@@ -135,7 +136,7 @@ export default function App () {
             </Route>
             <Route path="/SignUp" element={
               <>
-                <NavBar role={role} darkTheme={darkTheme}/>
+                <AboutNavBar role={role} darkTheme={darkTheme}/>
                 <SignUp
                   onFirstNameChange={onFirstNameChange}
                   onLastNameChange={onLastNameChange}
@@ -155,7 +156,7 @@ export default function App () {
             </Route>
             <Route path="/Login" element={
               <>
-                <NavBar role={role} darkTheme={darkTheme}/>
+                <AboutNavBar role={role} darkTheme={darkTheme}/>
                   <Login
                     onEmailChange={onEmailChange}
                     onPasswordChange={onPasswordChange}
@@ -170,7 +171,7 @@ export default function App () {
             </Route>
             <Route path="/teacherInfo" element={
               <>
-                <NavBar role={role} darkTheme={darkTheme}/>
+                <AboutNavBar role={role} darkTheme={darkTheme}/>
                 <TeacherInfo
                   handleCheck={handleCheck}
                   handleChange={handleChange}
@@ -184,7 +185,7 @@ export default function App () {
             </Route>
             <Route path="/userInfo" element={
               <>
-                <NavBar role={role} darkTheme={darkTheme}/>
+                <AboutNavBar role={role} darkTheme={darkTheme}/>
                 <UserInfo
                   handleCheck={handleCheck}
                   handleChange={handleChange}
@@ -212,6 +213,7 @@ export default function App () {
                 setLanguages={setLanguages}
                 setFriends={setFriends}
                 userId={userId}
+                languages={languages}
               />
             </>} >
             </Route>
@@ -232,6 +234,7 @@ export default function App () {
                 setLanguages={setLanguages}
                 setFriends={setFriends}
                 userId={userId}
+                languages={languages}
               />
             </>} >
             </Route>

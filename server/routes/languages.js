@@ -28,9 +28,7 @@ router.get('/languages/taught', (req, res, next) => {
   model.getTaughtLanguagesByTeacherId(accountId)
     .then((result) => {
       let languages = result.rows;
-      languages.length > 0 ?
-        res.status(200).send(languages) :
-        res.sendStatus(404);
+        res.status(200).send(languages)
     })
     .catch((error) => res.sendStatus(404));
 });

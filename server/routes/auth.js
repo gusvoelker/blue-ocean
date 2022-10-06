@@ -98,7 +98,7 @@ router.post("/logout", (req, res, next) => {
 router.use("/", (req, res, next) => {
   // req.user = { // DEBUG: Uncomment this if testing routes without auth
   //   id: 1,
-  //   isTeacher: true // Can set to true or false depending on which user is being tested
+  //   isTeacher: false // Can set to true or false depending on which user is being tested
   // }
   if (!req.user) {
     res.status(403).send("Login required");

@@ -10,34 +10,17 @@ import {
 import {serverURL} from '../../../config.js'
 import axios from 'axios'
 
-export default function PendingMeetingModal({ onClose, pendingMeetings, props }) {
+export default function PendingMeetingModal({ onClose, pendingMeetings, teacherId, acceptMeeting, denyMeeting }) {
   const [allPendingMeetings, setAllPendingMeetings] = useState(pendingMeetings)
-  const [updatedPendingMeeting, setUpdatedPendingMeeting] = useState([])
+  const [updatedPendingMeeting, setUpdatedPendingMeeting] = useState(null)
 
-  const acceptMeeting = (userId, start_time) => {
-    axios.put(`${serverURL}/meetings`, {params: {receiverId: props.userId, requesterID: userId, start_time}})
-    .then((returnedPendingMeetings) =>{
-      setPendingMeetings(returnedPendingMeetings.data)
-      onClose()
-    })
-    .catch(err=>{console.log('error accepting meeting ', err)})
 
-  }
-
-  const denyMeeting = (userId, start_time) => {
-    axios.put(`${serverURL}/meetings/delete`, {params: {receiverId: props.userId, requesterID: userId, start_time}})
-    .then((returnedPendingMeetings) =>{
-      setPendingMeetings(returnedPendingMeetings.data)
-      onClose()
-    })
-    .catch(err=>{console.log('error denying meeting ', err)})
-
-  }
   useEffect(() => {
     var pendingMeetingsArray = []
     allPendingMeetings.forEach(meeting => {
       var dateObj = new Date(meeting.start_time)
-      meeting.dateObj = dateObj.toLocaleTimeString();
+      meeting.timeObj = dateObj.toLocaleTimeString();
+      meeting.dateObj = dateObj.toLocaleDateString();
       pendingMeetingsArray.push(meeting)
     })
     setUpdatedPendingMeeting(pendingMeetingsArray)
@@ -50,12 +33,18 @@ export default function PendingMeetingModal({ onClose, pendingMeetings, props })
           Your Pending Meeting Requests
         </h4>
         <div>
-          {updatedPendingMeeting.map(pending => (
-            <>
-              <span>{pending.first_name} {pending.last_name} at {pending.dateObj}</span> <br></br>
-              <StyledButton onClick={acceptMeeting(pending.requester_id, pending.start_time)}>Accept</StyledButton>
-              <StyledButton onClick={denyMeeting}>Deny</StyledButton>
-            </>
+          {updatedPendingMeeting && updatedPendingMeeting.map((pending, index) => (
+            <div key={index}>
+              <span>{pending.first_name} {pending.last_name} on {pending.dateObj} at {pending.timeObj}</span> <br></br>
+              <StyledButton onClick={(e)=>{
+                acceptMeeting(e, pending.req_account_id, pending.rec_account_id, pending.start_time);
+                onClose();
+                }}>Accept</StyledButton>
+              <StyledButton onClick={(e)=>{
+                denyMeeting(e, pending.req_account_id, pending.rec_account_id, pending.start_time);
+                onClose();
+                }}>Deny</StyledButton>
+            </div>
           ))}
         </div>
 
