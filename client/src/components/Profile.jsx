@@ -99,6 +99,8 @@ export default function Profile (props) {
   const [currentFriend, setCurrentFriend] = useState('');
   const [friendSearch, setFriendSearch] = useState('');
   const [usersWithSameLanguage, setUsersWithSameLanguage] = useState([])
+  const [pendingRequests, setPendingRequests] = useState([])
+
   // const {userId} = useContext(SocketContext);
   // console.log(userId);
   console.log(props.userId);
@@ -136,12 +138,6 @@ export default function Profile (props) {
       return account;
       })
     })
-    // TODO: grab the languages that the user speaks and finish the filter
-    // .then(accounts => {
-    //   return accounts.filter((account) => {
-    //     return account.language.includes('languages this user speaks')
-    //   })
-    // })
     .then(accounts => setUsersWithSameLanguage(accounts))
     .catch((err) => {
       console.log(err);
@@ -276,7 +272,7 @@ export default function Profile (props) {
         </ProfileFriendsList>
       </ProfileContainer>
       <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch} usersWithSameLanguage={usersWithSameLanguage} languages={props.languages}/>
-      <PendingRequests onClose={() => setShowPending(false)} show={showPending} usersWithSameLanguage={usersWithSameLanguage}/>
+      <PendingRequests onClose={() => setShowPending(false)} show={showPending} pendingRequests={pendingRequests}/>
       <FriendsModal onClose={() => setShow(false)} show={show} friend={props.friends[currentFriend]} />
       <EditInfoModal onClose={() => setEditInfoShow(false)} show={editInfoShow} />
       </Dark>

@@ -99,6 +99,7 @@ export default function TeacherProfile(props) {
   const [pickDateShow, setPickDateShow] = useState(false);
   const [showPending, setShowPending] = useState(false);
   const [meetings, setMeetings] = useState([])
+  const [pendingRequests, setPendingRequests] = useState([])
   // const [meetings, setMeetings] = useState([{receiver_id: 1, first_name: 'Greta', last_name: 'Grover', start_time: 'Wed, 05 Oct 2022 20:34:12 GMT', status: false }, { receiver_id: 2, first_name: 'Nick', last_name: 'Kozlarek', start_time: 'Thu, 06 Oct 2022 20:34:12 GMT', status: true },])
   const [pendingMeetings, setPendingMeetings] = useState([])
   // const [pendingMeetings, setPendingMeetings] = useState([{requester_id: 1, first_name: 'Andrew', last_name: 'Cho', start_time: 'Thu, 06 Oct 2022 20:34:12 GMT', status: false }])
@@ -201,6 +202,10 @@ export default function TeacherProfile(props) {
   }
 
   const onPendingRequestsClick = () => {
+    axios.get(`${serverURL}/friend/requests`)
+    .then(({data}) => {
+      console.log(data);
+    })
     setShowPending(true);
   }
 
@@ -366,7 +371,7 @@ export default function TeacherProfile(props) {
       </ProfileContainer>
       <FriendsModal onClose={() => setShow(false)} show={show} friend={currentFriend} />
       <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch} usersWithSameLanguage={usersWithSameLanguage} languages={props.languages}/>
-      <PendingRequests onClose={() => setShowPending(false)} show={showPending} usersWithSameLanguage={usersWithSameLanguage}/>
+      <PendingRequests onClose={() => setShowPending(false)} show={showPending} pendingRequests={pendingRequests}/>
       <TeacherClassListModal onClose={() => setTeacherShow(false)} show={teacherShow} teacherId={teacherId} />
       <EditInfoModal onClose={() => setEditInfoShow(false)} show={editInfoShow} />
     </div>

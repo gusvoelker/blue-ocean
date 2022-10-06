@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
+import { serverURL } from '../config.js';
+import axios from 'axios';
 import {
   FriendsModalContainer,
   FriendsModalContent,
@@ -17,9 +19,14 @@ export default function AddFriendModal (props) {
 
   useEffect(() => {
     let nameArray = props.usersWithSameLanguage.map(user => {
-      return `${user.first_name} ${user.last_name}`
+      let obj = {
+        friend_name: `${user.first_name} ${user.last_name}`,
+        id: user.account_id
+      }
+      return obj;
     })
     setSearchedFriends(nameArray);
+    console.log(nameArray)
   }, [props.usersWithSameLanguage])
 
   const [searchedFriends, setSearchedFriends] = useState(['Frodo', 'Gandalf', 'Legolas', 'Bilbo']);
@@ -29,7 +36,11 @@ export default function AddFriendModal (props) {
     let language = e.target.value;
     if (language === 'any') {
       let nameArray = props.usersWithSameLanguage.map(user => {
-        return `${user.first_name} ${user.last_name}`
+        let obj = {
+          friend_name: `${user.first_name} ${user.last_name}`,
+          id: user.account_id
+        }
+        return obj;
       })
       setSearchedFriends(nameArray);
     } else {
@@ -43,11 +54,25 @@ export default function AddFriendModal (props) {
         }
       })
       let nameArray = accounts.map(user => {
-        return `${user.first_name} ${user.last_name}`
+        let obj = {
+          friend_name: `${user.first_name} ${user.last_name}`,
+          id: user.account_id
+        }
+        return obj;
       })
-      console.log(accounts);
+      console.log(nameArray);
       setSearchedFriends(nameArray);
     }
+  }
+
+  const addFriend = (e) => {
+    axios.post(`${serverURL}/friend`, {
+      requestedId: e.target.id
+    })
+    .then(response => {
+      //TODO: display success to client
+      console.log(response)
+    })
   }
 
   return (
@@ -75,8 +100,8 @@ export default function AddFriendModal (props) {
           {searchedFriends.map((friend) => {
             return (
               <StyledFriend >
-                <div style={{ fontWeight: 'bold', height: '1rem' }}>{friend}</div>
-                <StyledButton style={{ marginTop: '0rem', width: '8rem'}}>ADD FRIEND</StyledButton>
+                <div style={{ fontWeight: 'bold', height: '1rem' }}>{friend.friend_name}</div>
+                <StyledButton id={friend.id} style={{ marginTop: '0rem', width: '8rem'}} onClick={addFriend}>ADD FRIEND</StyledButton>
               </StyledFriend>
             )
           })}

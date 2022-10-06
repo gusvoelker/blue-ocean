@@ -17,11 +17,11 @@ export default function PendingRequests (props) {
   }
 
   useEffect(() => {
-    let nameArray = props.usersWithSameLanguage.map(user => {
+    let nameArray = props.pendingRequests.map(user => {
       return `${user.first_name} ${user.last_name}`
     })
     setSearchedFriends(nameArray);
-  }, [props.usersWithSameLanguage])
+  }, [props.pendingRequests])
 
   const [searchedFriends, setSearchedFriends] = useState(['Frodo', 'Gandalf', 'Legolas', 'Bilbo']);
 
