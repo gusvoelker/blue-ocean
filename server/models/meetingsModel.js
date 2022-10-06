@@ -3,7 +3,6 @@ const db = require("../db/db.js")
 
 //simple
 module.exports.findMeetings = (req_account) => {
-  console.log("account is this", req_account)
   return db.query(`
     SELECT m.conn_id,
       m.req_account_id,
@@ -24,7 +23,6 @@ module.exports.findMeetings = (req_account) => {
 }
 
 module.exports.findMeetingsRequests = (rec_account) => {
-  console.log("RECEIVING ACCOUNT IS ", rec_account)
   return db.query(`
     SELECT m.conn_id,
       m.req_account_id,

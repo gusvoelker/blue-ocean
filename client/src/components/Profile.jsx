@@ -86,16 +86,20 @@ const RightButton = styled.button`
 import FriendsModal from './FriendsModal.jsx';
 import AddFriendModal from './AddFriendModal.jsx';
 import EditInfoModal from './EditInfoModal.jsx';
+import PendingRequests from './PendingRequests.jsx';
 
 
 export default function Profile (props) {
   const [profileBackground, setProfileBackground] = useState(['https://images.unsplash.com/photo-1470125634816-ede3f51bbb42?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1998&q=80', 'https://images.unsplash.com/photo-1552288084-454d4fa5caa1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2170&q=80', 'https://images.unsplash.com/photo-1606335270813-52d62bfc5e69?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2525&q=80', 'https://images.unsplash.com/photo-1591467847734-12186c3a3f1c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2156&q=80', 'https://images.unsplash.com/photo-1603731125936-1c28b35b1659?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1905&q=80', 'https://images.unsplash.com/photo-1590918836821-3c692676add7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80']);
   const [profileBackgroundDark, setProfileBackgroundDark] = useState(['https://images.unsplash.com/photo-1475738198235-4b30fc20cff4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1976&q=80', 'https://images.unsplash.com/photo-1552288084-454d4fa5caa1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2170&q=80', 'https://images.unsplash.com/photo-1504069424204-a54566b5165c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1984&q=80', 'https://images.unsplash.com/photo-1529984489975-079884dc3bc9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2320&q=80', 'https://images.unsplash.com/photo-1538254815620-1d3e0b3f14cf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2416&q=80']);
   const [show, setShow] = useState(false);
+  const [showPending, setShowPending] = useState(false);
   const [addShow, setAddShow] = useState(false);
   const [editInfoShow, setEditInfoShow] = useState(false);
   const [currentFriend, setCurrentFriend] = useState(null);
   const [friendSearch, setFriendSearch] = useState('');
+  const [usersWithSameLanguage, setUsersWithSameLanguage] = useState([])
+  const [pendingRequests, setPendingRequests] = useState([])
 
   // const {userId} = useContext(SocketContext);
   // console.log(userId);
@@ -124,7 +128,31 @@ export default function Profile (props) {
   }, [currentFriend])
 
   const onAddFriendClick = () => {
+    axios.get(`${serverURL}/accounts`)
+    .then(({data}) => {
+      return data.map(account => {
+        axios.get(`${serverURL}/languages/known`, {
+          params: {
+            accountId: account.account_id
+          }
+        })
+        .then(({data}) => account.language = data)
+      return account;
+      })
+    })
+    .then(accounts => setUsersWithSameLanguage(accounts))
+    .catch((err) => {
+      console.log(err);
+    })
     setAddShow(true);
+  }
+
+  const onPendingRequestsClick = () => {
+    axios.get(`${serverURL}/friend/requests`)
+    .then(({data}) => {
+      setPendingRequests(data);
+    })
+    setShowPending(true);
   }
 
   const onFriendSearch = (e) => {
@@ -247,11 +275,12 @@ export default function Profile (props) {
             })}
           </p>
           <StyledButton style={{marginTop: '0rem'}} onClick={onAddFriendClick}>ADD FRIEND</StyledButton>
-          <StyledButton>PENDING REQUESTS</StyledButton>
+          <StyledButton onClick={onPendingRequestsClick}>PENDING REQUESTS</StyledButton>
         </ProfileFriendsList>
       </ProfileContainer>
+      <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch} usersWithSameLanguage={usersWithSameLanguage} languages={props.languages}/>
+      <PendingRequests onClose={() => setShowPending(false)} show={showPending} pendingRequests={pendingRequests}/>
       <FriendsModal onClose={() => setShow(false)} show={show} currentFriend={currentFriend} friend={props.friends[currentFriend]}/>
-      <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch}/>
       <EditInfoModal onClose={() => setEditInfoShow(false)} show={editInfoShow} />
       </Dark>
     </div>
