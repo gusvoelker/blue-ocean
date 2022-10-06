@@ -132,7 +132,6 @@ export default function TeacherProfile(props) {
     console.log('getClasses is running')
     axios.get(`${serverURL}/classes`, { params: { teacher_id: props.userId } })
       .then((classData) => {
-        console.log('class Data ', classData)
         setClasses(classData.data)
       })
       .catch((err) => { console.log('error getting classes ', err) })
@@ -143,14 +142,12 @@ export default function TeacherProfile(props) {
 
     axios.get(`${serverURL}/meetings`, { params: { user_id: props.userId } })
       .then((meetingsRes) => {
-        console.log('non pending meetings ', meetingsRes)
         setMeetings(meetingsRes.data)
       })
       .catch(err => { console.log('error getting meetings ', err) })
 
     axios.get(`${serverURL}/meetings/requests`, { params: { user_id: props.userId } })
       .then((pendingMeetings) => {
-        console.log('pending meetings 148 teacher profile', pendingMeetings)
         setPendingMeetings(pendingMeetings.data)
       })
   }, [])
@@ -179,7 +176,6 @@ export default function TeacherProfile(props) {
   const onFriendClick = (e) => {
     setShow(true);
     setCurrentFriend(e.target.id);
-    console.log('clicking on friend')
   }
 
   const onAddFriendClick = () => {
@@ -189,7 +185,6 @@ export default function TeacherProfile(props) {
     e.preventDefault()
     console.log('class id ', e.target.id)
     axios.get(`${serverURL}/classes/students`, { params: { class_id: e.target.id } }).then((students) => {
-      console.log(students.data)
       setStudents(students.data)
       setModalClassName(class_name)
       setClassShow(true)
@@ -222,11 +217,9 @@ export default function TeacherProfile(props) {
 
   const onCalendarClick = (dateTime, friend, user) => {
     setPickDateShow(false)
-    console.log(dateTime.toUTCString())
     var GMTTime = dateTime.toUTCString()
     axios.post(`${serverURL}/meetings`, { requesterId: props.userId, receiverId: friend, start_time: GMTTime })
       .then((meetingsRes) => {
-        console.log('meetings ', meetingsRes.data)
         setMeetings(meetingsRes.data)
       }).catch((err) => {
         console.log(err)
@@ -238,12 +231,10 @@ export default function TeacherProfile(props) {
     e.preventDefault()
     var start_time = new Date(start_time)
     var GMTTime = start_time.toUTCString()
-    console.log('GMT time teacher meeting modal', GMTTime)
     axios.delete(`${serverURL}/meetings`, { params: { receiverId: receiverId, requesterId: requesterId, dateTime: GMTTime } })
       .then(() => {
         axios.get(`${serverURL}/meetings`, { params: { user_id: props.userId } })
           .then((meetingsRes) => {
-            console.log('non pending meetings ', meetingsRes)
             setMeetings(meetingsRes.data)
           })
           .catch(err => { console.log('error getting meetings ', err) })
@@ -258,14 +249,12 @@ export default function TeacherProfile(props) {
       .then(() => {
         axios.get(`${serverURL}/meetings`, { params: { user_id: props.userId } })
           .then((meetingsRes) => {
-            console.log('non pending meetings acceptMeeting', meetingsRes)
             setMeetings(meetingsRes.data)
           })
           .catch(err => { console.log('error getting meetings ', err) })
 
         axios.get(`${serverURL}/meetings/requests`, { params: { user_id: props.userId } })
           .then((pendingMeetings) => {
-            console.log('pending meetings acceptMeeting ', pendingMeetings)
             setPendingMeetings(pendingMeetings.data)
           })
 

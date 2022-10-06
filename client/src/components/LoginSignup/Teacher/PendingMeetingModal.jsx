@@ -23,7 +23,6 @@ export default function PendingMeetingModal({ onClose, pendingMeetings, teacherI
       meeting.dateObj = dateObj.toLocaleDateString();
       pendingMeetingsArray.push(meeting)
     })
-    console.log('pending meetings ', pendingMeetingsArray)
     setUpdatedPendingMeeting(pendingMeetingsArray)
   }, [allPendingMeetings])
 

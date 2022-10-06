@@ -24,18 +24,15 @@ export default function TeacherCalendar({ teacherId, meetings, handleDelete }) {
   }
 
   const onCalendarClick = () => {
-    console.log('click', value)
     var meetingsOnDayArray = []
     meetings.forEach(meeting => {
       var dateObj = new Date(meeting.start_time)
-      console.log(dateObj, value, isSameDay(dateObj, value))
       if (isSameDay(dateObj, value)) {
         meeting.dateObj = dateObj.toLocaleTimeString();
         meetingsOnDayArray.push(meeting)
       }
 
     })
-    console.log('meetingsOnDay ', meetingsOnDayArray)
     setMeetingsOnDay(meetingsOnDayArray)
       setOpen(true)
 
@@ -49,7 +46,6 @@ export default function TeacherCalendar({ teacherId, meetings, handleDelete }) {
       var dateObj = new Date(meeting.start_time)
       highlight.push(dateObj)
     })
-    // console.log('days to highlight ', highlight)
     setDaysToHighlight(highlight)
   }, [meetings])
 
