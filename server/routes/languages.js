@@ -64,11 +64,7 @@ router.get('/languages/known', (req, res, next) => {
   model.getKnownLanguagesByUserId(accountId)
     .then((result) => {
       let languages = result.rows;
-<<<<<<< HEAD
-        res.status(200).send(languages);
-=======
       res.status(200).send(languages);
->>>>>>> dev
     })
     .catch((error) => res.sendStatus(404));
 });

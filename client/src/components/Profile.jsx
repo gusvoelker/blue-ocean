@@ -246,9 +246,10 @@ export default function Profile (props) {
           </StyledFriendSearchSpan>
           <p>{!filtering ?
             props.friends.map((friend, index) => {
+              //TODO: this was broken
               return (
-                <StyledFriend  id={friend} key={index} onClick={onFriendClick}>
-                  <div style={{fontWeight: 'bold'}}>{friend}</div>
+                <StyledFriend  id={friend.account_id} key={index} onClick={onFriendClick}>
+                  <div style={{fontWeight: 'bold'}}>{`${friend.first_name} ${friend.last_name}`}</div>
                   <Link to="/messages">
                     <StyledFriendIcons>
                       <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png'/>

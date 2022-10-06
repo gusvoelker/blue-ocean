@@ -12,11 +12,7 @@ router.get('/accounts', (req, res, next) => {
   model.getAccountsByType(req.user.isTeacher)
     .then((result) => {
       let accounts = result.rows;
-<<<<<<< HEAD
-        res.status(200).send(accounts);
-=======
       res.status(200).send(accounts);
->>>>>>> dev
     })
     .catch((error) => res.sendStatus(404));
 });
