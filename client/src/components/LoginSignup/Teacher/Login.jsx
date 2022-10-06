@@ -88,9 +88,9 @@ export default function Login (props) {
     e.preventDefault();
     try {
       const res = await axios.post(`${serverURL}/login`, formData);
-      console.log(res)
+      console.log(res.data.id)
       props.onIdChange(res.data.id);
-      setUser(res.data.id)
+      setUser(res.data);
       navigate("/teacherprofile")
     } catch (err) {
       console.log(err);
