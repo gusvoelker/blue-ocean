@@ -34,10 +34,10 @@ io.on("connection", (socket) => {
     // io.emit("receiveMessage", text);
     const user = getUser(receiverId);
     console.log(users);
-    // io.to(user.socketId).emit("getMessage", {
-    //   senderId,
-    //   text,
-    // });
+    io.emit("getMessage", {
+      senderId,
+      text,
+    });
   });
 
   socket.on("disconnect", () => {

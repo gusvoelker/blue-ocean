@@ -47,18 +47,35 @@ export default function Login (props) {
       ...formData,
       [e.target.name]: e.target.value
     })
-    console.log(e.target.value);
+    // console.log(e.target.value);
   };
 
   const handleSubmit = async(e) => {
     e.preventDefault();
-    try {
-      const res = await axios.post(`${serverURL}/login`, formData );
-      console.log(res.data);
-      setUser(res.data);
-    } catch (err) {
-      console.log(err);
-    }
+    fetch(`${serverURL}/login`, {
+      method: 'post',
+      credentials: "include",
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Access-Control-Allow-Origin': 'http://localhost:5173/'
+      },
+      body: JSON.stringify(formData)
+    })
+    .then((res) => {
+      return res.json()
+      .then((jsonResponse) => console.log(jsonResponse))
+      // setUser(res.data)
+    }).catch((err) => {
+      console.log(err)
+    })
+    // try {
+    //   const res = await axios.post(`${serverURL}/login`, formData, );
+    //   console.log(res.data);
+    //   setUser(res.data);
+    // } catch (err) {
+    //   console.log(err);
+    // }
   }
 
   let button;

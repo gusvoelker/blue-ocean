@@ -473,7 +473,7 @@ const MessagesTextContainer = styled.div`
   border-radius: 15px;
   text-align: center;
   padding: 25px;
-  overflow: hidden;
+  overflow: auto;
   flex-direction: column-reverse;
 `
 const MyMessage = styled.div`
@@ -484,7 +484,6 @@ const MyMessage = styled.div`
   height: auto;
   padding: 5px;
   margin-top: 15px;
-  overflow: auto;
   img {
     position: relative;
     width: 50px;

@@ -33,9 +33,21 @@ module.exports = (passport) => {
     })
   );
   passport.serializeUser((user, done) => {
-    return done(null, user);
+    console.log("called");
+    done(null, user);
   });
   passport.deserializeUser((user, done) => {
+    console.log("called -deserialize");
+    // model
+    //   .getPublicAccountInfoById(id)
+    //   .then((info) => {
+    //     console.log("deserialized!");
+    //     const user = info.rows[0];
+    //     done(null, user);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
     return done(null, user);
   });
 };

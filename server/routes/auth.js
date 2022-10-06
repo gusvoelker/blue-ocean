@@ -55,6 +55,7 @@ router.post("/register", (req, res, next) => {
 // LOGIN
 //session is established after authentication
 router.post("/login", (req, res, next) => {
+  // res.setHeader("Access-Control-Allow-Credentials", "true");
   console.log(req.body.email, req.body.password);
   passport.authenticate("local", (err, user, errorInfo) => {
     if (err) return res.sendStatus(500);
@@ -62,8 +63,13 @@ router.post("/login", (req, res, next) => {
     req.logIn(user, function (err) {
       if (err) return next(err);
       console.log(req.session);
+      // if (req.user) {
+      //   res.setHeader("Access-Control-Allow-Credentials", "true");
+      // }
       return res.status(200).send(req.user);
+      // return res.redirect("/");
     });
+    // successRedirect: "http://localhost:3000/profile";
   })(req, res, next);
 });
 
@@ -73,7 +79,10 @@ router.post("/logout", (req, res, next) => {
     if (err) {
       return next(err);
     }
-    res.send("You are logged out!");
+    req.session.destroy((err) => {
+      res.clearCookie("test");
+      res.send("You are logged out!");
+    });
   });
 });
 

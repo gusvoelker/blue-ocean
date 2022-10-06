@@ -19,7 +19,9 @@ import {
 }
 from './StyledComponents/StyledComponents.jsx';
 
+
 export default function Messages () {
+  console.log('render');
   const friends = ['Adam', 'Bob', 'Charlie', 'Daniel', 'Emily', 'Florenza', 'Adam', 'Bob', 'Charlie', 'Daniel', 'Emily', 'Florenza', 'Adam', 'Bob', 'Charlie', 'Daniel', 'Emily', 'Florenza'];
   const [profilePicture, setProfilePicture] = useState('https://i.postimg.cc/gkDMWvVY/photo-1615497001839-b0a0eac3274c.jpg');
   const [currentFriend, setCurrentFriend] = useState('Adam');
@@ -37,6 +39,16 @@ export default function Messages () {
   useEffect(()=> {
     socket.current = io('ws://localhost:8080');
     socket.current.on("getMessage", (data) =>{
+      let containsBoolean = false;
+      console.log('HEY WHY ISNT THIS WORKING');
+      messages.forEach((message) => {
+        if (message.text === data.text) {
+          containsBoolean = true;
+        }
+      })
+      if (!containsBoolean) {
+        setMessages(messages => [...messages, data]);
+      }
       console.log(data);
     })
   }, [user]);
@@ -68,7 +80,7 @@ export default function Messages () {
     //setMessage('');
     //need to find a way to get the receiver id
     socket.current.emit('sendMessage', {
-      senderId: 11, //user.id
+      senderId: user.id, //user.id
       receiverId: 12,
       text: message,
     })
@@ -98,18 +110,13 @@ export default function Messages () {
       </MessagesConvoContainer>
       <MessagesChatContainer>
         <MessagesTextContainer>
-          <MyMessage>
-            Hey how are you doing today
-            <img src={profilePicture}></img>
-          </MyMessage>
-          <TheirMessage>
-            I'm doing fine
-            <img src={friendsPicture}></img>
-          </TheirMessage>
-          <MyMessage>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            <img src={profilePicture}></img>
-          </MyMessage>
+          {messages.reverse().map((message, i) => {
+            return (
+            <MyMessage key= {i}>
+              {message.text}
+            </MyMessage>
+          )}
+          )}
         </MessagesTextContainer>
         <MessagesTopContainer>
           <img src={friendsPicture}></img>
