@@ -53,7 +53,7 @@ export default function App () {
   const [friends, setFriends] = useState([
     {account_id: 4, first_name: 'Bill', last_name: 'from lotr', email: 'galad@gmail.edu', avatar_url: null},
     {account_id: 3, first_name: 'Ted', last_name: 'Baggins', email: 'frodo@gmail.edu', avatar_url: null},
-    {account_id: 1, first_name: 'Tom', last_name: 'Buttkiss', email: 'tom@gmail.edu', avatar_url: null}]);
+    {account_id: 5, first_name: 'Tom', last_name: 'Buttkiss', email: 'tom@gmail.edu', avatar_url: null}]);
   const [profilePicture, setProfilePicture] = useState('https://i.postimg.cc/gkDMWvVY/photo-1615497001839-b0a0eac3274c.jpg');
   const [languages, setLanguages] = useState([]);
   const [isTeacher, setTeacher] = useState(true);

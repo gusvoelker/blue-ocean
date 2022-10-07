@@ -32,7 +32,7 @@ export default function Messages ({ friends }) {
   const [messages, setMessages] = useState([]);
   const [usersArray, setUsersArray] = useState([]);
   const [roomsArray, setRoomsArray] = useState([]);
-  const [currentRoom, setCurrentRoom] = useState(3);
+  const [currentRoom, setCurrentRoom] = useState(9);
 
 
   const { user } = useContext(SocketContext);
@@ -43,18 +43,31 @@ export default function Messages ({ friends }) {
   // useEffect(() => {
   //   //this should fetch all conversations for the current user
   // }, [user)
+  useEffect(() => {
+    console.log('mounted');
+  }, []);
 
-  useEffect(()=> {
+  // useEffect(()=> {
+
+  // }, []);
+
+  useEffect(() => {
     socket.current = io('ws://localhost:8080');
-    socket.current.on("getMessage", (data) => {
-      console.log("data.roomNumber: ", data.roomNumber);
-      console.log("currentRoom: ", currentRoom);
-      if (data.roomNumber === currentRoom) {
-        setMessages(messages => [...messages, data]);
-        console.log(data);
-      }
+    socket.current.on("roomNumber", (roomNumber) => {
+      setCurrentRoom(roomNumber);
+      console.log(roomNumber);
     })
-  }, [user]);
+    socket.current.on("getMessage", (data) => {
+      // console.log("currentFriend.first_name :", currentFriend.first_name);
+      // console.log("data.roomNumber: ", data.roomNumber);
+      // console.log("currentRoom: ", currentRoom);
+      setMessages(messages => [...messages, data]);
+      console.log(data);
+    })
+    return () => {
+      socket.current.disconnect();
+    };
+  }, []);
 
   useEffect(()=> {
     if (user !== undefined) {
@@ -63,12 +76,12 @@ export default function Messages ({ friends }) {
         setUsersArray(users);
         console.log(users)
       })
-      socket.current.on('getRooms', (rooms) => {
-        setRoomsArray(rooms);
-        console.log("roomArray!: ", rooms);
-      })
+      // socket.current.on('getRooms', (rooms) => {
+      //   setRoomsArray(rooms);
+      //   console.log("roomArray!: ", rooms);
+      // })
     }
-  }, [user]);
+  }, []);
 
 
 
@@ -89,7 +102,7 @@ export default function Messages ({ friends }) {
     //need to find a way to get the receiver id
     socket.current.emit('sendMessage', {
       senderId: user.id, //user.id
-      receiverId: currentFriend.friendId,
+      receiverId: currentFriend.account_id,
       text: message,
       roomNumber: currentRoom
     })
@@ -102,14 +115,18 @@ export default function Messages ({ friends }) {
   // const friendClickHandler = (e) => {
   //   setCurrentFriend(e.target.value)
   // }
-  const updateCurrentRoom = (id) => {
-    roomsArray.forEach((room) => {
-      if (room.members.includes(id)) {
-        setCurrentRoom(room.roomName);
-        console.log("roomName:", room.roomName)
-      }
-    })
-  }
+  const updateCurrentRoom = (id, friend) => {
+    setCurrentFriend(friend);
+    socket.current.emit('addRoom', user.id, id, currentRoom);
+    setMessages([]);
+  };
+
+  // roomsArray.forEach((room) => {
+  //   if (room.members.includes(id)) {
+  //     setCurrentRoom(room.roomName);
+  //     console.log("roomName:", room.roomName)
+  //   }
+  // });
 
 
   return (
@@ -121,10 +138,7 @@ export default function Messages ({ friends }) {
             return (
               <React.Fragment>
                 <StyledButton key={i} onClick={() => {
-                  setCurrentFriend(friend);
-                  console.log("friend.account:", friend.account_id);
-                  updateCurrentRoom(friend.account_id);
-                  setMessages([]);
+                  updateCurrentRoom(friend.account_id, friend);
                   }}>
                   {friend.first_name}
                   <MessageProfilePic src={profilePicture}></MessageProfilePic>

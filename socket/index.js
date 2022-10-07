@@ -11,7 +11,9 @@ const roomConnections = [
   {members: [5, 6], roomName: 4},
   {members: [2, 3], roomName: 5},
   {members: [3, 3], roomName: 6},
-  {members: [4, 1], roomName: 7}
+  {members: [4, 1], roomName: 7},
+  {members: [5, 3], roomName: 8},
+  {members: [5, 4], roomName: 9},
 ];
 
 let users = [];
@@ -37,18 +39,27 @@ io.on("connection", (socket) => {
   // io.emit("Hello users");
   socket.on("addUser", (userId) => {
     addUser(userId, socket.id);
-    let roomArray = [];
-    roomConnections.forEach((connection) => {
-      if (connection.members.includes(userId)) {
-        socket.join(connection.roomName);
-        roomArray.push(connection);
-        console.log(`Rooms: User ${userId} connected to Room ${connection.roomName}`);
-      }
-    })
-    io.to(socket.id).emit('getRooms', roomArray);
+    // let roomArray = [];
+    // roomConnections.forEach((connection) => {
+    //   if (connection.members.includes(userId)) {
+    //     socket.join(connection.roomName);
+    //     roomArray.push(connection);
+    //     console.log(`Rooms: User ${userId} connected to Room ${connection.roomName}`);
+    //   }
+    // })
+    // io.to(socket.id).emit('getRooms', roomArray);
     io.emit("getUsers", users);
   });
-
+  socket.on("addRoom", (userId, friendId, currentRoom) => {
+    socket.leave(currentRoom);
+    roomConnections.forEach((connection) => {
+      if (connection.members.includes(userId) && connection.members.includes(friendId)) {
+        socket.join(connection.roomName);
+        console.log(`Rooms: User ${userId} connected to Room ${connection.roomName}`);
+        io.to(socket.id).emit('roomNumber', connection.roomName);
+      }
+    })
+  })
   socket.on("sendMessage", ({ senderId, receiverId, text, roomNumber }) => {
     console.log(senderId, receiverId, text);
     // io.emit("receiveMessage", text);
