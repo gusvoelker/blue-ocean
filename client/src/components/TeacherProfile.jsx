@@ -432,7 +432,7 @@ const filteredFriendsList = filteredFriends.map((friend, index) => {
 
 
           <StyledButton style={{ marginTop: '0rem', width: '12rem' }} onClick={onAddFriendClick}>ADD FRIEND</StyledButton>
-          <StyledButton onClick={onPendingRequestsClick}>PENDING REQUESTS</StyledButton>
+          <StyledButton onClick={onPendingRequestsClick} style={{ marginTop: '0rem', width: '12rem' }}>PENDING REQUESTS</StyledButton>
           {teacherShow && <TeacherClassListModal userId={teacherId} onClose={() => setTeacherShow(false)} show={teacherShow} getClasses={getClasses}/>}
         </ProfileFriendsList>
         <ProfileFriendsList style={{ width: '23rem', left: '71%' }}>
