@@ -105,7 +105,11 @@ export default function Messages () {
       receiverId: currentFriend.account_id,
       text: message,
       roomNumber: currentRoom
-    })
+    });
+    axios.post(`${serverURL}/chats/messages`, {
+      message,
+      roomId: currentRoom
+    });
   };
 
   const handleChange = (e) =>{
@@ -120,9 +124,20 @@ export default function Messages () {
       .then((data) => {
         socket.current.emit('addRoom', currentRoom, data.data.room_id);
         setCurrentRoom(data.data.room_id);
+        axios.get(`${serverURL}/chats/messages`,
+          {
+            params: {
+              roomId: data.data.room_id
+            }
+          })
+          .then((result) => {
+            console.log(result.data);
+            setMessages(result.data);
+          })
+          .catch((error) => console.log(error));
       })
+      .catch((error) => console.log(error));
     setCurrentFriend(friend);
-    setMessages([]);
   };
 
   // roomsArray.forEach((room) => {
@@ -154,10 +169,10 @@ export default function Messages () {
       </MessagesConvoContainer>
       <MessagesChatContainer>
         <MessagesTextContainer>
-          {messages.slice().reverse().map((message, i) => {
+          {messages && messages.slice().reverse().map((message, i) => {
             return (
             <MyMessage key= {i}>
-              {message.text}
+              {message.message}
             </MyMessage>
           )}
           )}

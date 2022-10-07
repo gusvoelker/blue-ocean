@@ -66,7 +66,7 @@ io.on("connection", (socket) => {
     console.log("user from SendMessage:", user);
     io.to(roomNumber).emit("getMessage", {
       senderId,
-      text,
+      message: text,
       roomNumber,
     });
   });
