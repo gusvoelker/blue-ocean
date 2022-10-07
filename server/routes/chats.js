@@ -16,6 +16,16 @@ router.get('/chats', (req, res, next) => {
     .catch((error) => res.sendStatus(400));
 });
 
+// Expects requestedId - user to get room with
+router.get('/chats/id', (req, res, next) => {
+  chatModel.getRoomIdByParticipants(req.user.id, req.query.requestedId)
+    .then((result) => {
+      let room = result.rows[0];
+      res.status(200).send(room);
+    })
+    .catch((error) => res.sendStatus(400));
+});
+
 // Get a list of messages in the provided roomId for the authenticated user / teacher
 // Expects in request query: roomId - Integer representing a chat room ID
 router.get('/chats/messages', (req, res, next) => {
@@ -50,7 +60,6 @@ router.post('/chats', (req, res, next) => {
         .catch((error) => res.sendStatus(400));
     })
     .catch((error) => res.sendStatus(400));
-
 });
 
 // Used by teachers to start a chat between 2 students

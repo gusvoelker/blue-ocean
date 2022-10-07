@@ -110,20 +110,14 @@ ALTER TABLE desired_languages
 CREATE INDEX desired_languages_user_id_idx ON desired_languages (user_id);
 
 CREATE TABLE account_room (
-	room_id SERIAL NOT NULL PRIMARY KEY
+	room_id SERIAL NOT NULL PRIMARY KEY,
+	account_id_1 INT NOT NULL,
+	account_id_2 INT NOT NULL
 );
 
-CREATE TABLE participants (
-	part_id SERIAL NOT NULL PRIMARY KEY,
-	part_account_id INT NOT NULL,
-	room_id INT NOT NULL
-);
-
-ALTER TABLE participants
-	ADD CONSTRAINT fk_participants_part_account_id FOREIGN KEY (part_account_id) REFERENCES accounts(account_id),
-	ADD CONSTRAINT fk_participants_part_room_id FOREIGN KEY (room_id) REFERENCES account_room(room_id);
-
-CREATE INDEX participants_part_account_id_idx ON participants (part_account_id);
+ALTER TABLE account_room
+	ADD CONSTRAINT fk_participants_account_id_1 FOREIGN KEY (account_id_1) REFERENCES accounts(account_id),
+	ADD CONSTRAINT fk_participants_account_id_2 FOREIGN KEY (account_id_2) REFERENCES accounts(account_id);
 
 CREATE TABLE account_message (
 	message_id SERIAL NOT NULL PRIMARY KEY,
@@ -150,3 +144,17 @@ CREATE TABLE meetings (
 );
 
 CREATE INDEX meetings_req_account_id_idx ON meetings (req_account_id);
+
+-- CREATE TABLE p2p_message (
+-- 	message_id SERIAL NOT NULL PRIMARY KEY,
+-- 	sender_account_id INT NOT NULL,
+-- 	recipient_account_id INT NOT NULL,
+-- 	message VARCHAR(1000),
+-- 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- );
+
+-- ALTER TABLE p2p_message
+-- 	ADD CONSTRAINT fk_p2p_message_sender_account_id FOREIGN KEY(sender_account_id) REFERENCES accounts(account_id),
+-- 	ADD CONSTRAINT fk_p2p_message_recipient_account_id FOREIGN KEY(recipient_account_id) REFERENCES accounts(account_id);
+
+-- CREATE INDEX p2p_message_room_id_idx ON p2p_message(sender_account_id);
