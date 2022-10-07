@@ -110,6 +110,7 @@ export default function Messages () {
       message,
       roomId: currentRoom
     });
+    setMessage('');
   };
 
   const handleChange = (e) =>{
@@ -131,8 +132,8 @@ export default function Messages () {
             }
           })
           .then((result) => {
-            console.log(result.data);
-            setMessages(result.data);
+            // console.log(result.data);
+            setMessages(result.data.reverse());
           })
           .catch((error) => console.log(error));
       })
@@ -182,7 +183,7 @@ export default function Messages () {
           {currentFriend.first_name}
         </MessagesTopContainer>
         <StyledWriteMessage>
-          <WriteMessage handleChange={handleChange} handleSubmit={handleSubmit} />
+          <WriteMessage inputValue={message} handleChange={handleChange} handleSubmit={handleSubmit} />
         </StyledWriteMessage>
       </MessagesChatContainer>
     </div>
