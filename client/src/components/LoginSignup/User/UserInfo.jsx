@@ -117,7 +117,7 @@ export default function UserInfo ({handleCheck, handleChange, languages, setLang
           </StyledRightAlignedForms>
           <StyledLabel style={{display: 'flex', justifyContent: 'right', alignItems: 'right', flexDirection: 'column'}}>
             <p>
-              Do you have any other language profficiencies?
+              Do you have any other language proficiencies?
             </p>
             <span style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
               {languageProficiencies}
