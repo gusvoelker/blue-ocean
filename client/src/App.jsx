@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { redirect } from "react-router-dom";
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 
@@ -16,11 +17,9 @@ import { StyledLogPage,
 } from './components/StyledComponents/StyledComponents.jsx'
 import FriendsModal from './components/FriendsModal.jsx';
 
-import EntryForm from './components/LoginSignup/EntryForm.jsx';
-import Role from './components/LoginSignup/Role.jsx'
 import UserInfo from './components/LoginSignup/User/UserInfo.jsx'
-import SignUp from './components/LoginSignup/Teacher/SignUp.jsx'
-import Login from './components/LoginSignup/Teacher/Login.jsx'
+import SignUp from './components/LoginSignup/SignUp.jsx'
+import Login from './components/LoginSignup/Login.jsx'
 import TeacherInfo from './components/LoginSignup/Teacher/TeacherInfo.jsx'
 import About from './components/LoginSignup/About.jsx'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -40,36 +39,11 @@ import ThemeToggleButton from './components/NavBar/DarkModeToggle.jsx'
 
 export default function App () {
   const [darkTheme, setDarkTheme] = useState(false);
-  const [email, setEmail] = useState('hello@gmail.com');
-  const [password, setPassword] = useState('');
-  const [role, setRole] = useState('teacher');
-  const [teacherBoolean, setTeacherBoolean] = useState(false)
-  const [firstName, setFirstName] = useState('Anthony');
-  const [lastName, setLastName] = useState('Liang');
   // Teacher language levels
   const [formData, setFormData] = useState({})
   const [checked, setChecked] = useState([]);
-  const [friends, setFriends] = useState([
-    {account_id: 4, first_name: 'Bill', last_name: 'from lotr', email: 'galad@gmail.edu', avatar_url: null},
-    {account_id: 3, first_name: 'Ted', last_name: 'Baggins', email: 'frodo@gmail.edu', avatar_url: null},
-    {account_id: 5, first_name: 'Tom', last_name: 'Bombadil', email: 'tom@gmail.edu', avatar_url: null}]);
-  const [profilePicture, setProfilePicture] = useState('https://i.postimg.cc/gkDMWvVY/photo-1615497001839-b0a0eac3274c.jpg');
+  const [isTeacher, setIsTeacher] = useState(JSON.parse(localStorage.getItem('isTeacher')) || false); // TODO: Redirect to login / register page if undefined
   const [languages, setLanguages] = useState([]);
-  const [isTeacher, setTeacher] = useState(true);
-  const [userId, setUserId] = useState('');
-
-  const onIdChange = (value) => {
-    setUserId(value);
-  }
-
-  const teacherInfoSubmit = async () => {
-    // try {
-    //   const res = axios.post('/languages/taught', formData)
-    //   console.log(res)
-    // } catch (err) {
-    //   console.log(err)
-    // }
-  }
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -88,161 +62,90 @@ export default function App () {
       updatedList.splice(checked.indexOf(event.target.value), 1);
     }
     setChecked(updatedList);
-    console.log(checked);
   };
 
-  const onEmailChange = (e) => {
-    setEmail(e.target.value);
-  }
-
-  const onPasswordChange = (e) => {
-    setPassword(e.target.value);
-  }
-
-  const onRoleChange = (e) => {
-    setRole(e.target.value);
-  }
-
-  const onFirstNameChange = (e) => {
-    setFirstName(e.target.value);
-  }
-
-  const onLastNameChange = (e) => {
-    setLastName(e.target.value);
-  }
-
-  useEffect(() => {
-    if (role === 'user') {
-      setTeacher(false);
-    } else {
-      setTeacher(true);
-    }
-  }, [role])
+  const getLanguages = () => {
+    return axios.get(`${serverURL}/languages`)
+      .then(res => setLanguages(res.data))
+      .catch(error => {
+        return error;
+      });
+  };
 
   return (
     <div>
-      {!darkTheme ? <LightTheme/> : <DarkTheme/>}
+      {darkTheme ? <DarkTheme/> : <LightTheme/>}
       <ThemeToggleButton setDarkTheme={setDarkTheme} darkTheme={darkTheme}/>
       <StyledLogPage>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={
               <>
-                <AboutNavBar role={role} darkTheme={darkTheme}/>
-                  <About/>
+              <AboutNavBar isTeacher={isTeacher} darkTheme={darkTheme}/>
+              <About/>
               </>
-            }>
-            </Route>
+            }/>
             <Route path="/SignUp" element={
               <>
-                <AboutNavBar role={role} darkTheme={darkTheme}/>
-                <SignUp
-                  onFirstNameChange={onFirstNameChange}
-                  onLastNameChange={onLastNameChange}
-                  onRoleChange={onRoleChange}
-                  onEmailChange={onEmailChange}
-                  onPasswordChange={onPasswordChange}
-                  email={email}
-                  password={password}
-                  firstName={firstName}
-                  lastName={lastName}
-                  role={role}
-                  isTeacher={isTeacher}
-                  onIdChange={onIdChange}
-                />
+              <AboutNavBar isTeacher={isTeacher} darkTheme={darkTheme}/>
+              <SignUp
+                getLanguages={getLanguages}
+              />
               </>
-            }>
-            </Route>
+            }/>
             <Route path="/Login" element={
               <>
-                <AboutNavBar role={role} darkTheme={darkTheme}/>
-                  <Login
-                    onEmailChange={onEmailChange}
-                    onPasswordChange={onPasswordChange}
-                    onRoleChange={onRoleChange}
-                    email={email}
-                    password={password}
-                    role={role}
-                    onIdChange={onIdChange}
-                  />
-                </>
-              }>
-            </Route>
+              <AboutNavBar isTeacher={isTeacher} darkTheme={darkTheme}/>
+              <Login
+                getLanguages={getLanguages}
+              />
+              </>
+            }/>
             <Route path="/teacherInfo" element={
               <>
-                <AboutNavBar role={role} darkTheme={darkTheme}/>
-                <TeacherInfo
-                  handleCheck={handleCheck}
-                  handleChange={handleChange}
-                  languages={languages}
-                  setLanguages={setLanguages}
-                  formData={formData}
-                  teacherInfoSubmit={teacherInfoSubmit}
-                />
+              <AboutNavBar isTeacher={isTeacher} darkTheme={darkTheme}/>
+              <TeacherInfo
+                handleCheck={handleCheck}
+                handleChange={handleChange}
+                languages={languages}
+              />
               </>
-            }>
-            </Route>
+            }/>
             <Route path="/userInfo" element={
               <>
-                <AboutNavBar role={role} darkTheme={darkTheme}/>
-                <UserInfo
-                  handleCheck={handleCheck}
-                  handleChange={handleChange}
-                  languages={languages}
-                  setLanguages={setLanguages}
-                  formData={formData}
-                />
+              <AboutNavBar isTeacher={isTeacher} darkTheme={darkTheme}/>
+              <UserInfo
+                handleCheck={handleCheck}
+                handleChange={handleChange}
+                languages={languages}
+              />
               </>
-            }>
-            </Route>
-            <Route path="/profile" element={<>
-              <NavBar role={role} darkTheme={darkTheme}/>
+            }/>
+            <Route path="/profile" element={
+              <>
+              <NavBar isTeacher={isTeacher} darkTheme={darkTheme}/>
               <Profile
                 darkTheme={darkTheme}
-                friends={friends}
-                profilePicture={profilePicture}
-                firstName={firstName}
-                lastName={lastName}
-                email={email}
-                password={password}
-                role={role}
-                setFirstName={setFirstName}
-                setLastName={setLastName}
-                setEmail={setEmail}
-                setLanguages={setLanguages}
-                setFriends={setFriends}
-                userId={userId}
                 languages={languages}
               />
-            </>} >
-            </Route>
-            <Route path="/teacherprofile" element={<>
-              <NavBar role={role} darkTheme={darkTheme}/>
+              </>
+            }/>
+            <Route path="/teacherprofile" element={
+              <>
+              <NavBar isTeacher={isTeacher} darkTheme={darkTheme}/>
               <TeacherProfile
                 darkTheme={darkTheme}
-                friends={friends}
-                profilePicture={profilePicture}
-                firstName={firstName}
-                lastName={lastName}
-                email={email}
-                password={password}
-                role={role}
-                setFirstName={setFirstName}
-                setLastName={setLastName}
-                setEmail={setEmail}
-                setLanguages={setLanguages}
-                setFriends={setFriends}
-                userId={userId}
                 languages={languages}
               />
-            </>} >
-            </Route>
-            <Route path="/messages" element={<><NavBar role={role} darkTheme={darkTheme}/><Messages friends={friends} /></>} ></Route>
-            <Route path="/videoplayer" element={<>
-              <NavBar role={role} darkTheme={darkTheme} />
+              </>
+            }/>
+            <Route path="/messages" element={<><NavBar isTeacher={isTeacher} darkTheme={darkTheme}/><Messages /></>}/>
+            <Route path="/videoplayer" element={
+              <>
+              <NavBar isTeacher={isTeacher} darkTheme={darkTheme} />
               <VideoChat darkTheme={darkTheme} />
-            </>} >
-            </Route>
+              </>
+            }/>
           </Routes>
         </BrowserRouter>
       </StyledLogPage>

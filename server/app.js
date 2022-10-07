@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(
   session({
     secret: process.env.SV_SECRET,
-    name: "test",
+    name: "languageapp",
     resave: false,
     saveUninitialized: false,
     cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 }

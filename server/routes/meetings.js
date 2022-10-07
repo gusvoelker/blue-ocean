@@ -16,9 +16,7 @@ router.get('/meetings', (req, res, next) => {
 //returns all pending meetings for current user
 router.get('/meetings/requests', (req, res, next) => {
   meetingsModel.findMeetingsRequests(req.user.id)
-  .then(({rows}) => {
-    res.status(200).send(rows);
-  })
+  .then(({rows}) => res.status(200).send(rows))
   .catch((error) => res.sendStatus(400))
 });
 

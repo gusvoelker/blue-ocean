@@ -11,18 +11,12 @@ import {
 import './googleTranslate.css'
 import { Outlet, Link } from "react-router-dom";
 
-export default function AboutNavBar({ darkTheme, role }) {
+export default function AboutNavBar({ darkTheme, isTeacher }) {
 
-  let button;
-  if (role === 'user') {
-    button = <Link to="/profile">
-                <p style={{marginTop: '3rem'}}>Profile</p>
-              </Link>
-  } else {
-    button = <Link to="/teacherprofile">
-              <p style={{marginTop: '3rem'}}>Profile</p>
-            </Link>
-  }
+  let button =
+  <Link to={isTeacher ? "/teacherprofile" : "/profile"}>
+    <p style={{marginTop: '3rem'}}>Profile</p>
+  </Link>;
 
   if(!darkTheme) {
     return (
