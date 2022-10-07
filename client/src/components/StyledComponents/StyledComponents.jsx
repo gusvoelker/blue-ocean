@@ -716,6 +716,7 @@ const FriendsModalContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 4;
 `
 
 const FriendsModalContent = styled.div`
@@ -882,11 +883,18 @@ const CSVModalContainer = styled.div`
 const CSVModalContent = styled.div`
   width: 700px;
   height: 400px;
-  background-color: #ffffff;
+  background-color: #38698fe8;
+  border: 1px solid #f5f5f5;
   border-radius: 10px;
   padding: 10px;
   text-align: center;
   justify-content: center;
+  color: #f5f5f5 !important;
+  h4 {
+    font-size: 2rem;
+    margin-bottom: 0rem;
+    color: #f5f5f5
+  }
   h4 {
     font-size: 20px;
   }
@@ -908,7 +916,6 @@ const CSVModalContent = styled.div`
 `
 const StyledSpan = styled.span`
 width: 70%;
-color: black;
 display: inline-block;
 font-size: 1rem;
 padding: 0.3rem;
@@ -992,11 +999,13 @@ const ClassListModalContainer = styled.div`
 const ClassListModalContent = styled.div`
   width: 500px;
   height: auto;
-  background-color: #ffffff;
+  background-color: #38698fe8;
+  border: 1px solid #f5f5f5;
   border-radius: 10px;
   padding: 10px;
   text-align: center;
   justify-content: center;
+  color: #f5f5f5 !important;
   z-index: 4
   h4 {
     font-size: 30px;
@@ -1062,18 +1071,19 @@ const MeetingModalContainer = styled.div`
 `
 
 const MeetingModalContent = styled.div`
-  width: 500px;
+  width: 700px;
   height: auto;
-  background-color: #ffffff;
-  color: black;
+  background-color: #38698fe8;
+  border: 1px solid #f5f5f5;
   border-radius: 10px;
   padding: 10px;
   text-align: center;
   justify-content: center;
+  color: #f5f5f5 !important;
   z-index: 4
   h4 {
     font-size: 30px;
-    color: black;
+
   }
   div {
     padding: 10px;

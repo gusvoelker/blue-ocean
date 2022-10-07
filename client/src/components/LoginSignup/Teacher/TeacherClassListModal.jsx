@@ -35,8 +35,10 @@ export default function TeacherClassListModal({ teacherId, onClose, show, getCla
   }
 
   const handleFileClick = e => {
-    console.log('in handleFileClick userId', teacherId)
+    console.log('clicked on file')
     hiddenFileInput.current.click();
+    console.log('hidden File input ', hiddenFileInput)
+    console.log('hiddenFileINput current ', hiddenFileInput.current)
   }
 
   const onFileInput = (e) => {
@@ -52,7 +54,6 @@ export default function TeacherClassListModal({ teacherId, onClose, show, getCla
       },
       data: {
         className: className,
-        teacher_id: teacherId,
       },
     }
     axios(options).then(response => {
@@ -99,9 +100,10 @@ export default function TeacherClassListModal({ teacherId, onClose, show, getCla
               />
             </StyledSpinner>}
             ADD .CSV
-            <input hidden type='file' name="currentCSVFile" onChange={onFileInput} ref={hiddenFileInput}></input>
           </StyledCSVButton>
-
+          <form>
+            <input hidden type='file' name="currentCSVFile" onChange={onFileInput} ref={hiddenFileInput}></input>
+          </form>
 
           <StyledCSVCloseButton onClick={onClose} style={{ marginright: '2rem' }}>CLOSE</StyledCSVCloseButton>
 
