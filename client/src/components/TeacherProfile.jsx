@@ -147,6 +147,7 @@ export default function TeacherProfile(props) {
     axios.get(`${serverURL}/meetings`)
       .then((meetingsRes) => {
         setMeetings(meetingsRes.data)
+        console.log('meetings from database ', meetingsRes)
       })
       .catch(err => { console.log('error getting meetings ', err) })
 
@@ -247,6 +248,7 @@ export default function TeacherProfile(props) {
   const onCalendarClick = (dateTime, friend, user) => {
     setPickDateShow(false)
     var GMTTime = dateTime.toUTCString()
+    console.log('original time onCalendarClick ', GMTTime)
     axios.post(`${serverURL}/meetings`, {receiverId: friend, start_time: GMTTime })
       .then((meetingsRes) => {
         setMeetings(meetingsRes.data)
@@ -323,7 +325,7 @@ const filteredFriendsList = filteredFriends.map((friend, index) => {
       })
       .catch(err => { console.log('error deleting meeting ', err) })
   }
-  const acceptMeeting = (e, requesterId, start_time) => {
+  const acceptMeeting = (e, requesterId, receiverId, start_time) => {
     e.preventDefault()
     var start_time = new Date(start_time)
     var GMTtime = start_time.toUTCString()

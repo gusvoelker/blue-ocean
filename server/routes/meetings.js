@@ -44,7 +44,7 @@ router.post('/meetings', (req, res, next) => {
 //accepts a meeting (dupe record with status=true)
 router.put('/meetings', (req, res, next) => {
   let requesterId = req.body.requesterId;
-  console.log('put /meetings', req.body, req.query);
+  console.log('put /meetings', req.body, req.user.id);
   let dateTime = req.body.dateTime;
   //console.log(requesterId, receiverId, dateTime)
   meetingsModel.acceptMeeting(requesterId, req.user.id, dateTime)
@@ -60,10 +60,10 @@ router.put('/meetings', (req, res, next) => {
 })
 
 router.delete('/meetings', (req, res, next) => {
-  console.log(req.body, req.query);
-  if (req.user.id !== req.query.requesterId && req.user.id !== req.query.requesterId) {
-    return res.sendStatus(403); // Denies request if not placed by authenticated user
-  }
+  console.log(req.body, req.query, req.user.id);
+  // if (req.user.id !== req.query.requesterId && req.user.id !== req.query.requesterId) {
+  //   return res.sendStatus(403); // Denies request if not placed by authenticated user
+  // }
   let requesterId = req.query.requesterId;
   let receiverId = req.query.receiverId;
   let dateTime = req.query.dateTime;

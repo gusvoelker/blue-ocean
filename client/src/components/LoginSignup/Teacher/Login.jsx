@@ -92,7 +92,7 @@ export default function Login (props) {
             </StyledLabel>
             <StyledLabel>
               Password:
-              <StyledTextInput placeholder='enter password here' name='password' onChange={props.onPasswordChange}></StyledTextInput>
+              <StyledTextInput placeholder='enter password here' name='password' type="password" onChange={props.onPasswordChange}></StyledTextInput>
             </StyledLabel>
           </StyledRightAlignedForms>
           {error ? <p>

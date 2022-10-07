@@ -12,22 +12,24 @@ import {serverURL} from '../../../config.js'
 
 export default function TeacherMeetingModal({ onClose, open, meetingsOnDay, day, teacherId, handleDelete }) {
   var dateString = day.toLocaleDateString()
+  const [display, setDisplay] = useState(meetingsOnDay)
 
-
+  useEffect(()=>{
+    setDisplay(meetingsOnDay)
+  }, [meetingsOnDay])
 
   return (
     <MeetingModalContainer>
       <MeetingModalContent>
-        <h4>
-          Your Scheduled Meetings on {dateString}
-        </h4>
+      <h3 style={{marginTop: '-0.5rem'}}><strong>Your Scheduled Meetings on {dateString}</strong></h3>
+
         <div>
-          {meetingsOnDay.map((meeting, index )=> (
+          {display && display.map((meeting, index )=> (
             <div key={index}>
-              {meeting.status ? <span>{meeting.first_name} {meeting.last_name} at {meeting.dateObj}   </span> : <span>{meeting.first_name} {meeting.last_name} at {meeting.dateObj} (pending)  </span>}
+              {meeting.status ? <div>{meeting.first_name} {meeting.last_name} on {meeting.dateObj} at {meeting.timeObj}   </div> : <div>{meeting.first_name} {meeting.last_name}  on {meeting.dateObj} at {meeting.timeObj} (pending)  </div>}
               <StyledButton style={{marginLeft: '5px'}} onClick={(e)=>{
                 handleDelete(e, meeting.rec_account_id, meeting.req_account_id, meeting.start_time);
-                onClose()
+                onClose();
               }}>Delete</StyledButton>
             </div>
 
