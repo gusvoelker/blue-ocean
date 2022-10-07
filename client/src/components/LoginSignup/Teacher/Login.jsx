@@ -73,7 +73,6 @@ export default function Login (props) {
     //   setErrorMessage(err.response.data);
     //   setError(true);
     // }
-  }
 
   const handleSubmitTeacher = async(e) => {
     e.preventDefault();
@@ -90,7 +89,6 @@ export default function Login (props) {
     }
   }
 
-  let button;
 
   let button =
   <Link to="/profile">
