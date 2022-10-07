@@ -13,6 +13,7 @@ import {
 } from '../../StyledComponents/StyledComponents.jsx';
 import exampleCSVPic from './exampleCSVPic.png'
 import axios from 'axios';
+axios.defaults.withCredentials = true;
 import { serverURL } from '../../../config.js'
 
 

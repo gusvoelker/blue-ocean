@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import styled from 'styled-components';
 import axios from 'axios';
+axios.defaults.withCredentials = true;
 import { serverURL } from '../config.js';
 import {
   ProfileContainer,
@@ -176,17 +177,9 @@ export default function Profile (props) {
   }
 
     // api requests to retrieve all necessary data
-    const retrieveAccountInfo = axios.get(`${serverURL}/accounts/id`, {
-      params: {
-        accountId: 1
-      }
-    })
+    const retrieveAccountInfo = axios.get(`${serverURL}/accounts/id`);
 
-    const retrieveFriends = axios.get(`${serverURL}/friend`, {
-      params: {
-        accountId: 1
-      }
-    })
+    const retrieveFriends = axios.get(`${serverURL}/friend`);
 
     const retrieveLanguages = axios.get(`${serverURL}/languages`);
 

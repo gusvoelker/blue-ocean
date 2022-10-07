@@ -20,6 +20,7 @@ import {
   TeachingLanguageSpan
 } from './StyledComponents/StyledComponents.jsx'
 import axios from 'axios';
+axios.defaults.withCredentials = true;
 import FormData from 'form-data'
 import TeacherClassListModal from './LoginSignup/Teacher/TeacherClassListModal.jsx';
 import PendingRequests from './PendingRequests.jsx';
@@ -125,17 +126,9 @@ export default function TeacherProfile(props) {
   }
 
   // api requests to retrieve all necessary data
-  const retrieveAccountInfo = axios.get(`${serverURL}/accounts/id`, {
-    params: {
-      accountId: props.userId
-    }
-  })
+  const retrieveAccountInfo = axios.get(`${serverURL}/accounts/id`);
 
-  const retrieveFriends = axios.get(`${serverURL}/friend`, {
-    params: {
-      accountId: props.userId
-    }
-  })
+  const retrieveFriends = axios.get(`${serverURL}/friend`);
 
   const retrieveLanguages = axios.get(`${serverURL}/languages`);
 
@@ -151,13 +144,13 @@ export default function TeacherProfile(props) {
   useEffect(() => {
     getClasses()
 
-    axios.get(`${serverURL}/meetings`, { params: { user_id: props.userId } })
+    axios.get(`${serverURL}/meetings`)
       .then((meetingsRes) => {
         setMeetings(meetingsRes.data)
       })
       .catch(err => { console.log('error getting meetings ', err) })
 
-    axios.get(`${serverURL}/meetings/requests`, { params: { user_id: props.userId } })
+    axios.get(`${serverURL}/meetings/requests`)
       .then((pendingMeetings) => {
         setPendingMeetings(pendingMeetings.data)
       })
@@ -254,7 +247,7 @@ export default function TeacherProfile(props) {
   const onCalendarClick = (dateTime, friend, user) => {
     setPickDateShow(false)
     var GMTTime = dateTime.toUTCString()
-    axios.post(`${serverURL}/meetings`, { requesterId: props.userId, receiverId: friend, start_time: GMTTime })
+    axios.post(`${serverURL}/meetings`, {receiverId: friend, start_time: GMTTime })
       .then((meetingsRes) => {
         setMeetings(meetingsRes.data)
       }).catch((err) => {
@@ -265,11 +258,7 @@ export default function TeacherProfile(props) {
 
 const selectFriend = (e) => {
   setSelected(e.target.id);
-  axios.get(`${serverURL}/languages/taught`, {
-    params: {
-      accountId: 6
-    }
-  }).then((data) => {
+  axios.get(`${serverURL}/languages/taught`).then((data) => {
     console.log(data.data);
     console.log(props.friends);
     setTaughtLanguages(data.data);
@@ -326,7 +315,7 @@ const filteredFriendsList = filteredFriends.map((friend, index) => {
     var GMTTime = start_time.toUTCString()
     axios.delete(`${serverURL}/meetings`, { params: { receiverId: receiverId, requesterId: requesterId, dateTime: GMTTime } })
       .then(() => {
-        axios.get(`${serverURL}/meetings`, { params: { user_id: props.userId } })
+        axios.get(`${serverURL}/meetings`)
           .then((meetingsRes) => {
             setMeetings(meetingsRes.data)
           })
@@ -334,19 +323,19 @@ const filteredFriendsList = filteredFriends.map((friend, index) => {
       })
       .catch(err => { console.log('error deleting meeting ', err) })
   }
-  const acceptMeeting = (e, requesterId, receiverId, start_time) => {
+  const acceptMeeting = (e, requesterId, start_time) => {
     e.preventDefault()
     var start_time = new Date(start_time)
     var GMTtime = start_time.toUTCString()
-    axios.put(`${serverURL}/meetings`, { receiverId: receiverId, requesterId: requesterId, dateTime: GMTtime })
+    axios.put(`${serverURL}/meetings`, { requesterId: requesterId, dateTime: GMTtime })
       .then(() => {
-        axios.get(`${serverURL}/meetings`, { params: { user_id: props.userId } })
+        axios.get(`${serverURL}/meetings`)
           .then((meetingsRes) => {
             setMeetings(meetingsRes.data)
           })
           .catch(err => { console.log('error getting meetings ', err) })
 
-        axios.get(`${serverURL}/meetings/requests`, { params: { user_id: props.userId } })
+        axios.get(`${serverURL}/meetings/requests`)
           .then((pendingMeetings) => {
             setPendingMeetings(pendingMeetings.data)
           })
@@ -362,14 +351,14 @@ const filteredFriendsList = filteredFriends.map((friend, index) => {
     var GMTtime = start_time.toUTCString()
     axios.delete(`${serverURL}/meetings`, { params: { receiverId: receiverId, requesterId: requesterId, dateTime: GMTtime } })
       .then(() => {
-        axios.get(`${serverURL}/meetings`, { params: { user_id: props.userId } })
+        axios.get(`${serverURL}/meetings`)
           .then((meetingsRes) => {
             console.log('non pending meetings ', meetingsRes)
             setMeetings(meetingsRes.data)
           })
           .catch(err => { console.log('error getting meetings ', err) })
 
-        axios.get(`${serverURL}/meetings/requests`, { params: { user_id: props.userId } })
+        axios.get(`${serverURL}/meetings/requests`)
           .then((pendingMeetings) => {
             console.log('pending meetings ', pendingMeetings)
             setPendingMeetings(pendingMeetings.data)

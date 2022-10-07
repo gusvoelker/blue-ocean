@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
+axios.defaults.withCredentials = true;
 
 import { serverURL } from './config.js';
 import NavBar from './components/NavBar/NavBar.jsx';
