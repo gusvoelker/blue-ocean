@@ -288,7 +288,9 @@ const unfilteredFriends = friends.map((friend, index) => {
               <Link to="/messages">
                 <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend"/>
               </Link>
+              <Link to='/videoplayer'>
               <img src='https://i.pinimg.com/originals/1f/6f/48/1f6f482d8e1da80055ded006df4728e3.jpg' alt="message icon for starting a video chat"/>
+              </Link>
             </StyledFriendIcons>
         </StyledFriend>
     )
@@ -304,7 +306,9 @@ const filteredFriendsList = filteredFriends.map((friend, index) => {
           <Link to="/messages">
               <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' />
           </Link>
+          <Link to='/videoplayer'>
           <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png' alt="message icon for starting a message chat with a friend" />
+          </Link>
         </StyledFriendIcons>
     </StyledFriend>
   )
@@ -434,8 +438,8 @@ const filteredFriendsList = filteredFriends.map((friend, index) => {
           <StyledButton onClick={onPendingRequestsClick} style={{ marginTop: '0rem', width: '12rem' }}>PENDING REQUESTS</StyledButton>
           {teacherShow && <TeacherClassListModal onClose={() => setTeacherShow(false)} show={teacherShow} getClasses={getClasses}/>}
         </ProfileFriendsList>
-        <ProfileFriendsList style={{ width: '23rem', left: '71%' }}>
-          <StyledFriendSearchSpan style={{ justifyContent: 'center' }}>
+         {/* <ProfileFriendsList style={{ width: '23rem', left: '71%' }}> */}
+          {/* <StyledFriendSearchSpan style={{ justifyContent: 'center' }}>
             <h3><strong>Class List</strong></h3>
           </StyledFriendSearchSpan>
           <p>
@@ -450,10 +454,10 @@ const filteredFriendsList = filteredFriends.map((friend, index) => {
             })}
           </p>
           {classShow && <ClassListModal onClose={() => setClassShow(false)} classShow={classShow} modalClassName={modalClassName} students={students} />}
-          <StyledButton style={{ marginTop: '0rem', marginLeft: '1rem', width: '12rem' }} onClick={() => { setTeacherShow(true) }}>ADD CLASS LIST</StyledButton>
+          <StyledButton style={{ marginTop: '0rem', marginLeft: '1rem', width: '12rem' }} onClick={() => { setTeacherShow(true) }}>ADD CLASS LIST</StyledButton> */}
 
 
-        </ProfileFriendsList>
+        {/* </ProfileFriendsList> */}
       </ProfileContainer>
       <FriendsModal onClose={() => setShow(false)} show={show} friend={currentFriend} />
       <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch} usersWithSameLanguage={usersWithSameLanguage} languages={props.languages} userId={props.userId}/>
