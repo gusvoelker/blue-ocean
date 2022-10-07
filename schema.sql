@@ -116,8 +116,8 @@ CREATE TABLE account_room (
 );
 
 ALTER TABLE account_room
-	ADD CONSTRAINT fk_participants_account_id_1 FOREIGN KEY (account_id_1) REFERENCES accounts(account_id),
-	ADD CONSTRAINT fk_participants_account_id_2 FOREIGN KEY (account_id_2) REFERENCES accounts(account_id);
+	ADD CONSTRAINT fk_account_room_account_id_1 FOREIGN KEY (account_id_1) REFERENCES accounts(account_id),
+	ADD CONSTRAINT fk_account_room_account_id_2 FOREIGN KEY (account_id_2) REFERENCES accounts(account_id);
 
 CREATE TABLE account_message (
 	message_id SERIAL NOT NULL PRIMARY KEY,
