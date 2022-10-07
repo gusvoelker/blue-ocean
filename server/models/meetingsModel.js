@@ -3,7 +3,6 @@ const db = require("../db/db.js")
 
 //simple
 module.exports.findMeetings = (req_account) => {
-  console.log("account is this", req_account)
   return db.query(`
     SELECT m.conn_id,
       m.req_account_id,
@@ -24,7 +23,6 @@ module.exports.findMeetings = (req_account) => {
 }
 
 module.exports.findMeetingsRequests = (rec_account) => {
-  console.log("RECEIVING ACCOUNT IS ", rec_account)
   return db.query(`
     SELECT m.conn_id,
       m.req_account_id,
@@ -36,11 +34,11 @@ module.exports.findMeetingsRequests = (rec_account) => {
       FROM
         meetings m
       LEFT JOIN accounts a
-      ON m.rec_account_id = a.account_id
+      ON m.req_account_id = a.account_id
       WHERE
         rec_account_id='${rec_account}'
         AND start_time > now()
-        --AND m.status = false
+        AND m.status = false
       ORDER BY start_time
   `);
 }
@@ -51,11 +49,13 @@ module.exports.requestMeeting = (requesterId, receiverId, meetingDateTime) => {
     INSERT INTO meetings(
       req_account_id,
       rec_account_id,
-      start_time
+      start_time,
+      status
     ) VALUES (
       '${requesterId}',
       '${receiverId}',
-      '${meetingDateTime}'
+      '${meetingDateTime}',
+      false
     )
     RETURNING conn_id
   `)
@@ -86,7 +86,7 @@ module.exports.acceptMeeting = (requesterId, receiverId, meetingDateTime) => {
     SET status = true
     WHERE req_account_id = '${requesterId}'
     AND rec_account_id = '${receiverId}'
-    AND start_time = '${meetingDateTime}'
+    AND Date(start_time) = '${meetingDateTime}'
     RETURNING *
     ;
   `)
@@ -97,15 +97,15 @@ module.exports.deleteMeeting1 = (requesterId, receiverId, meetingDateTime) => {
   DELETE FROM meetings
   WHERE req_account_id = ${requesterId}
   AND rec_account_id = ${receiverId}
-  AND start_time = '${meetingDateTime}'
+  AND Date(start_time) = '${meetingDateTime}'
   `)
 };
 
 module.exports.deleteMeeting2 = (requesterId, receiverId, meetingDateTime) => {
   return db.query(`
   DELETE FROM meetings
-  WHERE req_account_id = ${receiverId}
-  AND rec_account_id = ${requesterId}
-  AND start_time = '${meetingDateTime}'
+  WHERE req_account_id = '${receiverId}'
+  AND rec_account_id = '${requesterId}'
+  AND Date(start_time) = '${meetingDateTime}'
   `)
 };

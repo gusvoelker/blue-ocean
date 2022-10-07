@@ -10,32 +10,28 @@ import {
 import axios from 'axios'
 import {serverURL} from '../../../config.js'
 
-export default function TeacherMeetingModal({ onClose, open, meetingsOnDay, day, props }) {
-  console.log('day in modal ', typeof day, day)
+export default function TeacherMeetingModal({ onClose, open, meetingsOnDay, day, teacherId, handleDelete }) {
   var dateString = day.toLocaleDateString()
+  const [display, setDisplay] = useState(meetingsOnDay)
 
-  const handleDelete = (userId, start_time) => {
-    axios.put(`${serverURL}/meetings/delete`, {params: {receiverId: props.userId, requesterID: userId, start_time}})
-    .then((returnedPendingMeetings) =>{
-      // setPendingMeetings(returnedPendingMeetings.data)
-      onClose()
-    })
-    .catch(err=>{console.log('error deleting meeting ', err)})
-
-  }
+  useEffect(()=>{
+    setDisplay(meetingsOnDay)
+  }, [meetingsOnDay])
 
   return (
     <MeetingModalContainer>
       <MeetingModalContent>
-        <h4>
-          Your Scheduled Meetings on {dateString}
-        </h4>
+      <h3 style={{marginTop: '-0.5rem'}}><strong>Your Scheduled Meetings on {dateString}</strong></h3>
+
         <div>
-          {meetingsOnDay.map(meeting => (
-            <>
-              <span>{meeting.first_name} {meeting.last_name} at {meeting.dateObj}   </span>
-              <StyledButton style={{marginLeft: '5px'}} onClick={handleDelete(meeting.receiver_id, meeting.start_time)}>Delete</StyledButton>
-            </>
+          {display && display.map((meeting, index )=> (
+            <div key={index}>
+              {meeting.status ? <div>{meeting.first_name} {meeting.last_name} on {meeting.dateObj} at {meeting.timeObj}   </div> : <div>{meeting.first_name} {meeting.last_name}  on {meeting.dateObj} at {meeting.timeObj} (pending)  </div>}
+              <StyledButton style={{marginLeft: '5px'}} onClick={(e)=>{
+                handleDelete(e, meeting.rec_account_id, meeting.req_account_id, meeting.start_time);
+                onClose();
+              }}>Delete</StyledButton>
+            </div>
 
           ))}
         </div>

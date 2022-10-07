@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import styled from 'styled-components';
 import axios from 'axios';
+axios.defaults.withCredentials = true;
 import {serverURL} from '../../../../src/config.js';
 import {
   StyledButton,
@@ -46,31 +47,21 @@ export default function Login (props) {
     password: props.password
   }
 
-  const handleSubmitStudent = async(e) => {
+  const handleSubmit= async(e) => {
     e.preventDefault();
-    fetch(`${serverURL}/login`, {
-      method: 'post',
-      credentials: "include",
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Access-Control-Allow-Origin': 'http://localhost:5173/'
-      },
-      body: JSON.stringify(formData)
-    })
-    .then((res) => {
-      return res.json()
-      .then((jsonResponse) => {
-        console.log(jsonResponse)
-        props.onIdChange(jsonResponse.id)
-        setUser(jsonResponse)
-        navigate("/profile");
-      })
-    }).catch((err) => {
+    try {
+      const res = await axios.post(`${serverURL}/login`, formData);
+      console.log('logged in');
+      console.log(res.data.id)
+      props.onIdChange(res.data.id);
+      setUser(res.data);
+      navigate(res.data.isTeacher ? "/teacherprofile" : "/profile");
+    } catch (err) {
       console.log(err);
-      // setErrorMessage(err.response.data);
+      setErrorMessage(err.response.data);
       setError(true);
-    });
+    }
+  };
 
     // try {
     //   const res = await axios.post(`${serverURL}/login`, formData);
@@ -101,15 +92,10 @@ export default function Login (props) {
 
   let button;
 
-  if (props.role === 'user') {
-    button = <Link to="/profile">
-                <StyledSubmitInput value='SUBMIT' onClick={handleSubmitStudent}></StyledSubmitInput>
-            </Link>
-  } else {
-    button = <Link to="/teacherprofile">
-                <StyledSubmitInput value='SUBMIT' onClick={handleSubmitTeacher}></StyledSubmitInput>
-            </Link>
-  }
+  let button =
+  <Link to="/profile">
+    <StyledSubmitInput value='SUBMIT' onClick={handleSubmit}></StyledSubmitInput>
+  </Link>;
 
   return (
       <StyledloginSignUpBox style={{height: '30rem', zIndex: '1', marginTop: '-2rem'}}>
@@ -124,14 +110,7 @@ export default function Login (props) {
             </StyledLabel>
             <StyledLabel>
               Password:
-              <StyledTextInput placeholder='enter password here' name='password' onChange={props.onPasswordChange}></StyledTextInput>
-            </StyledLabel>
-            <StyledLabel>
-            teacher or student:
-            <StyledSelectInput value={props.role} onChange={props.onRoleChange} style={{height: '2rem', fontSize: '0.8rem'}}>
-              <option value='teacher'>Teacher</option>
-              <option value='user'>Student</option>
-            </StyledSelectInput>
+              <StyledTextInput placeholder='enter password here' name='password' type="password" onChange={props.onPasswordChange}></StyledTextInput>
             </StyledLabel>
           </StyledRightAlignedForms>
           {error ? <p>

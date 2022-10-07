@@ -13,9 +13,9 @@ export default function ClassListModal({ onClose, classShow, modalClassName, stu
   return (
     <ClassListModalContainer>
       <ClassListModalContent>
-        <h4>
-          Students in {modalClassName}
-        </h4>
+      <h3 style={{marginTop: '-0.5rem'}}><strong>Students in {modalClassName}</strong></h3>
+
+
         <div style={{ marginBottom: "10px" }}>
           {students.map(student => (
             <>

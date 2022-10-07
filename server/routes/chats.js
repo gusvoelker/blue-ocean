@@ -11,9 +11,7 @@ router.get('/chats', (req, res, next) => {
   chatModel.getRoomsByAccountId(req.user.id)
     .then((result) => {
       let rooms = result.rows;
-      rooms.length > 0 ?
-        res.status(200).send(rooms) :
-        res.sendStatus(404);
+      res.status(200).send(rooms);
     })
     .catch((error) => res.sendStatus(400));
 });
@@ -22,15 +20,12 @@ router.get('/chats', (req, res, next) => {
 // Expects in request query: roomId - Integer representing a chat room ID
 router.get('/chats/messages', (req, res, next) => {
   if (!req.query.roomId) {
-    res.sendStatus(404);
-    return;
+    return res.sendStatus(404);
   }
   chatModel.getMessagesByRoomId(req.query.roomId, req.user.id)
     .then((result) => {
       let messages = result.rows;
-      messages.length > 0 ?
-        res.status(200).send(messages) :
-        res.sendStatus(404);
+      res.status(200).send(messages);
     })
     .catch((error) => res.sendStatus(400));
 });
@@ -41,16 +36,14 @@ router.get('/chats/messages', (req, res, next) => {
 // Expects in request body: requestedId - Integer representing a user/teacher ID
 router.post('/chats', (req, res, next) => {
   if (!req.body.requestedId) {
-    res.sendStatus(400);
-    return;
+    return res.sendStatus(400);
   }
   accountModel.getAccountTypeById(req.body.requestedId)
     .then((result) => {
       if (!result.rows[0]) { // Checks that the requestedId account exists
-        res.status(400).send({
+        return res.status(400).send({
           message: 'Account not found'
         });
-        return;
       }
       chatModel.createRoom(req.user.id, req.body.requestedId)
         .then((result) => res.sendStatus(201))
@@ -67,12 +60,10 @@ router.post('/chats', (req, res, next) => {
 // userId2 (INTEGER) - Student to connect
 router.post('/chats/connect', (req, res, next) => {
   if (!req.user.isTeacher) {
-    res.sendStatus(403);
-    return;
+    return res.sendStatus(403);
   }
   if (!req.body.userId1 || !req.body.userId2) {
-    res.sendStatus(400);
-    return;
+    return res.sendStatus(400);
   }
   friendModel.checkIfFriends(req.body.userId1, req.body.userId2)
     .then((checkResult) => {
@@ -98,8 +89,7 @@ router.post('/chats/connect', (req, res, next) => {
 // message - Message to send (1000 character limit)
 router.post('/chats/messages', (req, res, next) => {
   if (!req.body.roomId || !req.body.message) {
-    res.sendStatus(400);
-    return;
+    return res.sendStatus(400);
   }
   chatModel.postMessage(req.body.roomId, req.user.id, req.body.message)
     .then((result) => res.sendStatus(201))

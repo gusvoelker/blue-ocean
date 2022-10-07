@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
 import axios from 'axios';
+axios.defaults.withCredentials = true;
 import { serverURL } from '../../config.js';
 import {
   StyledAbout,
@@ -52,10 +53,17 @@ export default function About () {
         <StyledImage style={{marginRight: '-8rem', marginBottom: '-4rem'}}src="https://images.unsplash.com/photo-1580060839134-75a5edca2e99?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80" alt="people talking" />
         <StyledInfo style={{marginTop: '-3rem'}}>
           <h1>
-            About Us
+          Philosophy
           </h1>
           <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+          The ability to communicate with others is central to human nature. Throughout the ages, humans
+          have been able to share information, interests, needs, and values over time and space and, thus, have
+          influenced others by their actions and their words. In recent years, technology tools have brought the
+          world closer and have erased many of the existing borders. As boundaries between countries are
+          dissolving, the need for learning world languages has become a necessary component for linking with
+          the rest of the world and for producing an enlightened citizenship able to function in today’s global
+          marketplace.
           </p>
         </StyledInfo>
       </StyledAbout>

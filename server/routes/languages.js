@@ -12,9 +12,7 @@ router.get('/languages', (req, res, next) => {
   model.getAllLanguages()
     .then((result) => {
       let languages = result.rows;
-      languages.length > 0 ?
-        res.status(200).send(languages) :
-        res.sendStatus(404);
+      res.status(200).send(languages);
     })
     .catch((error) => res.sendStatus(404));
 });
@@ -28,9 +26,7 @@ router.get('/languages/taught', (req, res, next) => {
   model.getTaughtLanguagesByTeacherId(accountId)
     .then((result) => {
       let languages = result.rows;
-      languages.length > 0 ?
-        res.status(200).send(languages) :
-        res.sendStatus(404);
+      res.status(200).send(languages);
     })
     .catch((error) => res.sendStatus(404));
 });
@@ -46,8 +42,7 @@ router.get('/languages/taught', (req, res, next) => {
 // extended information on each account (name, email, etc.) from /accounts
 router.get('/languages/taught/accounts', (req, res, next) => {
   if (!req.query.languageId) {
-    res.sendStatus(400);
-    return;
+    return res.sendStatus(400);
   }
   model.getTeachersByTaughtLanguageId(req.query.languageId)
     .then((result) => {
@@ -95,8 +90,7 @@ router.get('/languages/desired', (req, res, next) => {
 // spanish: 2 }
 router.post('/languages/taught', (req, res, next) => {
   if (!req.user.isTeacher) {
-    res.sendStatus(403);
-    return;
+    return res.sendStatus(403);
   }
   // TODO: Figure out how to insert many rather than just one at a time
   model.insertTaughtLanguage(req.user.id, req.body.taughtLevel, req.body.language)
@@ -109,8 +103,7 @@ router.post('/languages/taught', (req, res, next) => {
 // Meant for students, will 403 on request by a teacher account
 router.post('/languages/known', (req, res, next) => {
   if (req.user.isTeacher) {
-    res.sendStatus(403);
-    return;
+    return res.sendStatus(403);
   }
   model.insertKnownLanguage(req.user.id, req.body.language)
     .then((result) => res.sendStatus(201))
@@ -122,8 +115,7 @@ router.post('/languages/known', (req, res, next) => {
 // Meant for students, will 403 on request by a teacher account
 router.post('/languages/desired', (req, res, next) => {
   if (req.user.isTeacher) {
-    res.sendStatus(403);
-    return;
+    return res.sendStatus(403);
   }
   model.insertDesiredLanguage(req.user.id, req.body.language)
     .then((result) => res.sendStatus(201))

@@ -12,7 +12,7 @@ const {parse} = require('csv-parse')
 //req.body.className
 router.post('/classes', (req, res, next) => {
   let classObj = {
-    teacher_id: req.body.teacher_id,
+    teacher_id: req.user.id,
     className: req.body.className,
   }
   console.log('classObj in router ', classObj)
@@ -66,8 +66,4 @@ router.get('/classes/students', (req, res, next) => {
   .catch((error) => res.sendStatus(400));
 });
 
-
-
-
 module.exports = router;
-

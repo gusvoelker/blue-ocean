@@ -13,11 +13,12 @@ import {
 } from '../../StyledComponents/StyledComponents.jsx';
 import exampleCSVPic from './exampleCSVPic.png'
 import axios from 'axios';
+axios.defaults.withCredentials = true;
 import { serverURL } from '../../../config.js'
 
 
 
-export default function TeacherClassListModal({ teacherId, onClose, show }) {
+export default function TeacherClassListModal({ teacherId, onClose, show, getClasses }) {
   //state for controlling whether loading spinner is visible
   const [spinner, setSpinner] = useState(false)
   const [className, setClassName] = useState('')
@@ -34,7 +35,10 @@ export default function TeacherClassListModal({ teacherId, onClose, show }) {
   }
 
   const handleFileClick = e => {
+    console.log('clicked on file')
     hiddenFileInput.current.click();
+    console.log('hidden File input ', hiddenFileInput)
+    console.log('hiddenFileINput current ', hiddenFileInput.current)
   }
 
   const onFileInput = (e) => {
@@ -50,7 +54,6 @@ export default function TeacherClassListModal({ teacherId, onClose, show }) {
       },
       data: {
         className: className,
-        teacher_id: teacherId,
       },
     }
     axios(options).then(response => {
@@ -65,6 +68,7 @@ export default function TeacherClassListModal({ teacherId, onClose, show }) {
       })
         .then(() => {
           console.log('response from second query')
+          getClasses()
           setSpinner(false);
         })
         .catch((err) => {
@@ -96,9 +100,10 @@ export default function TeacherClassListModal({ teacherId, onClose, show }) {
               />
             </StyledSpinner>}
             ADD .CSV
-            <input hidden type='file' name="currentCSVFile" onChange={onFileInput} ref={hiddenFileInput}></input>
           </StyledCSVButton>
-
+          <form>
+            <input hidden type='file' name="currentCSVFile" onChange={onFileInput} ref={hiddenFileInput}></input>
+          </form>
 
           <StyledCSVCloseButton onClick={onClose} style={{ marginright: '2rem' }}>CLOSE</StyledCSVCloseButton>
 

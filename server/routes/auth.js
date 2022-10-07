@@ -69,13 +69,9 @@ router.post("/login", (req, res, next) => {
     req.logIn(user, function (err) {
       if (err) return next(err);
       console.log(req.session);
-      // if (req.user) {
-      //   res.setHeader("Access-Control-Allow-Credentials", "true");
-      // }
+
       return res.status(200).send(req.user);
-      // return res.redirect("/");
     });
-    // successRedirect: "http://localhost:3000/profile";
   })(req, res, next);
 });
 
@@ -94,11 +90,12 @@ router.post("/logout", (req, res, next) => {
 
 // Authenticate all user requests
 // Users should not be able to access any resources without being signed in
-
 router.use("/", (req, res, next) => {
-  // req.user = { // DEBUG: Uncomment this if testing routes without auth
-  //   id: 1,
-  //   isTeacher: true // Can set to true or false depending on which user is being tested
+  // if (!req.user) {
+  //   req.user = { // DEBUG: Uncomment this if testing routes without auth
+  //     id: 1,
+  //     isTeacher: true // Can set to true or false depending on which user is being tested
+  //   }
   // }
   if (!req.user) {
     res.status(403).send("Login required");

@@ -33,16 +33,14 @@ router.post('/friend', (req, res, next) => {
   accountModel.getAccountTypeById(req.body.requestedId)
     .then((result) => {
       if (!result.rows[0]) { // Checks that the requestedId account exists
-        res.status(400).send({
+        return res.status(400).send({
           message: 'Provided accountId not found'
         });
-        return;
       }
       if (result.rows[0].is_teacher !== req.user.isTeacher) { // Checks that the requester and requesting are of the same type
-        res.status(403).send({
+        return res.status(403).send({
           message: 'Students and teachers can not be friends!'
         });
-        return;
       }
       friendModel.requestFriend(requesterId, req.body.requestedId)
         .then((connectionID) => {
@@ -62,10 +60,11 @@ router.post('/friend', (req, res, next) => {
 //accept friend status
 //req.query.idToAccept
 router.put('/friend', (req, res, next) => {
+  console.log('here', req.query)
   let requesterId = req.user.id;
   friendModel.acceptFriend(requesterId, req.query.idToAccept)
     .then(() => friendModel.createFriend(requesterId, req.query.idToAccept))
-    .then((connectionID) => res.status(202).send(connectionID))
+    .then((connectionID) => res.status(202).send(`${connectionID}`))
     .catch((error) => res.sendStatus(400));
 });
 
@@ -80,6 +79,12 @@ router.delete('/friend', (req, res, next) => {
     .catch((error) => res.sendStatus(400));
 });
 
+//req.query.friend_id
+router.delete('/friend/request', (req, res, next) => {
+  let requesterId = req.user.id;
+  friendModel.deletePendingFriend(requesterId, req.query.friend_id)
+    .then(res.sendStatus(204))
+    .catch((error) => res.sendStatus(400));
+});
+
 module.exports = router;
-
-

@@ -45,7 +45,7 @@ const ThemeToggle = styled.div`
   padding: 5px;
   position: fixed;
   right: 0;
-  top: 8rem;
+  top: 7rem;
   transition: 0.3s;
   font-size: small;
   text-align: center;
@@ -53,6 +53,14 @@ const ThemeToggle = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 20px;
+  img {
+    padding: 2px;
+    width: 2rem;
+    height: auto;
+    border-radius: 50%;
+    border: 1px solid #f5f5f5;
+    background-color: #f5f5f52b;
+  }
 `
 const OuterToggle = styled.div`
   padding: 2px;
@@ -708,6 +716,7 @@ const FriendsModalContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 4;
 `
 
 const FriendsModalContent = styled.div`
@@ -720,6 +729,42 @@ const FriendsModalContent = styled.div`
   text-align: center;
   justify-content: center;
   color: #f5f5f5;
+  h4 {
+    font-size: 2rem;
+    margin-bottom: 0rem;
+    color: #f5f5f5
+  }
+  div {
+    padding: 10px;
+    color: #f5f5f5
+  }
+  input{
+    position: relative;
+    width: 20rem;
+    border-radius: 10px;
+    border: 1px solid black;
+    height: 40px;
+    font-size: 20px;
+    background-color: #f5f5f5;
+    color: #383838 !important;
+    &:focus {
+      border: none;
+    };
+  }
+`
+const TeacherFriendsModalContent = styled.div`
+  width: 35rem;
+  height: 20rem;
+  background-color: #383838c1;
+  border: 1px solid #f5f5f5;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  align-items: center;
+  justify-content: center;
+  color: #f5f5f5;
+  gap: 1rem;
   h4 {
     font-size: 2rem;
     margin-bottom: 0rem;
@@ -838,11 +883,18 @@ const CSVModalContainer = styled.div`
 const CSVModalContent = styled.div`
   width: 700px;
   height: 400px;
-  background-color: #ffffff;
+  background-color: #38698fe8;
+  border: 1px solid #f5f5f5;
   border-radius: 10px;
   padding: 10px;
   text-align: center;
   justify-content: center;
+  color: #f5f5f5 !important;
+  h4 {
+    font-size: 2rem;
+    margin-bottom: 0rem;
+    color: #f5f5f5
+  }
   h4 {
     font-size: 20px;
   }
@@ -864,7 +916,6 @@ const CSVModalContent = styled.div`
 `
 const StyledSpan = styled.span`
 width: 70%;
-color: black;
 display: inline-block;
 font-size: 1rem;
 padding: 0.3rem;
@@ -948,11 +999,13 @@ const ClassListModalContainer = styled.div`
 const ClassListModalContent = styled.div`
   width: 500px;
   height: auto;
-  background-color: #ffffff;
+  background-color: #38698fe8;
+  border: 1px solid #f5f5f5;
   border-radius: 10px;
   padding: 10px;
   text-align: center;
   justify-content: center;
+  color: #f5f5f5 !important;
   z-index: 4
   h4 {
     font-size: 30px;
@@ -1018,18 +1071,19 @@ const MeetingModalContainer = styled.div`
 `
 
 const MeetingModalContent = styled.div`
-  width: 500px;
+  width: 700px;
   height: auto;
-  background-color: #ffffff;
-  color: black;
+  background-color: #38698fe8;
+  border: 1px solid #f5f5f5;
   border-radius: 10px;
   padding: 10px;
   text-align: center;
   justify-content: center;
+  color: #f5f5f5 !important;
   z-index: 4
   h4 {
     font-size: 30px;
-    color: black;
+
   }
   div {
     padding: 10px;
@@ -1059,7 +1113,46 @@ button {
   width: 19vw;
 }`
 
+const SelectedTeacherFriend = styled.p`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  h2 {
+    border-bottom: 2px solid #f5f5f5;
+    width:25rem;
+    text-align: left;
+  }
+  span {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width:25rem;
+  }
+  button {
+    margin-top: -4em;
+  }
+`
+const TeachingLanguageSpan = styled.span`
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  gap: 1rem;
+  h4 {
+    margin-top: -1rem;
+  }
+  ul {
+    margin-top: -2rem;
+    text-align: left;
+  }
+`
+
 export {
+  SelectedTeacherFriend,
+  TeachingLanguageSpan,
   StyledNavBar,
   StyledNavBarIcon,
   StyledNavBarLinks,
@@ -1127,4 +1220,5 @@ export {
   MeetingModalContainer,
   MeetingModalContent,
   ProfileCalendarContainer,
+  TeacherFriendsModalContent
 }

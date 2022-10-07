@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
+axios.defaults.withCredentials = true;
 
 import { serverURL } from './config.js';
 import NavBar from './components/NavBar/NavBar.jsx';
@@ -17,8 +18,6 @@ import FriendsModal from './components/FriendsModal.jsx';
 
 import EntryForm from './components/LoginSignup/EntryForm.jsx';
 import Role from './components/LoginSignup/Role.jsx'
-import UserSignUp from './components/LoginSignup/User/UserSignUp.jsx';
-import UserLogin from './components/LoginSignup/User/UserLogin.jsx'
 import UserInfo from './components/LoginSignup/User/UserInfo.jsx'
 import SignUp from './components/LoginSignup/Teacher/SignUp.jsx'
 import Login from './components/LoginSignup/Teacher/Login.jsx'
@@ -53,7 +52,7 @@ export default function App () {
   const [friends, setFriends] = useState([
     {account_id: 4, first_name: 'Bill', last_name: 'from lotr', email: 'galad@gmail.edu', avatar_url: null},
     {account_id: 3, first_name: 'Ted', last_name: 'Baggins', email: 'frodo@gmail.edu', avatar_url: null},
-    {account_id: 5, first_name: 'Tom', last_name: 'Buttkiss', email: 'tom@gmail.edu', avatar_url: null}]);
+    {account_id: 5, first_name: 'Tom', last_name: 'Bombadil', email: 'tom@gmail.edu', avatar_url: null}]);
   const [profilePicture, setProfilePicture] = useState('https://i.postimg.cc/gkDMWvVY/photo-1615497001839-b0a0eac3274c.jpg');
   const [languages, setLanguages] = useState([]);
   const [isTeacher, setTeacher] = useState(true);
@@ -136,7 +135,7 @@ export default function App () {
             </Route>
             <Route path="/SignUp" element={
               <>
-                <NavBar role={role} darkTheme={darkTheme}/>
+                <AboutNavBar role={role} darkTheme={darkTheme}/>
                 <SignUp
                   onFirstNameChange={onFirstNameChange}
                   onLastNameChange={onLastNameChange}
@@ -156,7 +155,7 @@ export default function App () {
             </Route>
             <Route path="/Login" element={
               <>
-                <NavBar role={role} darkTheme={darkTheme}/>
+                <AboutNavBar role={role} darkTheme={darkTheme}/>
                   <Login
                     onEmailChange={onEmailChange}
                     onPasswordChange={onPasswordChange}
@@ -171,7 +170,7 @@ export default function App () {
             </Route>
             <Route path="/teacherInfo" element={
               <>
-                <NavBar role={role} darkTheme={darkTheme}/>
+                <AboutNavBar role={role} darkTheme={darkTheme}/>
                 <TeacherInfo
                   handleCheck={handleCheck}
                   handleChange={handleChange}
@@ -185,7 +184,7 @@ export default function App () {
             </Route>
             <Route path="/userInfo" element={
               <>
-                <NavBar role={role} darkTheme={darkTheme}/>
+                <AboutNavBar role={role} darkTheme={darkTheme}/>
                 <UserInfo
                   handleCheck={handleCheck}
                   handleChange={handleChange}
@@ -213,6 +212,7 @@ export default function App () {
                 setLanguages={setLanguages}
                 setFriends={setFriends}
                 userId={userId}
+                languages={languages}
               />
             </>} >
             </Route>
@@ -233,6 +233,7 @@ export default function App () {
                 setLanguages={setLanguages}
                 setFriends={setFriends}
                 userId={userId}
+                languages={languages}
               />
             </>} >
             </Route>
