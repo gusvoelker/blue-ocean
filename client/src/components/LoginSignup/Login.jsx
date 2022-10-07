@@ -94,7 +94,7 @@ export default function Login (props) {
               <span>
                 Password:
               </span>
-              <StyledTextInput placeholder='Enter password' name='password' value={password} onChange={(e) => setPassword(e.target.value)}/>
+              <StyledTextInput placeholder='Enter password' name='password' value={password} type="password" onChange={(e) => setPassword(e.target.value)}/>
             </StyledLabel>
           </StyledRightAlignedForms>
           {error ? <p>

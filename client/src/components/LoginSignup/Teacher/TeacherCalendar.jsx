@@ -16,7 +16,7 @@ export default function TeacherCalendar({ meetings, handleDelete }) {
 
   const [value, onChange] = useState(new Date());
   const [open, setOpen] = useState(false)
-  const [meetingsOnDay, setMeetingsOnDay] = useState([])
+  const [meetingsOnDay, setMeetingsOnDay] = useState(null)
   const [daysToHighlight, setDaysToHighlight] = useState([])
   const [allMeetings, setAllMeetings] = useState(meetings)
 
@@ -25,37 +25,48 @@ export default function TeacherCalendar({ meetings, handleDelete }) {
   }
 
   const onCalendarClick = () => {
+      setOpen(true)
+  }
+
+  useEffect(()=>{
     var meetingsOnDayArray = []
+    console.log('value Effect', value)
     meetings.forEach(meeting => {
       var dateObj = new Date(meeting.start_time)
+      dateObj.setHours(dateObj.getHours()-4)
       if (isSameDay(dateObj, value)) {
-        meeting.dateObj = dateObj.toLocaleTimeString();
+        meeting.dateObj = dateObj.toLocaleDateString();
+        meeting.timeObj = dateObj.toLocaleTimeString();
         meetingsOnDayArray.push(meeting)
       }
     })
+    console.log('meetingsOnDay Effect', meetingsOnDayArray)
     setMeetingsOnDay(meetingsOnDayArray)
-      setOpen(true)
-  }
+
+  }, [value])
 
   useEffect(()=>{
     var highlight = []
     meetings.forEach(meeting =>{
       var dateObj = new Date(meeting.start_time)
+      dateObj.setHours(dateObj.getHours()-4)
       highlight.push(dateObj)
     })
+    console.log('days to highlight ', highlight)
+    console.log('meetings ', meetings)
     setDaysToHighlight(highlight)
   }, [meetings])
 
   return (
     <>
-      <Calendar onChange={onChange} onClickDay={onCalendarClick} value={value} tileClassName={({date, view}) => {
+     {daysToHighlight && <Calendar onChange={onChange} onClickDay={onCalendarClick} value={value} tileClassName={({date, view}) => {
         for (var i=0; i<daysToHighlight.length; i++) {
           if (isSameDay(daysToHighlight[i], date)) {
             return 'highlight'
           }
         }
-      }}/>
-      {open && <TeacherMeetingModal onClose={() => { setOpen(false) }} open={open} meetingsOnDay={meetingsOnDay} day={value} handleDelete={handleDelete}/>}
+      }}/>}
+      {(open && meetingsOnDay) && <TeacherMeetingModal onClose={() => { setOpen(false) }} open={open} meetingsOnDay={meetingsOnDay} day={value} handleDelete={handleDelete}/>}
 
     </>
 
