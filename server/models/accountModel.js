@@ -38,6 +38,7 @@ module.exports.getAccountTypeById = (accountId) => {
 module.exports.getPublicAccountInfoById = (accountId) => {
   return db.query(`
     SELECT
+      account_id,
       email,
       first_name,
       last_name,

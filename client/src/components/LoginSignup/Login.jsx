@@ -14,7 +14,8 @@ import {
   StyledSubmitInput,
   StyledPageRow,
   StyledImage,
-  StyledSelectInput
+  StyledSelectInput,
+  StyledTextInputPassword,
 } from '../StyledComponents/StyledComponents.jsx';
 import { SocketContext } from '../VideoComponents/SocketContext.jsx';
 import { Outlet, Link, useNavigate } from "react-router-dom";
@@ -37,7 +38,6 @@ const StyledloginSignUpBox = styled.div`
 `
 
 export default function Login (props) {
-  const { setUser} = useContext(SocketContext);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [email, setEmail] = useState('');
@@ -52,6 +52,7 @@ export default function Login (props) {
         password
       });
       localStorage.setItem('isTeacher', res.data.user.isTeacher);
+      await props.getAccount();
       await props.getLanguages();
       navigate(JSON.parse(localStorage.getItem('isTeacher')) ? "/teacherprofile" : "/profile");
     } catch (err) {
@@ -94,7 +95,7 @@ export default function Login (props) {
               <span>
                 Password:
               </span>
-              <StyledTextInput placeholder='Enter password' name='password' value={password} type="password" onChange={(e) => setPassword(e.target.value)}/>
+              <StyledTextInputPassword placeholder='Enter password' name='password' value={password} type="password" onChange={(e) => setPassword(e.target.value)}/>
             </StyledLabel>
           </StyledRightAlignedForms>
           {error ? <p>

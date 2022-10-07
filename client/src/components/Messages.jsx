@@ -21,7 +21,8 @@ import {
   StyledSubmitInput
 }
 from './StyledComponents/StyledComponents.jsx';
-import WriteMessage from './MessagesComponents/WriteMessage.jsx'
+import WriteMessage from './MessagesComponents/WriteMessage.jsx';
+
 
 
 
@@ -56,10 +57,6 @@ export default function Messages () {
 
   useEffect(() => {
     socket.current = io('ws://localhost:8080');
-    socket.current.on("roomNumber", (roomNumber) => {
-      setCurrentRoom(roomNumber);
-      console.log(roomNumber);
-    })
     socket.current.on("getMessage", (data) => {
       // console.log("currentFriend.first_name :", currentFriend.first_name);
       // console.log("data.roomNumber: ", data.roomNumber);
@@ -108,7 +105,12 @@ export default function Messages () {
       receiverId: currentFriend.account_id,
       text: message,
       roomNumber: currentRoom
-    })
+    });
+    axios.post(`${serverURL}/chats/messages`, {
+      message,
+      roomId: currentRoom
+    });
+    setMessage('');
   };
 
   const handleChange = (e) =>{
@@ -119,9 +121,24 @@ export default function Messages () {
   //   setCurrentFriend(e.target.value)
   // }
   const updateCurrentRoom = (id, friend) => {
+    axios.get(`${serverURL}/chats/id`, { params: { requestedId: id}})
+      .then((data) => {
+        socket.current.emit('addRoom', currentRoom, data.data.room_id);
+        setCurrentRoom(data.data.room_id);
+        axios.get(`${serverURL}/chats/messages`,
+          {
+            params: {
+              roomId: data.data.room_id
+            }
+          })
+          .then((result) => {
+            // console.log(result.data);
+            setMessages(result.data.reverse());
+          })
+          .catch((error) => console.log(error));
+      })
+      .catch((error) => console.log(error));
     setCurrentFriend(friend);
-    socket.current.emit('addRoom', user.id, id, currentRoom);
-    setMessages([]);
   };
 
   // roomsArray.forEach((room) => {
@@ -144,7 +161,7 @@ export default function Messages () {
                   updateCurrentRoom(friend.account_id, friend);
                   }}>
                   {friend.first_name}
-                  <MessageProfilePic src={profilePicture}></MessageProfilePic>
+                  <MessageProfilePic key={`${profilePicture}-${i}`} src={profilePicture}></MessageProfilePic>
                 </StyledButton>
               </React.Fragment>
             )
@@ -153,10 +170,10 @@ export default function Messages () {
       </MessagesConvoContainer>
       <MessagesChatContainer>
         <MessagesTextContainer>
-          {messages.slice().reverse().map((message, i) => {
+          {messages && messages.slice().reverse().map((message, i) => {
             return (
             <MyMessage key= {i}>
-              {message.text}
+              {message.message}
             </MyMessage>
           )}
           )}
@@ -166,7 +183,7 @@ export default function Messages () {
           {currentFriend.first_name}
         </MessagesTopContainer>
         <StyledWriteMessage>
-          <WriteMessage handleChange={handleChange} handleSubmit={handleSubmit} />
+          <WriteMessage inputValue={message} handleChange={handleChange} handleSubmit={handleSubmit} />
         </StyledWriteMessage>
       </MessagesChatContainer>
     </div>

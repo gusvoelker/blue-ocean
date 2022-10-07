@@ -1,6 +1,11 @@
+require("dotenv").config();
+
 const io = require("socket.io")(8080, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: [
+      process.env.CL_ORIGIN1,
+      process.env.CL_ORIGIN2
+    ]
   },
 });
 
@@ -50,15 +55,9 @@ io.on("connection", (socket) => {
     // io.to(socket.id).emit('getRooms', roomArray);
     io.emit("getUsers", users);
   });
-  socket.on("addRoom", (userId, friendId, currentRoom) => {
+  socket.on("addRoom", (currentRoom, newRoom) => {
     socket.leave(currentRoom);
-    roomConnections.forEach((connection) => {
-      if (connection.members.includes(userId) && connection.members.includes(friendId)) {
-        socket.join(connection.roomName);
-        console.log(`Rooms: User ${userId} connected to Room ${connection.roomName}`);
-        io.to(socket.id).emit('roomNumber', connection.roomName);
-      }
-    })
+    socket.join(newRoom)
   })
   socket.on("sendMessage", ({ senderId, receiverId, text, roomNumber }) => {
     console.log(senderId, receiverId, text);
@@ -67,7 +66,7 @@ io.on("connection", (socket) => {
     console.log("user from SendMessage:", user);
     io.to(roomNumber).emit("getMessage", {
       senderId,
-      text,
+      message: text,
       roomNumber,
     });
   });
