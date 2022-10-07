@@ -17,16 +17,26 @@ export default function AddFriendModal (props) {
     return null;
   }
 
-  useEffect(() => {
-    let nameArray = props.usersWithSameLanguage.map(user => {
+  const generateNameArray = (array) => {
+    let allButThisUser = array.slice();
+    array.forEach((user, index) => {
+      if (user.account_id === props.userId) {
+        allButThisUser.splice(index, 1);
+      }
+    })
+    let nameArray = allButThisUser.map(user => {
       let obj = {
         friend_name: `${user.first_name} ${user.last_name}`,
         id: user.account_id
       }
       return obj;
     })
+    return nameArray
+  }
+
+  useEffect(() => {
+    let nameArray = generateNameArray(props.usersWithSameLanguage);
     setSearchedFriends(nameArray);
-    console.log(nameArray)
   }, [props.usersWithSameLanguage])
 
   const [searchedFriends, setSearchedFriends] = useState(['Frodo', 'Gandalf', 'Legolas', 'Bilbo']);
@@ -35,13 +45,7 @@ export default function AddFriendModal (props) {
     let accounts = [];
     let language = e.target.value;
     if (language === 'any') {
-      let nameArray = props.usersWithSameLanguage.map(user => {
-        let obj = {
-          friend_name: `${user.first_name} ${user.last_name}`,
-          id: user.account_id
-        }
-        return obj;
-      })
+      let nameArray = generateNameArray(props.usersWithSameLanguage);
       setSearchedFriends(nameArray);
     } else {
       props.usersWithSameLanguage.forEach((account) => {
@@ -53,14 +57,7 @@ export default function AddFriendModal (props) {
           })
         }
       })
-      let nameArray = accounts.map(user => {
-        let obj = {
-          friend_name: `${user.first_name} ${user.last_name}`,
-          id: user.account_id
-        }
-        return obj;
-      })
-      console.log(nameArray);
+      let nameArray = generateNameArray(accounts);
       setSearchedFriends(nameArray);
     }
   }
