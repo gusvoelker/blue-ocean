@@ -12,7 +12,8 @@ import { differenceInCalendarDays } from 'date-fns';
 import TeacherMeetingModal from './TeacherMeetingModal.jsx'
 
 
-export default function TeacherCalendar({ teacherId, meetings, handleDelete }) {
+export default function TeacherCalendar({ meetings, handleDelete }) {
+
   const [value, onChange] = useState(new Date());
   const [open, setOpen] = useState(false)
   const [meetingsOnDay, setMeetingsOnDay] = useState([])
@@ -31,14 +32,10 @@ export default function TeacherCalendar({ teacherId, meetings, handleDelete }) {
         meeting.dateObj = dateObj.toLocaleTimeString();
         meetingsOnDayArray.push(meeting)
       }
-
     })
     setMeetingsOnDay(meetingsOnDayArray)
       setOpen(true)
-
-
   }
-
 
   useEffect(()=>{
     var highlight = []
@@ -58,7 +55,7 @@ export default function TeacherCalendar({ teacherId, meetings, handleDelete }) {
           }
         }
       }}/>
-      {open && <TeacherMeetingModal onClose={() => { setOpen(false) }} open={open} meetingsOnDay={meetingsOnDay} day={value} teacherId={teacherId} handleDelete={handleDelete}/>}
+      {open && <TeacherMeetingModal onClose={() => { setOpen(false) }} open={open} meetingsOnDay={meetingsOnDay} day={value} handleDelete={handleDelete}/>}
 
     </>
 

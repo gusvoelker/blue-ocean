@@ -4,6 +4,22 @@ const model = require("../models/accountModel.js");
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 
+const authHelper = (req, res, next=()=>{}) => {
+  passport.authenticate("local", (err, user, errorInfo) => {
+    if (err) return res.sendStatus(500);
+    if (!user) return res.status(400).send(errorInfo.message);
+    req.logIn(user, function (err) {
+      if (err) return next(err);
+      // console.log(req.session);
+      // console.log(user);
+      return res.status(200).send({
+        message: "Login successful",
+        user
+      });
+    });
+  })(req, res, next);
+};
+
 // POST REQUESTS //
 
 router.post("/register", (req, res, next) => {
@@ -41,38 +57,25 @@ router.post("/register", (req, res, next) => {
                 lastName,
                 isTeacher,
               })
-              .then((user) => {
-                res.status(201).send("Account successfully created");
-              })
+              .then((user) => authHelper(req, res, next))
               .catch((err) => {
-                console.log("This is your login error:", err);
+                console.log("Login error:", err);
                 res.sendStatus(500);
               });
           });
         }
       })
       .catch((err) => {
-        console.log("This is your login error2:", err);
+        console.log("Registration error:", err);
         res.sendStatus(500);
       });
   }
 });
 
 // LOGIN
-//session is established after authentication
+// session is established after authentication
 router.post("/login", (req, res, next) => {
-  // res.setHeader("Access-Control-Allow-Credentials", "true");
-  console.log(req.body.email, req.body.password);
-  passport.authenticate("local", (err, user, errorInfo) => {
-    if (err) return res.sendStatus(500);
-    if (!user) return res.status(400).send(errorInfo.message);
-    req.logIn(user, function (err) {
-      if (err) return next(err);
-      console.log(req.session);
-
-      return res.status(200).send(req.user);
-    });
-  })(req, res, next);
+  authHelper(req, res, next);
 });
 
 //LOGOUT
@@ -82,7 +85,7 @@ router.post("/logout", (req, res, next) => {
       return next(err);
     }
     req.session.destroy((err) => {
-      res.clearCookie("test");
+      res.clearCookie("languageapp");
       res.send("You are logged out!");
     });
   });
@@ -91,10 +94,16 @@ router.post("/logout", (req, res, next) => {
 // Authenticate all user requests
 // Users should not be able to access any resources without being signed in
 router.use("/", (req, res, next) => {
-  // if (!req.user) {
+  // if (!req.user) { // DEBUG: For teacher auth
   //   req.user = { // DEBUG: Uncomment this if testing routes without auth
-  //     id: 1,
+  //     id: 8,
   //     isTeacher: true // Can set to true or false depending on which user is being tested
+  //   }
+  // }
+  // if (!req.user) { // DEBUG: For user auth
+  //   req.user = { // DEBUG: Uncomment this if testing routes without auth
+  //     id: 10,
+  //     isTeacher: false
   //   }
   // }
   if (!req.user) {

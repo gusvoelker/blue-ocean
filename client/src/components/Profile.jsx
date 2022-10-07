@@ -99,12 +99,15 @@ export default function Profile (props) {
   const [editInfoShow, setEditInfoShow] = useState(false);
   const [currentFriend, setCurrentFriend] = useState(null);
   const [friendSearch, setFriendSearch] = useState('');
-  const [usersWithSameLanguage, setUsersWithSameLanguage] = useState([])
-  const [pendingRequests, setPendingRequests] = useState([])
+  const [usersWithSameLanguage, setUsersWithSameLanguage] = useState([]);
+  const [pendingRequests, setPendingRequests] = useState([]);
 
-  // const {userId} = useContext(SocketContext);
-  // console.log(userId);
-  console.log(props.userId);
+  const [email, setEmail] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [friends, setFriends] = useState([])
+  const [profilePicture, setProfilePicture] = useState('https://i.postimg.cc/gkDMWvVY/photo-1615497001839-b0a0eac3274c.jpg');
+
   var [x, setx] = useState(0);
   // function for the image to expand on click
   // on click function to move the carousel to the left
@@ -164,11 +167,11 @@ export default function Profile (props) {
     setEditInfoShow(true);
   }
 
-  const [filteredFriends, setFilteredFriends] = useState(props.friends);
+  const [filteredFriends, setFilteredFriends] = useState(friends);
   const [filtering, setFiltering] = useState(false);
 
   const filterFriends = (e) => {
-    setFilteredFriends(props.friends.filter(function (str) {
+    setFilteredFriends(friends.filter(function (str) {
         var fullName = str.first_name + ' ' + str.last_name
         var lowered = fullName.toLowerCase();
         return lowered.includes(e.target.value);
@@ -181,32 +184,29 @@ export default function Profile (props) {
 
     const retrieveFriends = axios.get(`${serverURL}/friend`);
 
-    const retrieveLanguages = axios.get(`${serverURL}/languages`);
-
     useEffect(() => {
-      Promise.all([retrieveAccountInfo, retrieveFriends, retrieveLanguages])
+      Promise.all([retrieveAccountInfo, retrieveFriends])
       .then((data) => {
         var apiAccountInfo = data[0].data;
         var apiFriends = data[1].data;
-        var apiLanguages = data[2].data;
         // setting account info
-        props.setEmail(apiAccountInfo.email);
-        props.setFirstName(apiAccountInfo.first_name);
-        props.setLastName(apiAccountInfo.last_name);
-        // setting friends
-        props.setFriends(apiFriends);
-        // setting languages
-        props.setLanguages(apiLanguages);
-      }).catch((err) => {
+        setEmail(apiAccountInfo.email);
+        setFirstName(apiAccountInfo.first_name);
+        setLastName(apiAccountInfo.last_name);
+        setFriends(apiFriends);
+      })
+      .catch((err) => {
         console.log('error retrieving data', err);
       });
     }, []);
+
+    console.log(props.languages);
 
   return (
     <div>
       <Dark>
       <ProfileContainer>
-        <ProfilePicture src={props.profilePicture} />
+        <ProfilePicture src={profilePicture} />
         {!props.darkTheme ?
         <ProfileBackground>
           <img src={profileBackground[x]} style={{textAlign: 'left', display: 'block'}}/>
@@ -225,11 +225,11 @@ export default function Profile (props) {
           <table>
             <tr>
               <td>Name:</td>
-              <td>{props.firstName} {props.lastName}</td>
+              <td>{firstName} {lastName}</td>
             </tr>
             <tr>
-              <td>E-mail:</td>
-              <td>{props.email}</td>
+              <td>Email:</td>
+              <td>{email}</td>
             </tr>
           </table>
           {/* <StyledButton onClick={onEditInfo} style={{marginTop: '1rem'}}>EDIT INFO</StyledButton> */}
@@ -242,7 +242,7 @@ export default function Profile (props) {
             </StyledFriendSearch>
           </StyledFriendSearchSpan>
           <p>{!filtering ?
-            props.friends.map((friend, index) => {
+            friends.map((friend, index) => {
               return (
                 <StyledFriend key={friend.account_id}>
                   <div style={{fontWeight: 'bold'}} id={index} onClick={onFriendClick}>{friend.first_name + ' ' + friend.last_name} <FontAwesomeIcon icon={faChevronDown} /></div>
@@ -273,7 +273,7 @@ export default function Profile (props) {
       </ProfileContainer>
       <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch} usersWithSameLanguage={usersWithSameLanguage} languages={props.languages}/>
       <PendingRequests onClose={() => setShowPending(false)} show={showPending} pendingRequests={pendingRequests}/>
-      <FriendsModal onClose={() => setShow(false)} show={show} currentFriend={currentFriend} friend={props.friends[currentFriend]}/>
+      <FriendsModal onClose={() => setShow(false)} show={show} currentFriend={currentFriend} friend={friends[currentFriend]}/>
       <EditInfoModal onClose={() => setEditInfoShow(false)} show={editInfoShow} />
       </Dark>
     </div>

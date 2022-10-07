@@ -89,12 +89,12 @@ module.exports.createAccount = (account) => {
       '${account.lastName}',
       ${account.isTeacher}
     )
-    RETURNING account_id
+    RETURNING account_id, is_teacher
   `)
     .then((createRes) => {
       if (createRes.name === "error") {
         throw new Error(createRes.message);
       }
-      return createRes.rows[0].account_id;
+      return createRes.rows[0];
     });
 };

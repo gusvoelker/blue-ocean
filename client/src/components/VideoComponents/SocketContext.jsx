@@ -2,10 +2,12 @@ import React, { createContext, useState, useRef, useEffect } from 'react';
 import { io } from 'socket.io-client';
 import Peer from 'simple-peer';
 
+import { videoServerURL } from '../../config.js';
+
 const SocketContext = createContext();
 
 // const socket = io('http://localhost:5000');
-const socket = io('http://ec2-18-216-115-180.us-east-2.compute.amazonaws.com:5000');
+const socket = io(videoServerURL);
 
 const ContextProvider = ({ children }) => {
   const [callAccepted, setCallAccepted] = useState(false);

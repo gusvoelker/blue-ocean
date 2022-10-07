@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import axios from 'axios';
+axios.defaults.withCredentials = true;
 import styled from 'styled-components';
-import { Outlet, Link } from "react-router-dom";
 import {
   StyledButton,
   StyledLogPage,
@@ -15,8 +17,7 @@ import {
   StyledPageRow,
   StyledImage
 } from '../../StyledComponents/StyledComponents.jsx'
-import axios from 'axios';
-axios.defaults.withCredentials = true;
+
 import { serverURL } from '../../../config.js';
 
 const StyledloginSignUpBox = styled.div`
@@ -35,50 +36,13 @@ const StyledloginSignUpBox = styled.div`
   border: 2px solid #383838;
 `
 
-export default function UserInfo ({handleCheck, handleChange, languages, setLanguages }) {
-  // const [formData, setFormData] = useState({
-  //   primary: '',
-  //   tolearn: '',
-  //   videochat: ''
-  // })
-  // const [checked, setChecked] = useState([]);
-
-  // const handleChange = (e) => {
-  //   e.preventDefault();
-  //   setFormData({
-  //     ...formData,
-  //     [e.target.name]: e.target.value
-  //   })
-  //   console.log(e.target.value);
-  // }
-
-  // const handleCheck = (event) => {
-  //   var updatedList = [...checked];
-  //   if (event.target.checked) {
-  //     updatedList = [...checked, event.target.value];
-  //   } else {
-  //     updatedList.splice(checked.indexOf(event.target.value), 1);
-  //   }
-  //   setChecked(updatedList);
-  //   console.log(checked);
-  // };
-
-  useEffect(() => {
-    axios.get(`${serverURL}/languages`)
-      .then((data) => {
-        var apiLanguages = data.data
-        setLanguages(apiLanguages);
-        console.log(apiLanguages);
-      }).catch((err) => {
-        console.log('err: ', err)
-      })
-  }, [])
+export default function UserInfo ({handleCheck, handleChange, languages }) {
 
   const languageList = languages.map((language) => {
     return (
       <option value={language.lang_name} key={language.lang_id}>{language.lang_name}</option>
     )
-  })
+  });
 
   const languageProficiencies = languages.map((language) => {
     return (
@@ -87,7 +51,8 @@ export default function UserInfo ({handleCheck, handleChange, languages, setLang
         <input value={language.lang_name} type="checkbox" onChange={handleCheck} />
       </label>
     )
-  })
+  });
+
   return (
       <StyledloginSignUpBox>
         <StyledLoginSignUpForm>
@@ -123,7 +88,7 @@ export default function UserInfo ({handleCheck, handleChange, languages, setLang
               {languageProficiencies}
             </span>
           </StyledLabel>
-          <Link to="/login">
+          <Link to="/profile">
             <StyledSubmitInput value='SUBMIT'></StyledSubmitInput>
           </Link>
         </StyledLoginSignUpForm>

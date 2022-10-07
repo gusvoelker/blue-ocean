@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import styled from 'styled-components';
 import axios from 'axios';
 axios.defaults.withCredentials = true;
-import {serverURL} from '../../../../src/config.js';
+import {serverURL} from '../../../src/config.js';
 import {
   StyledButton,
   StyledLogPage,
@@ -15,8 +15,8 @@ import {
   StyledPageRow,
   StyledImage,
   StyledSelectInput
-} from '../../StyledComponents/StyledComponents.jsx';
-import { SocketContext } from '../../VideoComponents/SocketContext.jsx';
+} from '../StyledComponents/StyledComponents.jsx';
+import { SocketContext } from '../VideoComponents/SocketContext.jsx';
 import { Outlet, Link, useNavigate } from "react-router-dom";
 
 
@@ -39,23 +39,21 @@ const StyledloginSignUpBox = styled.div`
 export default function Login (props) {
   const { setUser} = useContext(SocketContext);
   const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('hello');
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
-
-  let formData = {
-    email: props.email,
-    password: props.password
-  }
 
   const handleSubmit= async(e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`${serverURL}/login`, formData);
-      console.log('logged in');
-      console.log(res.data.id)
-      props.onIdChange(res.data.id);
-      setUser(res.data);
-      navigate(res.data.isTeacher ? "/teacherprofile" : "/profile");
+      const res = await axios.post(`${serverURL}/login`, {
+        email,
+        password
+      });
+      localStorage.setItem('isTeacher', res.data.user.isTeacher);
+      await props.getLanguages();
+      navigate(JSON.parse(localStorage.getItem('isTeacher')) ? "/teacherprofile" : "/profile");
     } catch (err) {
       console.log(err);
       setErrorMessage(err.response.data);
@@ -86,13 +84,17 @@ export default function Login (props) {
             LOG IN
           </h1>
           <StyledRightAlignedForms>
-            <StyledLabel>
-              Email:
-              <StyledTextEmail placeholder='enter email here' name='email' onChange={props.onEmailChange}></StyledTextEmail>
+          <StyledLabel>
+              <span>
+                Email:
+              </span>
+              <StyledTextEmail placeholder='Enter email' name='email' value={email} onChange={(e) => setEmail(e.target.value)}/>
             </StyledLabel>
             <StyledLabel>
-              Password:
-              <StyledTextInput placeholder='enter password here' name='password' onChange={props.onPasswordChange}></StyledTextInput>
+              <span>
+                Password:
+              </span>
+              <StyledTextInput placeholder='Enter password' name='password' value={password} onChange={(e) => setPassword(e.target.value)}/>
             </StyledLabel>
           </StyledRightAlignedForms>
           {error ? <p>
