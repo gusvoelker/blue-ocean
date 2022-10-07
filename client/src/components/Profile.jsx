@@ -178,13 +178,13 @@ export default function Profile (props) {
     // api requests to retrieve all necessary data
     const retrieveAccountInfo = axios.get(`${serverURL}/accounts/id`, {
       params: {
-        accountId: 1
+        accountId: props.userId
       }
     })
 
     const retrieveFriends = axios.get(`${serverURL}/friend`, {
       params: {
-        accountId: 1
+        accountId: props.userId
       }
     })
 
