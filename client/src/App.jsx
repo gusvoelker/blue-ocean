@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
+axios.defaults.withCredentials = true;
 
 import { serverURL } from './config.js';
 import NavBar from './components/NavBar/NavBar.jsx';
@@ -17,8 +18,6 @@ import FriendsModal from './components/FriendsModal.jsx';
 
 import EntryForm from './components/LoginSignup/EntryForm.jsx';
 import Role from './components/LoginSignup/Role.jsx'
-import UserSignUp from './components/LoginSignup/User/UserSignUp.jsx';
-import UserLogin from './components/LoginSignup/User/UserLogin.jsx'
 import UserInfo from './components/LoginSignup/User/UserInfo.jsx'
 import SignUp from './components/LoginSignup/Teacher/SignUp.jsx'
 import Login from './components/LoginSignup/Teacher/Login.jsx'

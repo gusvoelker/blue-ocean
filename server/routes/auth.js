@@ -14,7 +14,13 @@ router.post("/register", (req, res, next) => {
     res.status(400).send("Please fill in email field");
   } else if (!password && email) {
     res.status(400).send("Please fill in password field");
-  } else if (!email || !password || !firstName || !lastName || isTeacher === undefined) {
+  } else if (
+    !email ||
+    !password ||
+    !firstName ||
+    !lastName ||
+    isTeacher === undefined
+  ) {
     res.status(400).send("Please fill in all required fields");
   } else {
     model
@@ -36,20 +42,18 @@ router.post("/register", (req, res, next) => {
                 isTeacher,
               })
               .then((user) => {
-                res
-                  .status(201)
-                  .send("Account successfully created");
+                res.status(201).send("Account successfully created");
               })
               .catch((err) => {
                 console.log("This is your login error:", err);
-                res.sendStatus(500)
+                res.sendStatus(500);
               });
           });
         }
       })
       .catch((err) => {
         console.log("This is your login error2:", err);
-        res.sendStatus(500)
+        res.sendStatus(500);
       });
   }
 });
@@ -57,19 +61,18 @@ router.post("/register", (req, res, next) => {
 // LOGIN
 //session is established after authentication
 router.post("/login", (req, res, next) => {
+  // res.setHeader("Access-Control-Allow-Credentials", "true");
   console.log(req.body.email, req.body.password);
-  passport.authenticate(
-    "local",
-    (err, user, errorInfo) => {
-      if (err) return res.sendStatus(500);
-      if (!user) return res.status(400).send(errorInfo.message);
-      req.logIn(user, function (err) {
-        if (err) return next(err);
-        console.log(req.session);
-        return res.status(200).send({user: req.user});
-      });
-    }
-  )(req, res, next);
+  passport.authenticate("local", (err, user, errorInfo) => {
+    if (err) return res.sendStatus(500);
+    if (!user) return res.status(400).send(errorInfo.message);
+    req.logIn(user, function (err) {
+      if (err) return next(err);
+      console.log(req.session);
+
+      return res.status(200).send(req.user);
+    });
+  })(req, res, next);
 });
 
 //LOGOUT
@@ -78,19 +81,24 @@ router.post("/logout", (req, res, next) => {
     if (err) {
       return next(err);
     }
-    res.send("You are logged out!");
+    req.session.destroy((err) => {
+      res.clearCookie("test");
+      res.send("You are logged out!");
+    });
   });
 });
 
 // Authenticate all user requests
 // Users should not be able to access any resources without being signed in
-router.use('/', (req, res, next) => {
-  // req.user = { // DEBUG: Uncomment this if testing routes without auth
-  //   id: 1,
-  //   isTeacher: false // Can set to true or false depending on which user is being tested
+router.use("/", (req, res, next) => {
+  // if (!req.user) {
+  //   req.user = { // DEBUG: Uncomment this if testing routes without auth
+  //     id: 1,
+  //     isTeacher: true // Can set to true or false depending on which user is being tested
+  //   }
   // }
   if (!req.user) {
-    res.status(403).send('Login required');
+    res.status(403).send("Login required");
   } else {
     next();
   }

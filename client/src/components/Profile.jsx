@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import styled from 'styled-components';
 import axios from 'axios';
+axios.defaults.withCredentials = true;
 import { serverURL } from '../config.js';
 import {
   ProfileContainer,
@@ -96,7 +97,7 @@ export default function Profile (props) {
   const [showPending, setShowPending] = useState(false);
   const [addShow, setAddShow] = useState(false);
   const [editInfoShow, setEditInfoShow] = useState(false);
-  const [currentFriend, setCurrentFriend] = useState('');
+  const [currentFriend, setCurrentFriend] = useState(null);
   const [friendSearch, setFriendSearch] = useState('');
   const [usersWithSameLanguage, setUsersWithSameLanguage] = useState([])
   const [pendingRequests, setPendingRequests] = useState([])
@@ -117,10 +118,12 @@ export default function Profile (props) {
 
   const onFriendClick = (e) => {
     e.preventDefault();
-    setCurrentFriend(parseInt(e.target.id))
+    var index = e.target.id;
+    setCurrentFriend(index)
+    console.log(index);
   }
   useEffect(() => {
-    if (currentFriend !== '') {
+    if (currentFriend) {
       setShow(true);
     }
   }, [currentFriend])
@@ -174,17 +177,9 @@ export default function Profile (props) {
   }
 
     // api requests to retrieve all necessary data
-    const retrieveAccountInfo = axios.get(`${serverURL}/accounts/id`, {
-      params: {
-        accountId: 1
-      }
-    })
+    const retrieveAccountInfo = axios.get(`${serverURL}/accounts/id`);
 
-    const retrieveFriends = axios.get(`${serverURL}/friend`, {
-      params: {
-        accountId: 1
-      }
-    })
+    const retrieveFriends = axios.get(`${serverURL}/friend`);
 
     const retrieveLanguages = axios.get(`${serverURL}/languages`);
 
@@ -237,7 +232,7 @@ export default function Profile (props) {
               <td>{props.email}</td>
             </tr>
           </table>
-          <StyledButton onClick={onEditInfo} style={{marginTop: '1rem'}}>EDIT INFO</StyledButton>
+          {/* <StyledButton onClick={onEditInfo} style={{marginTop: '1rem'}}>EDIT INFO</StyledButton> */}
         </ProfileAccountInfo>
         <ProfileFriendsList>
           <StyledFriendSearchSpan>
@@ -249,8 +244,8 @@ export default function Profile (props) {
           <p>{!filtering ?
             props.friends.map((friend, index) => {
               return (
-                <StyledFriend  id={index} key={friend.account_id} onClick={onFriendClick}>
-                  <div style={{fontWeight: 'bold'}}>{friend.first_name + ' ' + friend.last_name}</div>
+                <StyledFriend key={friend.account_id}>
+                  <div style={{fontWeight: 'bold'}} id={index} onClick={onFriendClick}>{friend.first_name + ' ' + friend.last_name} <FontAwesomeIcon icon={faChevronDown} /></div>
                   <Link to="/messages">
                     <StyledFriendIcons>
                       <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png'/>
@@ -261,8 +256,8 @@ export default function Profile (props) {
           }) :
             filteredFriends.map((friend, index) => {
               return (
-                <StyledFriend  id={index} key={friend.account_id} onClick={onFriendClick}>
-                  <div style={{fontWeight: 'bold'}}>{friend.first_name + ' ' + friend.last_name}</div>
+                <StyledFriend  id={index} key={friend.account_id}>
+                  <div style={{fontWeight: 'bold'}} id={index} onClick={onFriendClick}>{friend.first_name + ' ' + friend.last_name} <FontAwesomeIcon icon={faChevronDown} /></div>
                   <Link to="/messages">
                     <StyledFriendIcons>
                       <img src='https://cdn-icons-png.flaticon.com/512/71/71580.png'/>
@@ -278,7 +273,7 @@ export default function Profile (props) {
       </ProfileContainer>
       <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch} usersWithSameLanguage={usersWithSameLanguage} languages={props.languages} userId={props.userId}/>
       <PendingRequests onClose={() => setShowPending(false)} show={showPending} pendingRequests={pendingRequests}/>
-      <FriendsModal onClose={() => setShow(false)} show={show} friend={props.friends[currentFriend]} />
+      <FriendsModal onClose={() => setShow(false)} show={show} currentFriend={currentFriend} friend={props.friends[currentFriend]}/>
       <EditInfoModal onClose={() => setEditInfoShow(false)} show={editInfoShow} />
       </Dark>
     </div>

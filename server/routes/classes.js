@@ -66,8 +66,4 @@ router.get('/classes/students', (req, res, next) => {
   .catch((error) => res.sendStatus(400));
 });
 
-
-
-
 module.exports = router;
-

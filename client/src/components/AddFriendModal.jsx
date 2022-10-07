@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
 import { serverURL } from '../config.js';
 import axios from 'axios';
+axios.defaults.withCredentials = true;
 import {
   FriendsModalContainer,
   FriendsModalContent,

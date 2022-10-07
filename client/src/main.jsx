@@ -4,9 +4,9 @@ import App from './App'
 import { ContextProvider } from './components/VideoComponents/SocketContext.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <ContextProvider>
       <App />
     </ContextProvider>
-  </React.StrictMode>
+  // </React.StrictMode>
 );

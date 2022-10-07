@@ -20,6 +20,7 @@ import {
   TeachingLanguageSpan
 } from './StyledComponents/StyledComponents.jsx'
 import axios from 'axios';
+axios.defaults.withCredentials = true;
 import FormData from 'form-data'
 import TeacherClassListModal from './LoginSignup/Teacher/TeacherClassListModal.jsx';
 import PendingRequests from './PendingRequests.jsx';
@@ -125,17 +126,9 @@ export default function TeacherProfile(props) {
   }
 
   // api requests to retrieve all necessary data
-  const retrieveAccountInfo = axios.get(`${serverURL}/accounts/id`, {
-    params: {
-      accountId: props.userId
-    }
-  })
+  const retrieveAccountInfo = axios.get(`${serverURL}/accounts/id`);
 
-  const retrieveFriends = axios.get(`${serverURL}/friend`, {
-    params: {
-      accountId: props.userId
-    }
-  })
+  const retrieveFriends = axios.get(`${serverURL}/friend`);
 
   const retrieveLanguages = axios.get(`${serverURL}/languages`);
 
@@ -151,13 +144,13 @@ export default function TeacherProfile(props) {
   useEffect(() => {
     getClasses()
 
-    axios.get(`${serverURL}/meetings`, { params: { user_id: props.userId } })
+    axios.get(`${serverURL}/meetings`)
       .then((meetingsRes) => {
         setMeetings(meetingsRes.data)
       })
       .catch(err => { console.log('error getting meetings ', err) })
 
-    axios.get(`${serverURL}/meetings/requests`, { params: { user_id: props.userId } })
+    axios.get(`${serverURL}/meetings/requests`)
       .then((pendingMeetings) => {
         setPendingMeetings(pendingMeetings.data)
       })
@@ -254,7 +247,7 @@ export default function TeacherProfile(props) {
   const onCalendarClick = (dateTime, friend, user) => {
     setPickDateShow(false)
     var GMTTime = dateTime.toUTCString()
-    axios.post(`${serverURL}/meetings`, { requesterId: props.userId, receiverId: friend, start_time: GMTTime })
+    axios.post(`${serverURL}/meetings`, {receiverId: friend, start_time: GMTTime })
       .then((meetingsRes) => {
         setMeetings(meetingsRes.data)
       }).catch((err) => {
@@ -265,12 +258,9 @@ export default function TeacherProfile(props) {
 
 const selectFriend = (e) => {
   setSelected(e.target.id);
-  axios.get(`${serverURL}/languages/taught`, {
-    params: {
-      accountId: 6
-    }
-  }).then((data) => {
+  axios.get(`${serverURL}/languages/taught`).then((data) => {
     console.log(data.data);
+    console.log(props.friends);
     setTaughtLanguages(data.data);
     setFriendSelected(true);
   }).catch((err) => {
@@ -279,10 +269,18 @@ const selectFriend = (e) => {
 
 }
 
+// useEffect(() => {
+//   if (selected !== null) {
+//     setTimeout(() => {
+//       setFriendSelected(true);
+//     }, 1000)
+//   }
+// }, [selected]);
+
 const unfilteredFriends = props.friends.map((friend, index) => {
     return (
       <StyledFriend key={friend.account_id} >
-          <div style={{ fontWeight: 'bold' }} id={index} onClick={selectFriend}>{friend.first_name + ' ' + friend.last_name}</div>
+          <div style={{ fontWeight: 'bold' }} id={index} onClick={selectFriend}>{friend.first_name + ' ' + friend.last_name} <FontAwesomeIcon icon={faChevronDown} /></div>
           {pickDateShow && <ScheduleModal onClose={(dateTime) => { onCalendarClick(dateTime, friend.account_id, props.userId) }} friend={friend}/>}
             <StyledFriendIcons>
               <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call" onClick={() => { setPickDateShow(true) }} />
@@ -298,7 +296,7 @@ const unfilteredFriends = props.friends.map((friend, index) => {
 const filteredFriendsList = filteredFriends.map((friend, index) => {
   return (
     <StyledFriend  id={friend.account_id} key={friend.account_id}>
-      <div style={{ fontWeight: 'bold' }} id={index} onClick={selectFriend}>{friend.first_name + ' ' + friend.last_name}</div>
+      <div style={{ fontWeight: 'bold' }} id={index} onClick={selectFriend}>{friend.first_name + ' ' + friend.last_name} <FontAwesomeIcon icon={faChevronDown} /></div>
       {pickDateShow && <ScheduleModal onClose={(dateTime) => { onCalendarClick(dateTime, friend.account_id, props.userId) }} friend={friend}/>}
         <StyledFriendIcons>
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Calendar_icon_2.svg/989px-Calendar_icon_2.svg.png" alt="calendar icon for setting up a video call" onClick={() => { setPickDateShow(true) }} />
@@ -317,7 +315,7 @@ const filteredFriendsList = filteredFriends.map((friend, index) => {
     var GMTTime = start_time.toUTCString()
     axios.delete(`${serverURL}/meetings`, { params: { receiverId: receiverId, requesterId: requesterId, dateTime: GMTTime } })
       .then(() => {
-        axios.get(`${serverURL}/meetings`, { params: { user_id: props.userId } })
+        axios.get(`${serverURL}/meetings`)
           .then((meetingsRes) => {
             setMeetings(meetingsRes.data)
           })
@@ -325,19 +323,19 @@ const filteredFriendsList = filteredFriends.map((friend, index) => {
       })
       .catch(err => { console.log('error deleting meeting ', err) })
   }
-  const acceptMeeting = (e, requesterId, receiverId, start_time) => {
+  const acceptMeeting = (e, requesterId, start_time) => {
     e.preventDefault()
     var start_time = new Date(start_time)
     var GMTtime = start_time.toUTCString()
-    axios.put(`${serverURL}/meetings`, { receiverId: receiverId, requesterId: requesterId, dateTime: GMTtime })
+    axios.put(`${serverURL}/meetings`, { requesterId: requesterId, dateTime: GMTtime })
       .then(() => {
-        axios.get(`${serverURL}/meetings`, { params: { user_id: props.userId } })
+        axios.get(`${serverURL}/meetings`)
           .then((meetingsRes) => {
             setMeetings(meetingsRes.data)
           })
           .catch(err => { console.log('error getting meetings ', err) })
 
-        axios.get(`${serverURL}/meetings/requests`, { params: { user_id: props.userId } })
+        axios.get(`${serverURL}/meetings/requests`)
           .then((pendingMeetings) => {
             setPendingMeetings(pendingMeetings.data)
           })
@@ -353,14 +351,14 @@ const filteredFriendsList = filteredFriends.map((friend, index) => {
     var GMTtime = start_time.toUTCString()
     axios.delete(`${serverURL}/meetings`, { params: { receiverId: receiverId, requesterId: requesterId, dateTime: GMTtime } })
       .then(() => {
-        axios.get(`${serverURL}/meetings`, { params: { user_id: props.userId } })
+        axios.get(`${serverURL}/meetings`)
           .then((meetingsRes) => {
             console.log('non pending meetings ', meetingsRes)
             setMeetings(meetingsRes.data)
           })
           .catch(err => { console.log('error getting meetings ', err) })
 
-        axios.get(`${serverURL}/meetings/requests`, { params: { user_id: props.userId } })
+        axios.get(`${serverURL}/meetings/requests`)
           .then((pendingMeetings) => {
             console.log('pending meetings ', pendingMeetings)
             setPendingMeetings(pendingMeetings.data)
@@ -404,7 +402,9 @@ const filteredFriendsList = filteredFriends.map((friend, index) => {
           {!friendSelected ? <p>{!filtering ? unfilteredFriends : filteredFriendsList}</p> :
             <SelectedTeacherFriend>
               <span>
+                {selected &&
                 <h2>{props.friends[parseInt(selected)].first_name + ' ' + props.friends[parseInt(selected)].last_name}</h2>
+                }
                 <TeachingLanguageSpan>
                   <h4>
                     Languages Taught:

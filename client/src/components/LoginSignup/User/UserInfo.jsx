@@ -16,6 +16,7 @@ import {
   StyledImage
 } from '../../StyledComponents/StyledComponents.jsx'
 import axios from 'axios';
+axios.defaults.withCredentials = true;
 import { serverURL } from '../../../config.js';
 
 const StyledloginSignUpBox = styled.div`
