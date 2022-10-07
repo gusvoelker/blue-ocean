@@ -21,7 +21,8 @@ import {
   StyledSubmitInput
 }
 from './StyledComponents/StyledComponents.jsx';
-import WriteMessage from './MessagesComponents/WriteMessage.jsx'
+import WriteMessage from './MessagesComponents/WriteMessage.jsx';
+
 
 
 
@@ -56,10 +57,6 @@ export default function Messages () {
 
   useEffect(() => {
     socket.current = io('ws://localhost:8080');
-    socket.current.on("roomNumber", (roomNumber) => {
-      setCurrentRoom(roomNumber);
-      console.log(roomNumber);
-    })
     socket.current.on("getMessage", (data) => {
       // console.log("currentFriend.first_name :", currentFriend.first_name);
       // console.log("data.roomNumber: ", data.roomNumber);
@@ -119,8 +116,12 @@ export default function Messages () {
   //   setCurrentFriend(e.target.value)
   // }
   const updateCurrentRoom = (id, friend) => {
+    axios.get(`${serverURL}/chats/id`, { params: { requestedId: id}})
+      .then((data) => {
+        socket.current.emit('addRoom', currentRoom, data.data.room_id);
+        setCurrentRoom(data.data.room_id);
+      })
     setCurrentFriend(friend);
-    socket.current.emit('addRoom', user.id, id, currentRoom);
     setMessages([]);
   };
 
@@ -144,7 +145,7 @@ export default function Messages () {
                   updateCurrentRoom(friend.account_id, friend);
                   }}>
                   {friend.first_name}
-                  <MessageProfilePic src={profilePicture}></MessageProfilePic>
+                  <MessageProfilePic key={`${profilePicture}-${i}`} src={profilePicture}></MessageProfilePic>
                 </StyledButton>
               </React.Fragment>
             )
