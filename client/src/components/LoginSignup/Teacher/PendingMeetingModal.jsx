@@ -17,25 +17,25 @@ export default function PendingMeetingModal({ onClose, pendingMeetings, teacherI
 
   useEffect(() => {
     var pendingMeetingsArray = []
-    allPendingMeetings.forEach(meeting => {
+    pendingMeetings.forEach(meeting => {
       var dateObj = new Date(meeting.start_time)
+      dateObj.setHours(dateObj.getHours()-4)
       meeting.timeObj = dateObj.toLocaleTimeString();
       meeting.dateObj = dateObj.toLocaleDateString();
       pendingMeetingsArray.push(meeting)
     })
+    console.log('pending meetings array PendingMeetingModal ', pendingMeetingsArray)
     setUpdatedPendingMeeting(pendingMeetingsArray)
-  }, [allPendingMeetings])
+  }, [pendingMeetings])
 
   return (
     <MeetingModalContainer>
       <MeetingModalContent>
-        <h4>
-          Your Pending Meeting Requests
-        </h4>
+      <h3 style={{marginTop: '-0.5rem'}}><strong>Pending Meetings</strong></h3>
         <div>
           {updatedPendingMeeting && updatedPendingMeeting.map((pending, index) => (
             <div key={index}>
-              <span>{pending.first_name} {pending.last_name} on {pending.dateObj} at {pending.timeObj}</span> <br></br>
+              <div >{pending.first_name} {pending.last_name} on {pending.dateObj} at {pending.timeObj}</div> <br></br>
               <StyledButton onClick={(e)=>{
                 acceptMeeting(e, pending.req_account_id, pending.rec_account_id, pending.start_time);
                 onClose();

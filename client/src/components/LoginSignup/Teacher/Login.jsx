@@ -74,6 +74,22 @@ export default function Login (props) {
     //   setError(true);
     // }
 
+  const handleSubmitTeacher = async(e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(`${serverURL}/login`, formData);
+      console.log(res)
+      props.onIdChange(res.data.id);
+      setUser(res.data.id);
+      navigate("/teacherprofile")
+    } catch (err) {
+      console.log(err);
+      setErrorMessage(err.response.data);
+      setError(true);
+    }
+  }
+
+
   let button =
   <Link to="/profile">
     <StyledSubmitInput value='SUBMIT' onClick={handleSubmit}></StyledSubmitInput>
@@ -92,7 +108,7 @@ export default function Login (props) {
             </StyledLabel>
             <StyledLabel>
               Password:
-              <StyledTextInput placeholder='enter password here' name='password' onChange={props.onPasswordChange}></StyledTextInput>
+              <StyledTextInput placeholder='enter password here' name='password' type="password" onChange={props.onPasswordChange}></StyledTextInput>
             </StyledLabel>
           </StyledRightAlignedForms>
           {error ? <p>
