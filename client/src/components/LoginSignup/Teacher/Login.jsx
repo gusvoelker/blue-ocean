@@ -73,6 +73,24 @@ export default function Login (props) {
     //   setErrorMessage(err.response.data);
     //   setError(true);
     // }
+  }
+
+  const handleSubmitTeacher = async(e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(`${serverURL}/login`, formData);
+      console.log(res)
+      props.onIdChange(res.data.id);
+      setUser(res.data.id);
+      navigate("/teacherprofile")
+    } catch (err) {
+      console.log(err);
+      setErrorMessage(err.response.data);
+      setError(true);
+    }
+  }
+
+  let button;
 
   let button =
   <Link to="/profile">

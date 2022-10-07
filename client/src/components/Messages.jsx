@@ -18,49 +18,70 @@ import {
   StyledSubmitInput
 }
 from './StyledComponents/StyledComponents.jsx';
+import WriteMessage from './MessagesComponents/WriteMessage.jsx'
 
 
-export default function Messages () {
-  console.log('render');
-  const friends = ['Adam', 'Bob', 'Charlie', 'Daniel', 'Emily', 'Florenza', 'Adam', 'Bob', 'Charlie', 'Daniel', 'Emily', 'Florenza', 'Adam', 'Bob', 'Charlie', 'Daniel', 'Emily', 'Florenza'];
+
+
+
+export default function Messages ({ friends }) {
   const [profilePicture, setProfilePicture] = useState('https://i.postimg.cc/gkDMWvVY/photo-1615497001839-b0a0eac3274c.jpg');
-  const [currentFriend, setCurrentFriend] = useState('Adam');
+  const [currentFriend, setCurrentFriend] = useState({account_id: 4, first_name: 'Bill', last_name: 'from lotr', email: 'galad@gmail.edu', avatar_url: null});
   const [friendsPicture, setFriendsPicture] = useState('https://i.postimg.cc/Kv8V2zHT/catbehavior-HERO-1024x576.jpg');
   const [message, setMessage] = useState('');
-  const { user } = useContext(SocketContext);
   const [messages, setMessages] = useState([]);
+  const [usersArray, setUsersArray] = useState([]);
+  const [roomsArray, setRoomsArray] = useState([]);
+  const [currentRoom, setCurrentRoom] = useState(9);
+
+
+  const { user } = useContext(SocketContext);
   const scrollRef = useRef();
   const socket = useRef();
+
 
   // useEffect(() => {
   //   //this should fetch all conversations for the current user
   // }, [user)
+  useEffect(() => {
+    console.log('mounted');
+  }, []);
 
-  useEffect(()=> {
+  // useEffect(()=> {
+
+  // }, []);
+
+  useEffect(() => {
     socket.current = io('ws://localhost:8080');
-    socket.current.on("getMessage", (data) =>{
-      let containsBoolean = false;
-      console.log('HEY WHY ISNT THIS WORKING');
-      messages.forEach((message) => {
-        if (message.text === data.text) {
-          containsBoolean = true;
-        }
-      })
-      if (!containsBoolean) {
-        setMessages(messages => [...messages, data]);
-      }
+    socket.current.on("roomNumber", (roomNumber) => {
+      setCurrentRoom(roomNumber);
+      console.log(roomNumber);
+    })
+    socket.current.on("getMessage", (data) => {
+      // console.log("currentFriend.first_name :", currentFriend.first_name);
+      // console.log("data.roomNumber: ", data.roomNumber);
+      // console.log("currentRoom: ", currentRoom);
+      setMessages(messages => [...messages, data]);
       console.log(data);
     })
-  }, [user]);
+    return () => {
+      socket.current.disconnect();
+    };
+  }, []);
 
   useEffect(()=> {
     if (user !== undefined) {
       socket.current.emit('addUser', user.id);
       socket.current.on('getUsers', (users) => {
+        setUsersArray(users);
         console.log(users)
       })
+      // socket.current.on('getRooms', (rooms) => {
+      //   setRoomsArray(rooms);
+      //   console.log("roomArray!: ", rooms);
+      // })
     }
-  }, [user]);
+  }, []);
 
 
 
@@ -81,8 +102,9 @@ export default function Messages () {
     //need to find a way to get the receiver id
     socket.current.emit('sendMessage', {
       senderId: user.id, //user.id
-      receiverId: 12,
+      receiverId: currentFriend.account_id,
       text: message,
+      roomNumber: currentRoom
     })
   };
 
@@ -90,17 +112,35 @@ export default function Messages () {
     setMessage(e.target.value);
   }
 
+  // const friendClickHandler = (e) => {
+  //   setCurrentFriend(e.target.value)
+  // }
+  const updateCurrentRoom = (id, friend) => {
+    setCurrentFriend(friend);
+    socket.current.emit('addRoom', user.id, id, currentRoom);
+    setMessages([]);
+  };
+
+  // roomsArray.forEach((room) => {
+  //   if (room.members.includes(id)) {
+  //     setCurrentRoom(room.roomName);
+  //     console.log("roomName:", room.roomName)
+  //   }
+  // });
+
 
   return (
     <div>
       <MessagesConvoContainer>
         <p>Messages</p>
         <MessageFriends>
-          {friends.map(friend => {
+          {friends.map((friend, i) => {
             return (
               <React.Fragment>
-                <StyledButton>
-                  {friend}
+                <StyledButton key={i} onClick={() => {
+                  updateCurrentRoom(friend.account_id, friend);
+                  }}>
+                  {friend.first_name}
                   <MessageProfilePic src={profilePicture}></MessageProfilePic>
                 </StyledButton>
               </React.Fragment>
@@ -110,7 +150,7 @@ export default function Messages () {
       </MessagesConvoContainer>
       <MessagesChatContainer>
         <MessagesTextContainer>
-          {messages.reverse().map((message, i) => {
+          {messages.slice().reverse().map((message, i) => {
             return (
             <MyMessage key= {i}>
               {message.text}
@@ -120,12 +160,10 @@ export default function Messages () {
         </MessagesTextContainer>
         <MessagesTopContainer>
           <img src={friendsPicture}></img>
-          {currentFriend}
+          {currentFriend.first_name}
         </MessagesTopContainer>
         <StyledWriteMessage>
-          <textarea placeholder='write your message' onChange={handleChange}>
-          </textarea>
-          <StyledSubmitInput style={{width: '10rem', border: '1px solid #383838'}} value='Send' onClick={handleSubmit}/>
+          <WriteMessage handleChange={handleChange} handleSubmit={handleSubmit} />
         </StyledWriteMessage>
       </MessagesChatContainer>
     </div>
