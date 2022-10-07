@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import styled from 'styled-components';
+import { Link } from "react-router-dom";
 import axios from 'axios';
 axios.defaults.withCredentials = true;
-import { serverURL } from '../../../config.js';
+import styled from 'styled-components';
 import {
   StyledButton,
   StyledLogPage,
@@ -18,7 +18,7 @@ import {
   StyledImage
 } from '../../StyledComponents/StyledComponents.jsx';
 
-import { Outlet, Link } from "react-router-dom";
+import { serverURL } from '../../../config.js';
 
 const StyledloginSignUpBox = styled.div`
   background-image: url("https://images.unsplash.com/photo-1619447093155-3d646f597c91?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=688&q=80");
@@ -49,42 +49,8 @@ const TeacherLanguageLevel = styled.span`
   }
 `
 
-export default function TeacherInfo ({handleCheck, handleChange, languages, setLanguages, teacherInfoSubmit }) {
-  useEffect(() => {
-    axios.get(`${serverURL}/languages`)
-      .then((data) => {
-        var apiLanguages = data.data
-        setLanguages(apiLanguages);
-        console.log(apiLanguages);
-      }).catch((err) => {
-        console.log('err: ', err)
-      })
-  }, [])
-  // const [formData, setFormData] = useState({
-  //   level: '',
-  // })
-  // const [checked, setChecked] = useState([]);
+export default function TeacherInfo ({handleCheck, handleChange, languages, teacherInfoSubmit }) {
 
-  // const handleChange = (e) => {
-  //   e.preventDefault();
-  //   setChecked(existingValues => ({
-  //     ...existingValues,
-  //     [e.target.name]: e.target.value,
-  //   }))
-  // }
-
-  // const handleCheck = (event) => {
-  //   var updatedList = [...checked];
-  //   if (event.target.checked) {
-  //     var languageObject = {};
-  //     languageObject[event.target.value] = 1;
-  //     updatedList = [...checked, languageObject];
-  //   } else {
-  //     updatedList.splice(checked.indexOf(event.target.value), 1);
-  //   }
-  //   setChecked(updatedList);
-  //   console.log(checked);
-  // };
   var languageList = languages.map(language => {
     return (
       <label  key={language.lang_id}>
@@ -103,7 +69,7 @@ export default function TeacherInfo ({handleCheck, handleChange, languages, setL
         </StyledLabel>
       </label>
     )
-  })
+  });
 
   return (
     <StyledloginSignUpBox style={{height: '50rem', width: '50rem'}}>
@@ -118,7 +84,7 @@ export default function TeacherInfo ({handleCheck, handleChange, languages, setL
           </StyledLabel>
         <StyledRightAlignedForms>
         </StyledRightAlignedForms>
-        <Link to="/login">
+        <Link to="/teacherprofile">
           <StyledSubmitInput value='SUBMIT' onClick={teacherInfoSubmit}></StyledSubmitInput>
         </Link>
       </StyledLoginSignUpForm>

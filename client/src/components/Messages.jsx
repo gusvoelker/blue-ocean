@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import styled from 'styled-components';
+import axios from 'axios';
+axios.defaults.withCredentials = true;
+import { serverURL } from '../config.js';
 import { io } from 'socket.io-client';
 import { SocketContext } from './VideoComponents/SocketContext.jsx';
 import {
@@ -24,9 +27,12 @@ import WriteMessage from './MessagesComponents/WriteMessage.jsx'
 
 
 
-export default function Messages ({ friends }) {
+export default function Messages () {
   const [profilePicture, setProfilePicture] = useState('https://i.postimg.cc/gkDMWvVY/photo-1615497001839-b0a0eac3274c.jpg');
-  const [currentFriend, setCurrentFriend] = useState({account_id: 4, first_name: 'Bill', last_name: 'from lotr', email: 'galad@gmail.edu', avatar_url: null});
+  const [friends, setFriends] = useState([
+    {account_id: 4, first_name: 'Bill', last_name: 'from lotr', email: 'galad@gmail.edu', avatar_url: null}
+  ])
+  const [currentFriend, setCurrentFriend] = useState(friends[0]);
   const [friendsPicture, setFriendsPicture] = useState('https://i.postimg.cc/Kv8V2zHT/catbehavior-HERO-1024x576.jpg');
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
@@ -39,17 +45,14 @@ export default function Messages ({ friends }) {
   const scrollRef = useRef();
   const socket = useRef();
 
-
-  // useEffect(() => {
-  //   //this should fetch all conversations for the current user
-  // }, [user)
-  useEffect(() => {
-    console.log('mounted');
+  useEffect(()=> {
+    axios.get(`${serverURL}/friend`)
+      .then((data) => {
+        var apiFriends = data.data
+        // setting account info
+        setFriends(apiFriends);
+      });
   }, []);
-
-  // useEffect(()=> {
-
-  // }, []);
 
   useEffect(() => {
     socket.current = io('ws://localhost:8080');
