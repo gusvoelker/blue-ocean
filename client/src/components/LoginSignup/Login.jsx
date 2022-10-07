@@ -14,7 +14,8 @@ import {
   StyledSubmitInput,
   StyledPageRow,
   StyledImage,
-  StyledSelectInput
+  StyledSelectInput,
+  StyledTextInputPassword,
 } from '../StyledComponents/StyledComponents.jsx';
 import { SocketContext } from '../VideoComponents/SocketContext.jsx';
 import { Outlet, Link, useNavigate } from "react-router-dom";
@@ -94,7 +95,7 @@ export default function Login (props) {
               <span>
                 Password:
               </span>
-              <StyledTextInput placeholder='Enter password' name='password' value={password} type="password" onChange={(e) => setPassword(e.target.value)}/>
+              <StyledTextInputPassword placeholder='Enter password' name='password' value={password} type="password" onChange={(e) => setPassword(e.target.value)}/>
             </StyledLabel>
           </StyledRightAlignedForms>
           {error ? <p>

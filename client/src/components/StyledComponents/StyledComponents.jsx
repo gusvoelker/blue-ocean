@@ -557,7 +557,14 @@ const StyledTextInput = styled.input.attrs({ type: 'text' })`
   box-shadow: 5px 5px 5px #383838;
   border: 1px solid #383838;
 `
-
+const StyledTextInputPassword = styled.input.attrs({ type: 'password' })`
+  width: 15;
+  font-size: 1rem;
+  padding: 0.3rem;
+  border-radius: 100px;
+  box-shadow: 5px 5px 5px #383838;
+  border: 1px solid #383838;
+`
 const StyledTextEmail = styled.input.attrs({ type: 'email' })`
   width: 15;
   font-size: 1rem;
@@ -1220,5 +1227,6 @@ export {
   MeetingModalContainer,
   MeetingModalContent,
   ProfileCalendarContainer,
-  TeacherFriendsModalContent
+  TeacherFriendsModalContent,
+  StyledTextInputPassword,
 }

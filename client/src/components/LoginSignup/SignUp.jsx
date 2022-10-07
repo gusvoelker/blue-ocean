@@ -14,7 +14,8 @@ import {
   StyledSubmitInput,
   StyledPageRow,
   StyledImage,
-  StyledSelectInput
+  StyledSelectInput,
+  StyledTextInputPassword,
 } from '../StyledComponents/StyledComponents.jsx'
 
 import { Outlet, Link, useNavigate } from "react-router-dom";
@@ -91,7 +92,7 @@ export default function SignUp (props) {
               <span>
                 Password:
               </span>
-              <StyledTextInput placeholder='Enter password' name='password' value={password} onChange={(e) => setPassword(e.target.value)}/>
+              <StyledTextInputPassword placeholder='Enter password' name='password' value={password} onChange={(e) => setPassword(e.target.value)}/>
             </StyledLabel>
             <StyledLabel>
               Role:
