@@ -37,7 +37,6 @@ const StyledloginSignUpBox = styled.div`
 `
 
 export default function Login (props) {
-  const { setUser} = useContext(SocketContext);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [email, setEmail] = useState('');
@@ -52,6 +51,7 @@ export default function Login (props) {
         password
       });
       localStorage.setItem('isTeacher', res.data.user.isTeacher);
+      await props.getAccount();
       await props.getLanguages();
       navigate(JSON.parse(localStorage.getItem('isTeacher')) ? "/teacherprofile" : "/profile");
     } catch (err) {

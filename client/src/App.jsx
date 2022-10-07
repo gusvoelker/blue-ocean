@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { redirect } from "react-router-dom";
 import axios from 'axios';
 axios.defaults.withCredentials = true;
@@ -25,6 +25,8 @@ import About from './components/LoginSignup/About.jsx'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import VideoChat from './components/VideoChat.jsx'
 import ThemeToggleButton from './components/NavBar/DarkModeToggle.jsx'
+import { SocketContext } from './components/VideoComponents/SocketContext.jsx';
+
 
 
 // User Story
@@ -44,6 +46,8 @@ export default function App () {
   const [checked, setChecked] = useState([]);
   const [isTeacher, setIsTeacher] = useState(JSON.parse(localStorage.getItem('isTeacher')) || false); // TODO: Redirect to login / register page if undefined
   const [languages, setLanguages] = useState([]);
+
+  const { setUser } = useContext(SocketContext);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -72,6 +76,22 @@ export default function App () {
       });
   };
 
+  const getAccount = () => {
+    axios.get(`${serverURL}/accounts/id`)
+      .then((result) => {
+        let user = {
+          id: result.data.account_id
+        }
+        // SET CONTEXT
+        setUser(user);
+      })
+      .catch((error) => console.log(error));
+  }
+
+  useState(() => {
+    getAccount();
+  }, []);
+
   return (
     <div>
       {darkTheme ? <DarkTheme/> : <LightTheme/>}
@@ -89,6 +109,7 @@ export default function App () {
               <>
               <AboutNavBar isTeacher={isTeacher} darkTheme={darkTheme}/>
               <SignUp
+                getAccount={getAccount}
                 getLanguages={getLanguages}
               />
               </>
@@ -97,6 +118,7 @@ export default function App () {
               <>
               <AboutNavBar isTeacher={isTeacher} darkTheme={darkTheme}/>
               <Login
+                getAccount={getAccount}
                 getLanguages={getLanguages}
               />
               </>

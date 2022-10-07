@@ -56,6 +56,7 @@ export default function SignUp (props) {
         isTeacher
       })
       localStorage.setItem('isTeacher', res.data.user.isTeacher);
+      await props.getAccount();
       await props.getLanguages();
       navigate(JSON.parse(localStorage.getItem('isTeacher')) ? '/teacherinfo' : '/userinfo')
     } catch (err) {
