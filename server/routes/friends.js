@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const friendModel = require('../models/friendModel.js');
 const accountModel = require('../models/accountModel.js');
+const chatModel = require('../models/chatModel.js');
 
 // GET REQUESTS //
 
@@ -64,7 +65,8 @@ router.put('/friend', (req, res, next) => {
   let requesterId = req.user.id;
   friendModel.acceptFriend(requesterId, req.query.idToAccept)
     .then(() => friendModel.createFriend(requesterId, req.query.idToAccept))
-    .then((connectionID) => res.status(202).send(`${connectionID}`))
+    .then(() => chatModel.createRoom(requesterId, req.query.idToAccept))
+    .then(() => res.status(202))
     .catch((error) => res.sendStatus(400));
 });
 
