@@ -18,12 +18,16 @@ router.get('/chats', (req, res, next) => {
 
 // Expects requestedId - user to get room with
 router.get('/chats/id', (req, res, next) => {
-  chatModel.getRoomIdByParticipants(req.user.id, req.query.requestedId)
+  let requestedId = parseInt(req.query.requestedId);
+  chatModel.getRoomIdByParticipants(req.user.id, requestedId)
     .then((result) => {
       let room = result.rows[0];
       res.status(200).send(room);
     })
-    .catch((error) => res.sendStatus(400));
+    .catch((error) => {
+      console.log(error);
+      res.sendStatus(400)
+    });
 });
 
 // Get a list of messages in the provided roomId for the authenticated user / teacher
@@ -32,7 +36,8 @@ router.get('/chats/messages', (req, res, next) => {
   if (!req.query.roomId) {
     return res.sendStatus(404);
   }
-  chatModel.getMessagesByRoomId(req.query.roomId, req.user.id)
+  let roomId = parseInt(req.query.roomId);
+  chatModel.getMessagesByRoomId(roomId, req.user.id)
     .then((result) => {
       let messages = result.rows;
       res.status(200).send(messages);
@@ -100,7 +105,8 @@ router.post('/chats/messages', (req, res, next) => {
   if (!req.body.roomId || !req.body.message) {
     return res.sendStatus(400);
   }
-  chatModel.postMessage(req.body.roomId, req.user.id, req.body.message)
+  let roomId = parseInt(req.body.roomId);
+  chatModel.postMessage(roomId, req.user.id, req.body.message)
     .then((result) => res.sendStatus(201))
     .catch((error) => res.sendStatus(400));
 });
