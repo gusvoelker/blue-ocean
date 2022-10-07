@@ -271,7 +271,7 @@ export default function Profile (props) {
           <StyledButton onClick={onPendingRequestsClick}>PENDING REQUESTS</StyledButton>
         </ProfileFriendsList>
       </ProfileContainer>
-      <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch} usersWithSameLanguage={usersWithSameLanguage} languages={props.languages}/>
+      <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch} usersWithSameLanguage={usersWithSameLanguage} languages={props.languages} userId={props.userId}/>
       <PendingRequests onClose={() => setShowPending(false)} show={showPending} pendingRequests={pendingRequests}/>
       <FriendsModal onClose={() => setShow(false)} show={show} currentFriend={currentFriend} friend={friends[currentFriend]}/>
       <EditInfoModal onClose={() => setEditInfoShow(false)} show={editInfoShow} />
