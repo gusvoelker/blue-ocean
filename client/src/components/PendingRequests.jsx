@@ -20,7 +20,6 @@ export default function PendingRequests (props) {
   }
 
   useEffect(() => {
-
     let nameArray = props.pendingRequests.map(user => {
       let obj = {
         friend_name: `${user.first_name} ${user.last_name}`,
@@ -37,12 +36,18 @@ export default function PendingRequests (props) {
     axios.put(`${serverURL}/friend`, null, { params: {
       idToAccept: e.target.id
     }})
+    .then(() => {
+      axios.get(`${serverURL}/friend`)
+      .then(({data}) => props.setFriends(data))
+    })
+    props.onClose();
   }
 
   const removeFriend = (e) => {
     axios.delete(`${serverURL}/friend/request`, null, { params: {
       friend_id: e.target.id
     }})
+    props.onClose();
   }
 
   return (

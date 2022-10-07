@@ -272,7 +272,7 @@ export default function Profile (props) {
         </ProfileFriendsList>
       </ProfileContainer>
       <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch} usersWithSameLanguage={usersWithSameLanguage} languages={props.languages} userId={props.userId}/>
-      <PendingRequests onClose={() => setShowPending(false)} show={showPending} pendingRequests={pendingRequests}/>
+      <PendingRequests onClose={() => setShowPending(false)} show={showPending} pendingRequests={pendingRequests} setFriends={props.setFriends}/>
       <FriendsModal onClose={() => setShow(false)} show={show} currentFriend={currentFriend} friend={props.friends[currentFriend]}/>
       <EditInfoModal onClose={() => setEditInfoShow(false)} show={editInfoShow} />
       </Dark>
