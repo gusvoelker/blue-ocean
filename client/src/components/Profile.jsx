@@ -123,7 +123,6 @@ export default function Profile (props) {
     e.preventDefault();
     var index = e.target.id;
     setCurrentFriend(index)
-    console.log(index);
   }
   useEffect(() => {
     if (currentFriend) {
@@ -145,9 +144,7 @@ export default function Profile (props) {
       })
     })
     .then(accounts => setUsersWithSameLanguage(accounts))
-    .catch((err) => {
-      console.log(err);
-    })
+    .catch((err) => console.log(err));
     setAddShow(true);
   }
 
@@ -195,12 +192,8 @@ export default function Profile (props) {
         setLastName(apiAccountInfo.last_name);
         setFriends(apiFriends);
       })
-      .catch((err) => {
-        console.log('error retrieving data', err);
-      });
+      .catch((err) => console.log(err));
     }, []);
-
-    console.log(props.languages);
 
   return (
     <div>

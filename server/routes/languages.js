@@ -83,41 +83,43 @@ router.get('/languages/desired', (req, res, next) => {
 // POST REQUESTS //
 
 // Expects in req.body:
+//  langId - Integer
 //  taughtLevel - String in range ('1', '2', '3', '4', '5', 'AP')
-//  language - String
 // Meant for teachers, will 403 on request by a student account
-// { english: 5,
-// spanish: 2 }
 router.post('/languages/taught', (req, res, next) => {
   if (!req.user.isTeacher) {
     return res.sendStatus(403);
   }
+  let langId = parseInt(req.body.langId);
+  let taughtLevel = req.body.taughtLevel.toString();
   // TODO: Figure out how to insert many rather than just one at a time
-  model.insertTaughtLanguage(req.user.id, req.body.taughtLevel, req.body.language)
+  model.insertTaughtLanguageById(req.user.id, langId, taughtLevel)
     .then((result) => res.sendStatus(201))
     .catch((error) => res.sendStatus(400));
 });
 
 // Expects in req.body:
-//  language - String
+//  langId - Integer
 // Meant for students, will 403 on request by a teacher account
 router.post('/languages/known', (req, res, next) => {
   if (req.user.isTeacher) {
     return res.sendStatus(403);
   }
-  model.insertKnownLanguage(req.user.id, req.body.language)
+  let langId = parseInt(req.body.langId);
+  model.insertKnownLanguageById(req.user.id, langId)
     .then((result) => res.sendStatus(201))
     .catch((error) => res.sendStatus(400));
 });
 
 // Expects in req.body:
-//  language - String
+//  langId - Integer
 // Meant for students, will 403 on request by a teacher account
 router.post('/languages/desired', (req, res, next) => {
   if (req.user.isTeacher) {
     return res.sendStatus(403);
   }
-  model.insertDesiredLanguage(req.user.id, req.body.language)
+  let langId = parseInt(req.body.langId);
+  model.insertDesiredLanguageById(req.user.id, langId)
     .then((result) => res.sendStatus(201))
     .catch((error) => res.sendStatus(400));
 });

@@ -71,9 +71,7 @@ export default function App () {
   const getLanguages = () => {
     return axios.get(`${serverURL}/languages`)
       .then(res => setLanguages(res.data))
-      .catch(error => {
-        return error;
-      });
+      .catch((error) => console.log(error));
   };
 
   const getAccount = () => {
@@ -90,6 +88,7 @@ export default function App () {
 
   useState(() => {
     getAccount();
+    getLanguages();
   }, []);
 
   return (

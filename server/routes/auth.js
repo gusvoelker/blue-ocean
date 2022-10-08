@@ -96,13 +96,13 @@ router.post("/logout", (req, res, next) => {
 router.use("/", (req, res, next) => {
   // if (!req.user) { // DEBUG: For teacher auth
   //   req.user = { // DEBUG: Uncomment this if testing routes without auth
-  //     id: 8,
+  //     id: 2,
   //     isTeacher: true // Can set to true or false depending on which user is being tested
   //   }
   // }
   // if (!req.user) { // DEBUG: For user auth
   //   req.user = { // DEBUG: Uncomment this if testing routes without auth
-  //     id: 10,
+  //     id: 1,
   //     isTeacher: false
   //   }
   // }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from 'axios';
 axios.defaults.withCredentials = true;
+import { serverURL } from '../../../config.js';
 import styled from 'styled-components';
 import {
   StyledButton,
@@ -17,8 +18,6 @@ import {
   StyledPageRow,
   StyledImage
 } from '../../StyledComponents/StyledComponents.jsx'
-
-import { serverURL } from '../../../config.js';
 
 const StyledloginSignUpBox = styled.div`
   background-image: url("https://images.unsplash.com/photo-1536683402757-75f8d0dfa419?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1332&q=80");
@@ -36,11 +35,29 @@ const StyledloginSignUpBox = styled.div`
   border: 2px solid #383838;
 `
 
-export default function UserInfo ({handleCheck, handleChange, languages }) {
+export default function UserInfo ({ handleCheck, handleChange, languages }) {
+
+  if (languages.length === 0) {
+    return null;
+  }
+
+  const [knownLanguageId, setKnownLanguageId] = useState(languages[0].lang_id);
+  const [desiredLanguageId, setDesiredLanguageId] = useState(languages[0].lang_id);
+
+  const submitLanguages = () => {
+    axios.post(`${serverURL}/languages/known`, {
+      langId: knownLanguageId
+    })
+      .catch((error) => console.log(error));
+    axios.post(`${serverURL}/languages/desired`, {
+      langId: desiredLanguageId
+    })
+      .catch((error) => console.log(error));
+  };
 
   const languageList = languages.map((language) => {
     return (
-      <option value={language.lang_name} key={language.lang_id}>{language.lang_name}</option>
+      <option value={language.lang_id} key={language.lang_id}>{language.lang_name}</option>
     )
   });
 
@@ -48,7 +65,7 @@ export default function UserInfo ({handleCheck, handleChange, languages }) {
     return (
       <label key={language.lang_id}>
         {language.lang_name}:
-        <input value={language.lang_name} type="checkbox" onChange={handleCheck} />
+        <input value={language.lang_id} type="checkbox" onChange={handleCheck} />
       </label>
     )
   });
@@ -62,34 +79,27 @@ export default function UserInfo ({handleCheck, handleChange, languages }) {
           <StyledRightAlignedForms>
             <StyledLabel>
               What is your primary language?
-              <StyledSelectInput onChange={handleChange} name='primary'>
+              <StyledSelectInput onChange={(e) => setKnownLanguageId(e.target.value)} name='lang-known'>
                 {languageList}
               </StyledSelectInput>
             </StyledLabel>
             <StyledLabel>
               What language would you like to learn?
-              <StyledSelectInput onChange={handleChange} name='tolearn'>
+              <StyledSelectInput onChange={(e) => setDesiredLanguageId(e.target.value)} name='lang-learn'>
                 {languageList}
               </StyledSelectInput>
             </StyledLabel>
             <StyledLabel>
+              {/* TODO: Remove this if it does nothing */}
               Do you want to enable voice chat?
               <StyledSelectInput onChange={handleChange} name='videochat'>
-                <option value='yes'>yes</option>
-                <option value='no'>no</option>
+                <option value={true}>yes</option>
+                <option value={false}>no</option>
               </StyledSelectInput>
             </StyledLabel>
           </StyledRightAlignedForms>
-          <StyledLabel style={{display: 'flex', justifyContent: 'right', alignItems: 'right', flexDirection: 'column'}}>
-            <p>
-              Do you have any other language proficiencies?
-            </p>
-            <span style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
-              {languageProficiencies}
-            </span>
-          </StyledLabel>
           <Link to="/profile">
-            <StyledSubmitInput value='SUBMIT'></StyledSubmitInput>
+            <StyledSubmitInput value='SUBMIT' onClick={submitLanguages}></StyledSubmitInput>
           </Link>
         </StyledLoginSignUpForm>
       </StyledloginSignUpBox>
