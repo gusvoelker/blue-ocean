@@ -41,32 +41,10 @@ import { SocketContext } from './components/VideoComponents/SocketContext.jsx';
 
 export default function App () {
   const [darkTheme, setDarkTheme] = useState(false);
-  // Teacher language levels
-  const [formData, setFormData] = useState({})
-  const [checked, setChecked] = useState([]);
   const [isTeacher, setIsTeacher] = useState(JSON.parse(localStorage.getItem('isTeacher')) || false); // TODO: Redirect to login / register page if undefined
-  const [languages, setLanguages] = useState([]);
+  const [languages, setLanguages] = useState([]); // TODO: Move this to its own context
 
   const { setUser } = useContext(SocketContext);
-
-  const handleChange = (e) => {
-    e.preventDefault();
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
-    console.log(e.target.value);
-  }
-
-  const handleCheck = (event) => {
-    var updatedList = [...checked];
-    if (event.target.checked) {
-      updatedList = [...checked, event.target.value];
-    } else {
-      updatedList.splice(checked.indexOf(event.target.value), 1);
-    }
-    setChecked(updatedList);
-  };
 
   const getLanguages = () => {
     return axios.get(`${serverURL}/languages`)
@@ -126,8 +104,6 @@ export default function App () {
               <>
               <AboutNavBar isTeacher={isTeacher} darkTheme={darkTheme}/>
               <TeacherInfo
-                handleCheck={handleCheck}
-                handleChange={handleChange}
                 languages={languages}
               />
               </>
@@ -136,8 +112,6 @@ export default function App () {
               <>
               <AboutNavBar isTeacher={isTeacher} darkTheme={darkTheme}/>
               <UserInfo
-                handleCheck={handleCheck}
-                handleChange={handleChange}
                 languages={languages}
               />
               </>

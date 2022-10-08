@@ -49,7 +49,7 @@ const TeacherLanguageLevel = styled.span`
   }
 `
 
-export default function TeacherInfo ({handleCheck, handleChange, languages, teacherInfoSubmit }) {
+export default function TeacherInfo ({ languages }) {
 
   if (languages.length === 0) {
     return null;

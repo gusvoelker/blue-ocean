@@ -35,7 +35,7 @@ const StyledloginSignUpBox = styled.div`
   border: 2px solid #383838;
 `
 
-export default function UserInfo ({ handleCheck, handleChange, languages }) {
+export default function UserInfo ({ languages }) {
 
   if (languages.length === 0) {
     return null;
@@ -61,15 +61,6 @@ export default function UserInfo ({ handleCheck, handleChange, languages }) {
     )
   });
 
-  const languageProficiencies = languages.map((language) => {
-    return (
-      <label key={language.lang_id}>
-        {language.lang_name}:
-        <input value={language.lang_id} type="checkbox" onChange={handleCheck} />
-      </label>
-    )
-  });
-
   return (
       <StyledloginSignUpBox>
         <StyledLoginSignUpForm>
@@ -87,14 +78,6 @@ export default function UserInfo ({ handleCheck, handleChange, languages }) {
               What language would you like to learn?
               <StyledSelectInput onChange={(e) => setDesiredLanguageId(e.target.value)} name='lang-learn'>
                 {languageList}
-              </StyledSelectInput>
-            </StyledLabel>
-            <StyledLabel>
-              {/* TODO: Remove this if it does nothing */}
-              Do you want to enable voice chat?
-              <StyledSelectInput onChange={handleChange} name='videochat'>
-                <option value={true}>yes</option>
-                <option value={false}>no</option>
               </StyledSelectInput>
             </StyledLabel>
           </StyledRightAlignedForms>
