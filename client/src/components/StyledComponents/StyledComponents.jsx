@@ -486,12 +486,13 @@ const MessagesTextContainer = styled.div`
 `
 const MyMessage = styled.div`
   width: auto;
-  text-align: left;
+  text-align: right;
   background-color: #e5e4e2;
   border-radius: 10px;
   height: auto;
   padding: 5px;
   margin-top: 15px;
+  margin-left: 1rem;
   img {
     position: relative;
     width: 50px;
@@ -503,7 +504,11 @@ const MyMessage = styled.div`
 `
 
 const TheirMessage = styled(MyMessage)`
-  background-color: #C0C0C0;
+  background-color: #386A8F;
+  color: #f5f5f5;
+  text-align: left;
+  margin-right: 1rem;
+  margin-left: 0rem;
   img {
     border-radius: 50%;
     object-fit: cover;
