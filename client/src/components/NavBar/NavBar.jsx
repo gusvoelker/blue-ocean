@@ -13,7 +13,6 @@ import { Outlet, Link } from "react-router-dom";
 import { SocketContext } from '../VideoComponents/SocketContext.jsx';
 
 export default function NavBar({ darkTheme, isTeacher }) {
-  console.log(isTeacher);
   let button =
   <Link to={isTeacher ? "/teacherprofile" : "/profile"} style={{textDecoration: 'none'}}>
     <p style={{marginTop: '3rem'}}>Profile</p>
