@@ -62,7 +62,8 @@ export default function Messages () {
       // console.log("data.roomNumber: ", data.roomNumber);
       // console.log("currentRoom: ", currentRoom);
       setMessages(messages => [...messages, data]);
-      console.log(data);
+      // console.log('I am what is logging ', data);
+
     })
     return () => {
       socket.current.disconnect();
@@ -74,7 +75,7 @@ export default function Messages () {
       socket.current.emit('addUser', user.id);
       socket.current.on('getUsers', (users) => {
         setUsersArray(users);
-        console.log(users)
+        // console.log(users)
       })
       // socket.current.on('getRooms', (rooms) => {
       //   setRoomsArray(rooms);
@@ -132,7 +133,6 @@ export default function Messages () {
             }
           })
           .then((result) => {
-            // console.log(result.data);
             setMessages(result.data.reverse());
           })
           .catch((error) => console.log(error));
@@ -171,7 +171,7 @@ export default function Messages () {
       <MessagesChatContainer>
         <MessagesTextContainer>
           {messages && messages.slice().reverse().map((message, i) => {
-            if (message.account_id === user.id || message.account_id === undefined) {
+            if (message.account_id === user.id || (message?.account_id === undefined && message?.senderId === user.id)) {
               return (
                 <MyMessage key= {i}>
                   {message.message}
