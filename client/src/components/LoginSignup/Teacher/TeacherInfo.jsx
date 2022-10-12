@@ -49,16 +49,50 @@ const TeacherLanguageLevel = styled.span`
   }
 `
 
-export default function TeacherInfo ({handleCheck, handleChange, languages, teacherInfoSubmit }) {
+export default function TeacherInfo ({ languages }) {
+
+  if (languages.length === 0) {
+    return null;
+  }
+
+  const [taughtLanguages, setTaughtLanguages] = useState({});
+
+  useState(() => {
+    let initialTaughtLanguages = {};
+    for (let language of languages) {
+      initialTaughtLanguages[language.lang_id] = '0';
+    }
+    setTaughtLanguages(initialTaughtLanguages);
+  }, []);
+
+  const submitTaughtLanguages = () => {
+    console.log(taughtLanguages);
+    for (let id in taughtLanguages) {
+      if (taughtLanguages[id] !== '0') {
+        axios.post(`${serverURL}/languages/taught`, {
+          langId: id,
+          taughtLevel: taughtLanguages[id]
+         })
+          .catch((error) => console.log(error));
+      }
+    }
+  };
 
   var languageList = languages.map(language => {
     return (
-      <label  key={language.lang_id}>
+      <label key={language.lang_id}>
         {language.lang_name}
-        <input value={language.lang_name} type="checkbox" onChange={handleCheck} />
         <StyledLabel>
           Level:
-          <StyledSelectInput name='english' onChange={handleChange} style={{height: '2rem', fontSize: '0.8rem', width: '4rem'}}>
+          <StyledSelectInput name={`taught-level-${language.lang_id}`}
+            onChange={(e) => {
+                let newTaughtLanguages = taughtLanguages;
+                newTaughtLanguages[language.lang_id] = e.target.value;
+                setTaughtLanguages(newTaughtLanguages);
+              }
+            }
+            style={{height: '2rem', fontSize: '0.8rem', width: '4rem'}}>
+            <option value='0'>0</option>
             <option value='1'>1</option>
             <option value='2'>2</option>
             <option value='3'>3</option>
@@ -85,7 +119,7 @@ export default function TeacherInfo ({handleCheck, handleChange, languages, teac
         <StyledRightAlignedForms>
         </StyledRightAlignedForms>
         <Link to="/teacherprofile">
-          <StyledSubmitInput value='SUBMIT' onClick={teacherInfoSubmit}></StyledSubmitInput>
+          <StyledSubmitInput value='SUBMIT' onClick={submitTaughtLanguages}></StyledSubmitInput>
         </Link>
       </StyledLoginSignUpForm>
     </StyledloginSignUpBox>

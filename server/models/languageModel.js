@@ -62,42 +62,80 @@ module.exports.insertLanguage = (language) => {
   `);
 };
 
-// TODO: Only allow people to insert if the lang_id doesn't already exist for them
-module.exports.insertTaughtLanguage = (teacherId, taughtLevel, language) => {
+module.exports.insertTaughtLanguageById = (teacherId, langId, taughtLevel) => {
   return db.query(`
     INSERT INTO taught_languages(teacher_id, lang_id, taught_level)
-      VALUES (
-        ${teacherId},
-        (SELECT lang_id
-          FROM languages
-          WHERE lang_name='${language}'),
-        '${taughtLevel}'
+      SELECT ${teacherId}, ${langId}, '${taughtLevel}'
+      WHERE NOT EXISTS (
+        SELECT teacher_id, lang_id
+          FROM taught_languages
+          WHERE teacher_id = ${teacherId}
+            AND lang_id = ${langId}
       )
   `);
 };
 
-// TODO: Only allow people to insert if the lang_id doesn't already exist for them
-module.exports.insertKnownLanguage = (userId, language) => {
+module.exports.insertKnownLanguageById = (userId, langId) => {
   return db.query(`
     INSERT INTO known_languages(user_id, lang_id)
-      VALUES (
-        ${userId},
-        (SELECT lang_id
-          FROM languages
-          WHERE lang_name='${language}')
+      SELECT ${userId}, ${langId}
+      WHERE NOT EXISTS (
+        SELECT user_id, lang_id
+          FROM known_languages
+          WHERE user_id = ${userId}
+            AND lang_id = ${langId}
       )
   `);
 };
 
-// TODO: Only allow people to insert if the lang_id doesn't already exist for them
-module.exports.insertDesiredLanguage = (userId, language) => {
+module.exports.insertDesiredLanguageById = (userId, langId) => {
   return db.query(`
     INSERT INTO desired_languages(user_id, lang_id)
-      VALUES (
-        ${userId},
-        (SELECT lang_id
-          FROM languages
-          WHERE lang_name='${language}')
+      SELECT ${userId}, ${langId}
+      WHERE NOT EXISTS (
+        SELECT user_id, lang_id
+          FROM desired_languages
+          WHERE user_id = ${userId}
+            AND lang_id = ${langId}
       )
   `);
 };
+
+// BENCHED //
+
+// module.exports.insertTaughtLanguageByName = (teacherId, taughtLevel, language) => {
+//   return db.query(`
+//     INSERT INTO taught_languages(teacher_id, lang_id, taught_level)
+//       VALUES (
+//         ${teacherId},
+//         (SELECT lang_id
+//           FROM languages
+//           WHERE lang_name='${language}'),
+//         '${taughtLevel}'
+//       )
+//   `);
+// };
+
+// module.exports.insertKnownLanguageByName = (userId, language) => {
+//   return db.query(`
+//     INSERT INTO known_languages(user_id, lang_id)
+//       VALUES (
+//         ${userId},
+//         (SELECT lang_id
+//           FROM languages
+//           WHERE lang_name='${language}')
+//       )
+//   `);
+// };
+
+// module.exports.insertDesiredLanguageByName = (userId, language) => {
+//   return db.query(`
+//     INSERT INTO desired_languages(user_id, lang_id)
+//       VALUES (
+//         ${userId},
+//         (SELECT lang_id
+//           FROM languages
+//           WHERE lang_name='${language}')
+//       )
+//   `);
+// };
