@@ -549,7 +549,9 @@ const StyledSubmitInput = styled.input.attrs({ type: 'submit' })`
 const StyledTextInput = styled.input.attrs({ type: 'text' })`
   width: 15;
   font-size: 1rem;
-  padding: 0.3rem;
+  padding: 0.5rem;
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
   border-radius: 100px;
   box-shadow: 5px 5px 5px #383838;
   border: 1px solid #383838;
@@ -557,7 +559,9 @@ const StyledTextInput = styled.input.attrs({ type: 'text' })`
 const StyledTextInputPassword = styled.input.attrs({ type: 'password' })`
   width: 15;
   font-size: 1rem;
-  padding: 0.3rem;
+  padding: 0.5rem;
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
   border-radius: 100px;
   box-shadow: 5px 5px 5px #383838;
   border: 1px solid #383838;
@@ -565,7 +569,9 @@ const StyledTextInputPassword = styled.input.attrs({ type: 'password' })`
 const StyledTextEmail = styled.input.attrs({ type: 'email' })`
   width: 15;
   font-size: 1rem;
-  padding: 0.3rem;
+  padding: 0.5rem;
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
   border-radius: 50px;
   box-shadow: 5px 5px 5px #383838;
   border: 1px solid #383838;
@@ -574,6 +580,8 @@ const StyledClassTextInput = styled.input.attrs({ type: 'text' })`
   width: 15;
   font-size: 1rem;
   padding: 0.5rem;
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
   margin-top: 0.5rem;
   border-radius: 100px;
   box-shadow: 5px 5px 5px #383838;

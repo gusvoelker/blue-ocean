@@ -58,7 +58,7 @@ export default function Messages () {
   }, []);
 
   useEffect(() => {
-    socket.current = io('ws://localhost:8080');
+    socket.current = io('ws://localhost:8080'); // TODO(?): Change to config var
     socket.current.on("getMessage", (data) => {
       // console.log("currentFriend.first_name :", currentFriend.first_name);
       // console.log("data.roomNumber: ", data.roomNumber);
