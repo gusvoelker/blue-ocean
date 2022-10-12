@@ -484,15 +484,15 @@ const MessagesTextContainer = styled.div`
   overflow: auto;
   flex-direction: column-reverse;
 `
-const MyMessage = styled.div`
-  width: auto;
+const TheirMessage = styled.div`
+  width: fit-content;
   text-align: right;
   background-color: #e5e4e2;
   border-radius: 10px;
   height: auto;
-  padding: 5px;
+  padding: 1rem;
   margin-top: 15px;
-  margin-left: 1rem;
+  margin-left: 0.7rem;
   img {
     position: relative;
     width: 50px;
@@ -503,7 +503,7 @@ const MyMessage = styled.div`
   }
 `
 
-const TheirMessage = styled(MyMessage)`
+const MyMessage = styled(TheirMessage)`
   background-color: #386A8F;
   color: #f5f5f5;
   text-align: left;
