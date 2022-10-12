@@ -31,7 +31,7 @@ import WriteMessage from './MessagesComponents/WriteMessage.jsx';
 export default function Messages () {
   const [profilePicture, setProfilePicture] = useState('https://i.postimg.cc/gkDMWvVY/photo-1615497001839-b0a0eac3274c.jpg');
   const [friends, setFriends] = useState([
-    {account_id: 4, first_name: 'Bill', last_name: 'from lotr', email: 'galad@gmail.edu', avatar_url: null}
+    {account_id: 4, first_name: 'Select a message', last_name: 'from lotr', email: 'galad@gmail.edu', avatar_url: null}
   ])
   const [currentFriend, setCurrentFriend] = useState(friends[0]);
   const [friendsPicture, setFriendsPicture] = useState('https://i.postimg.cc/Kv8V2zHT/catbehavior-HERO-1024x576.jpg');
@@ -171,11 +171,20 @@ export default function Messages () {
       <MessagesChatContainer>
         <MessagesTextContainer>
           {messages && messages.slice().reverse().map((message, i) => {
-            return (
-            <MyMessage key= {i}>
-              {message.message}
-            </MyMessage>
-          )}
+            if (message.account_id === user.id || message.account_id === undefined) {
+              return (
+                <MyMessage key= {i}>
+                  {message.message}
+                </MyMessage>
+              )
+            } else {
+              return (
+                <TheirMessage key= {i}>
+                  {message.message}
+                </TheirMessage>
+              )
+            }
+            }
           )}
         </MessagesTextContainer>
         <MessagesTopContainer>
