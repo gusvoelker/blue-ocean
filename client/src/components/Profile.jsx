@@ -84,6 +84,12 @@ const RightButton = styled.button`
   border: 1px solid #f5f5f5;
 `
 
+const ProfileFriendsListButtons = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+`
+
 import FriendsModal from './FriendsModal.jsx';
 import AddFriendModal from './AddFriendModal.jsx';
 import EditInfoModal from './EditInfoModal.jsx';
@@ -231,7 +237,7 @@ export default function Profile (props) {
           <StyledFriendSearchSpan>
             <h3><strong>Friends List</strong></h3>
             <StyledFriendSearch>
-              <input name='friendfilter' type='text' placeholder='filter' onChange={filterFriends}></input>
+              <input name='friendfilter' type='text' placeholder='Search' onChange={filterFriends}></input>
             </StyledFriendSearch>
           </StyledFriendSearchSpan>
           <p>{!filtering ?
@@ -260,8 +266,10 @@ export default function Profile (props) {
               )
             })}
           </p>
-          <StyledButton style={{marginTop: '0rem'}} onClick={onAddFriendClick}>ADD FRIEND</StyledButton>
-          <StyledButton onClick={onPendingRequestsClick}>PENDING REQUESTS</StyledButton>
+          <ProfileFriendsListButtons>
+            <StyledButton style={{marginTop: '0rem'}} onClick={onAddFriendClick}>ADD FRIEND</StyledButton>
+            <StyledButton onClick={onPendingRequestsClick}>PENDING REQUESTS</StyledButton>
+          </ProfileFriendsListButtons>
         </ProfileFriendsList>
       </ProfileContainer>
       <AddFriendModal onClose={() => setAddShow(false)} show={addShow} onFriendSearch={onFriendSearch} usersWithSameLanguage={usersWithSameLanguage} languages={props.languages} userId={props.userId}/>

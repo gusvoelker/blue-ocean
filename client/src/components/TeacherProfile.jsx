@@ -401,7 +401,7 @@ const filteredFriendsList = filteredFriends.map((friend, index) => {
           <StyledFriendSearchSpan>
             <h3><strong>Friends List</strong></h3>
             <StyledFriendSearch>
-              <input name='friendfilter' type='text' placeholder='filter' onChange={filterFriends}></input>
+              <input name='friendfilter' type='text' placeholder='Search' onChange={filterFriends}></input>
             </StyledFriendSearch>
           </StyledFriendSearchSpan>
           {!friendSelected ? <p>{!filtering ? unfilteredFriends : filteredFriendsList}</p> :

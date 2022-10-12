@@ -10,6 +10,8 @@ import {
   LightGreyButton,
   MessagesChatContainer,
   MessagesTextContainer,
+  MessageContainerLeft,
+  MessageContainerRight,
   MyMessage,
   TheirMessage,
   MessagesTopContainer,
@@ -173,15 +175,19 @@ export default function Messages () {
           {messages && messages.slice().reverse().map((message, i) => {
             if (message.account_id === user.id || (message?.account_id === undefined && message?.senderId === user.id)) {
               return (
-                <MyMessage key= {i}>
-                  {message.message}
-                </MyMessage>
+                <MessageContainerRight>
+                  <MyMessage key= {i}>
+                    {message.message}
+                  </MyMessage>
+                </MessageContainerRight>
               )
             } else {
               return (
-                <TheirMessage key= {i}>
-                  {message.message}
-                </TheirMessage>
+                <MessageContainerLeft>
+                  <TheirMessage key= {i}>
+                    {message.message}
+                  </TheirMessage>
+                </MessageContainerLeft>
               )
             }
             }

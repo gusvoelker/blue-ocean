@@ -18,7 +18,7 @@ export default function FriendsModal (props) {
   }
   var [rating, setRating] = useState(4);
   var [desiredLanguages, setDesiredLanguages] = useState([])
-  var [ratedLanguage, setRatedLanguage] = useState(0)
+  var [ratedLanguage, setRatedLanguage] = useState(null)
 
   const handleRange = (e) => {
     setRating(parseInt(e.target.value));
@@ -33,10 +33,12 @@ export default function FriendsModal (props) {
       }
     }).then((data) => {
       setDesiredLanguages(data.data);
+      setRatedLanguage(data.data[0]);
     }).catch((err) => {
       console.log(err);
     })
-  })
+  }, []);
+
   const handleRate = (e) => {
     axios.post(`${serverURL}/ratings`, {
         accountId: props.friend.account_id,
@@ -67,13 +69,13 @@ export default function FriendsModal (props) {
         <h4>
           {props.friend.first_name + ' ' + props.friend.last_name}
         </h4>
-        <input onChange={handleRange} type="range" id="volume" name="volume"
-          min="1" max="4"/><br></br>
         <label for="volume">Rate their language proficiency in:</label><br></br>
         <StyledSelectInput onChange={handleSelect} style={{color: '#383838', marginTop: '1rem'}}>
           {languageSelect}
         </StyledSelectInput>
         <br></br>
+        <input onChange={handleRange} type="range" id="volume" name="volume"
+          min="1" max="4"/>
         <h2>{rating}</h2>
         <StyledButton onClick={props.onClose} style={{margin: '1rem'}}>CLOSE</StyledButton>
         <StyledButton onClick={handleRate} style={{margin: '1rem'}}>RATE</StyledButton>
