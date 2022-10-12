@@ -10,7 +10,8 @@ import Profile from './components/Profile.jsx';
 import TeacherProfile from './components/TeacherProfile.jsx';
 import Error from './components/LoginSignup/Error.jsx';
 import Messages from './components/Messages.jsx';
-import { StyledLogPage,
+import {
+  StyledLogPage,
   LightTheme,
   DarkTheme,
   DarkStyledNavBar,
@@ -30,16 +31,16 @@ import { SocketContext } from './components/VideoComponents/SocketContext.jsx';
 
 
 // User Story
-  // About
-  // Login or signup
-    // signup
-      // Teacher or User
-    // login
-  // Profile
-  // You can get anywhere
+// About
+// Login or signup
+// signup
+// Teacher or User
+// login
+// Profile
+// You can get anywhere
 
 
-export default function App () {
+export default function App() {
   const [darkTheme, setDarkTheme] = useState(false);
   const [isTeacher, setIsTeacher] = useState(JSON.parse(localStorage.getItem('isTeacher')) || false); // TODO: Redirect to login / register page if undefined
   const [languages, setLanguages] = useState([]); // TODO: Move this to its own context
@@ -71,76 +72,76 @@ export default function App () {
 
   return (
     <div>
-      {darkTheme ? <DarkTheme/> : <LightTheme/>}
-      <ThemeToggleButton setDarkTheme={setDarkTheme} darkTheme={darkTheme}/>
+      {darkTheme ? <DarkTheme /> : <LightTheme />}
+      <ThemeToggleButton setDarkTheme={setDarkTheme} darkTheme={darkTheme} />
       <StyledLogPage>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={
+            <Route exact path="/" element={
               <>
-              <AboutNavBar isTeacher={isTeacher} darkTheme={darkTheme}/>
-              <About/>
+                <AboutNavBar isTeacher={isTeacher} darkTheme={darkTheme} />
+                <About />
               </>
-            }/>
+            } />
             <Route path="/SignUp" element={
               <>
-              <AboutNavBar isTeacher={isTeacher} darkTheme={darkTheme}/>
-              <SignUp
-                getAccount={getAccount}
-                getLanguages={getLanguages}
-              />
+                <AboutNavBar isTeacher={isTeacher} darkTheme={darkTheme} />
+                <SignUp
+                  getAccount={getAccount}
+                  getLanguages={getLanguages}
+                />
               </>
-            }/>
+            } />
             <Route path="/Login" element={
               <>
-              <AboutNavBar isTeacher={isTeacher} darkTheme={darkTheme}/>
-              <Login
-                getAccount={getAccount}
-                getLanguages={getLanguages}
-              />
+                <AboutNavBar isTeacher={isTeacher} darkTheme={darkTheme} />
+                <Login
+                  getAccount={getAccount}
+                  getLanguages={getLanguages}
+                />
               </>
-            }/>
+            } />
             <Route path="/teacherInfo" element={
               <>
-              <AboutNavBar isTeacher={isTeacher} darkTheme={darkTheme}/>
-              <TeacherInfo
-                languages={languages}
-              />
+                <AboutNavBar isTeacher={isTeacher} darkTheme={darkTheme} />
+                <TeacherInfo
+                  languages={languages}
+                />
               </>
-            }/>
+            } />
             <Route path="/userInfo" element={
               <>
-              <AboutNavBar isTeacher={isTeacher} darkTheme={darkTheme}/>
-              <UserInfo
-                languages={languages}
-              />
+                <AboutNavBar isTeacher={isTeacher} darkTheme={darkTheme} />
+                <UserInfo
+                  languages={languages}
+                />
               </>
-            }/>
+            } />
             <Route path="/profile" element={
               <>
-              <NavBar isTeacher={isTeacher} darkTheme={darkTheme}/>
-              <Profile
-                darkTheme={darkTheme}
-                languages={languages}
-              />
+                <NavBar isTeacher={isTeacher} darkTheme={darkTheme} />
+                <Profile
+                  darkTheme={darkTheme}
+                  languages={languages}
+                />
               </>
-            }/>
+            } />
             <Route path="/teacherprofile" element={
               <>
-              <NavBar isTeacher={isTeacher} darkTheme={darkTheme}/>
-              <TeacherProfile
-                darkTheme={darkTheme}
-                languages={languages}
-              />
+                <NavBar isTeacher={isTeacher} darkTheme={darkTheme} />
+                <TeacherProfile
+                  darkTheme={darkTheme}
+                  languages={languages}
+                />
               </>
-            }/>
-            <Route path="/messages" element={<><NavBar isTeacher={isTeacher} darkTheme={darkTheme}/><Messages /></>}/>
+            } />
+            <Route path="/messages" element={<><NavBar isTeacher={isTeacher} darkTheme={darkTheme} /><Messages /></>} />
             <Route path="/videoplayer" element={
               <>
-              <NavBar isTeacher={isTeacher} darkTheme={darkTheme} />
-              <VideoChat darkTheme={darkTheme} />
+                <NavBar isTeacher={isTeacher} darkTheme={darkTheme} />
+                <VideoChat darkTheme={darkTheme} />
               </>
-            }/>
+            } />
           </Routes>
         </BrowserRouter>
       </StyledLogPage>

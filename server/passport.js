@@ -36,7 +36,7 @@ module.exports = (passport) => {
     done(null, user);
   });
   passport.deserializeUser((user, done) => {
-    console.log("called -deserialize");
+    // console.log("called -deserialize");
     // model
     //   .getPublicAccountInfoById(id)
     //   .then((info) => {

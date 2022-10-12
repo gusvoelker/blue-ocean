@@ -57,7 +57,7 @@ export default function TeacherInfo ({ languages }) {
 
   const [taughtLanguages, setTaughtLanguages] = useState({});
 
-  useState(() => {
+  useEffect(() => {
     let initialTaughtLanguages = {};
     for (let language of languages) {
       initialTaughtLanguages[language.lang_id] = '0';
@@ -66,7 +66,7 @@ export default function TeacherInfo ({ languages }) {
   }, []);
 
   const submitTaughtLanguages = () => {
-    console.log(taughtLanguages);
+    // console.log(taughtLanguages);
     for (let id in taughtLanguages) {
       if (taughtLanguages[id] !== '0') {
         axios.post(`${serverURL}/languages/taught`, {
