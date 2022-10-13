@@ -65,7 +65,7 @@ io.on("connection", (socket) => {
     const user = getUser(receiverId);
     console.log("user from SendMessage:", user);
     io.to(roomNumber).emit("getMessage", {
-      senderId,
+      account_id: senderId,
       message: text,
       roomNumber,
     });

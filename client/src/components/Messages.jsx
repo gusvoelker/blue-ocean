@@ -10,6 +10,8 @@ import {
   LightGreyButton,
   MessagesChatContainer,
   MessagesTextContainer,
+  MessageContainerLeft,
+  MessageContainerRight,
   MyMessage,
   TheirMessage,
   MessagesTopContainer,
@@ -56,7 +58,7 @@ export default function Messages () {
   }, []);
 
   useEffect(() => {
-    socket.current = io('ws://localhost:8080');
+    socket.current = io('ws://localhost:8080'); // TODO(?): Change to config var
     socket.current.on("getMessage", (data) => {
       // console.log("currentFriend.first_name :", currentFriend.first_name);
       // console.log("data.roomNumber: ", data.roomNumber);
@@ -173,15 +175,19 @@ export default function Messages () {
           {messages && messages.slice().reverse().map((message, i) => {
             if (message.account_id === user.id || (message?.account_id === undefined && message?.senderId === user.id)) {
               return (
-                <MyMessage key= {i}>
-                  {message.message}
-                </MyMessage>
+                <MessageContainerRight>
+                  <MyMessage key= {i}>
+                    {message.message}
+                  </MyMessage>
+                </MessageContainerRight>
               )
             } else {
               return (
-                <TheirMessage key= {i}>
-                  {message.message}
-                </TheirMessage>
+                <MessageContainerLeft>
+                  <TheirMessage key= {i}>
+                    {message.message}
+                  </TheirMessage>
+                </MessageContainerLeft>
               )
             }
             }

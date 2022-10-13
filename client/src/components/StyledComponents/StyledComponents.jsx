@@ -221,18 +221,13 @@ const ProfileAccountInfo = styled.div`
   };
   td{
     padding: 7px;
-    height: 40px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    max-width: 0;
+    word-break: break-all;
   }
 `
 const ProfileFriendsList = styled.div`
   position: absolute;
   bottom: 0%;
   width: 43.5vw;
-  height: 450px;
   border-radius: 15px;
   left:36.25%;
   padding: 10px;
@@ -279,7 +274,6 @@ const ProfileFriendsList = styled.div`
     }
     };
   div{
-    padding: 10px;
     &:hover {
       color: #383838;
     }
@@ -337,7 +331,6 @@ const StyledFriendSearch = styled.div`
   justify-content: space-between;
   background-color: #f5f5f5;
   height: 1.5rem;
-  width: 15rem;
   font-size: 1rem;
   padding: .5rem;
   border-radius: 50px;
@@ -392,7 +385,6 @@ const MessagesChatContainer = styled.div`
   background-color: #38698fe8;
   border: 1px solid #f5f5f5;
   border-radius: 15px;
-  text-align: center;
   padding: 25px;
 `
 const StyledWriteMessage = styled.div`
@@ -479,42 +471,42 @@ const MessagesTextContainer = styled.div`
   background-color: white;
   margin-top: 2rem;
   border-radius: 15px;
-  text-align: center;
   padding: 25px;
   overflow: auto;
+  scroll-behavior: smooth;
   flex-direction: column-reverse;
 `
-const MyMessage = styled.div`
-  width: auto;
-  text-align: right;
-  background-color: #e5e4e2;
-  border-radius: 10px;
-  height: auto;
-  padding: 5px;
-  margin-top: 15px;
-  margin-left: 1rem;
-  img {
-    position: relative;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-    float: right;
-  }
+
+const MessageContainer = styled.div`
+  display: flex;
+  width: 100%;
+  word-break: break-word;
 `
 
-const TheirMessage = styled(MyMessage)`
-  background-color: #386A8F;
+const MessageContainerLeft = styled(MessageContainer)`
+  justify-content: flex-start;
+`
+
+const MessageContainerRight = styled(MessageContainer)`
+  justify-content: flex-end;
+`
+
+const ChatMessage = styled.div`
+  width: fit-content;
+  border-radius: 10px;
+  height: auto;
+  padding: 1rem;
+  margin-top: 10px;
+`
+
+const TheirMessage = styled(ChatMessage)`
+  color: #383838;
+  background-color: #e5e4e2;
+`
+
+const MyMessage = styled(ChatMessage)`
   color: #f5f5f5;
-  text-align: left;
-  margin-right: 1rem;
-  margin-left: 0rem;
-  img {
-    border-radius: 50%;
-    object-fit: cover;
-    float: left;
-    margin-right: 10px;
-  }
+  background-color: #386A8F;
 `
 const LightGreyButton = styled.button`
   background-color: #d3d3d3;
@@ -557,7 +549,9 @@ const StyledSubmitInput = styled.input.attrs({ type: 'submit' })`
 const StyledTextInput = styled.input.attrs({ type: 'text' })`
   width: 15;
   font-size: 1rem;
-  padding: 0.3rem;
+  padding: 0.5rem;
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
   border-radius: 100px;
   box-shadow: 5px 5px 5px #383838;
   border: 1px solid #383838;
@@ -565,7 +559,9 @@ const StyledTextInput = styled.input.attrs({ type: 'text' })`
 const StyledTextInputPassword = styled.input.attrs({ type: 'password' })`
   width: 15;
   font-size: 1rem;
-  padding: 0.3rem;
+  padding: 0.5rem;
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
   border-radius: 100px;
   box-shadow: 5px 5px 5px #383838;
   border: 1px solid #383838;
@@ -573,7 +569,9 @@ const StyledTextInputPassword = styled.input.attrs({ type: 'password' })`
 const StyledTextEmail = styled.input.attrs({ type: 'email' })`
   width: 15;
   font-size: 1rem;
-  padding: 0.3rem;
+  padding: 0.5rem;
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
   border-radius: 50px;
   box-shadow: 5px 5px 5px #383838;
   border: 1px solid #383838;
@@ -582,6 +580,8 @@ const StyledClassTextInput = styled.input.attrs({ type: 'text' })`
   width: 15;
   font-size: 1rem;
   padding: 0.5rem;
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
   margin-top: 0.5rem;
   border-radius: 100px;
   box-shadow: 5px 5px 5px #383838;
@@ -741,9 +741,12 @@ const FriendsModalContent = styled.div`
   text-align: center;
   justify-content: center;
   color: #f5f5f5;
+  h2 {
+    margin-top: 0rem;
+  }
   h4 {
     font-size: 2rem;
-    margin-bottom: 0rem;
+    margin-bottom: 0.5rem;
     color: #f5f5f5
   }
   div {
@@ -1178,6 +1181,9 @@ export {
   MessagesConvoContainer,
   MessagesChatContainer,
   MessagesTextContainer,
+  MessageContainer,
+  MessageContainerLeft,
+  MessageContainerRight,
   StyledFriendSearchSpan,
   MyMessage,
   TheirMessage,

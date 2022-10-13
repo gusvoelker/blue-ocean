@@ -13,49 +13,42 @@ import { Outlet, Link } from "react-router-dom";
 import { SocketContext } from '../VideoComponents/SocketContext.jsx';
 
 export default function NavBar({ darkTheme, isTeacher }) {
-  let button =
-  <Link to={isTeacher ? "/teacherprofile" : "/profile"} style={{textDecoration: 'none'}}>
-    <p style={{marginTop: '3rem'}}>Profile</p>
-  </Link>;
 
-  if(!darkTheme) {
-    return (
-      <StyledNavBar id='translate'>
-        <StyledNavBarIcon>
-          Chat Chat
-        </StyledNavBarIcon>
+  const renderButton = (
+    <Link to={isTeacher ? "/teacherprofile" : "/profile"} style={{textDecoration: 'none'}}>
+      <p style={{marginTop: '3rem'}}>Profile</p>
+    </Link>
+  );
 
-        <StyledNavBarLinks>
-          <p id='translate2' ></p>
-          {button}
-          <Link to="/messages" style={{textDecoration: 'none'}}>
-            <p style={{marginTop: '3rem'}}>Chat</p>
-          </Link>
-          {isTeacher ? <Link to='/videoplayer' style={{textDecoration: 'none'}}>
-            <p style={{marginTop: '3rem'}}>Video Call</p>
-          </Link> : null }
-        </StyledNavBarLinks>
+  const renderContent = (
+    <>
+    <StyledNavBarIcon>
+    Chat Chat
+    </StyledNavBarIcon>
+    <StyledNavBarLinks>
+      <p id='translate2' ></p>
+      {renderButton}
+      <Link to="/messages" style={{textDecoration: 'none'}}>
+        <p style={{marginTop: '3rem'}}>Chat</p>
+      </Link>
+      {isTeacher ? <Link to='/videoplayer' style={{textDecoration: 'none'}}>
+        <p style={{marginTop: '3rem'}}>Video Call</p>
+      </Link> : null }
+    </StyledNavBarLinks>
+    </>
+  );
 
-      </StyledNavBar>
-    )
-  } else {
+  if (darkTheme) {
     return (
       <DarkStyledNavBar id='translate'>
-        <StyledNavBarIcon>
-        Chat Chat
-        </StyledNavBarIcon>
-
-        <StyledNavBarLinks>
-          <p id='translate2' ></p>
-          {button}
-          <Link to="/messages" style={{textDecoration: 'none'}}>
-            <p style={{marginTop: '3rem'}}>Chat</p>
-          </Link>
-          {isTeacher ? <Link to='/videoplayer' style={{textDecoration: 'none'}}>
-            <p style={{marginTop: '3rem'}}>Video Call</p>
-          </Link> : null }
-        </StyledNavBarLinks>
+        {renderContent}
       </DarkStyledNavBar>
-    )
+    );
   }
+
+  return (
+    <StyledNavBar id='translate'>
+      {renderContent}
+    </StyledNavBar>
+  );
 }

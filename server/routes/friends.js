@@ -61,7 +61,6 @@ router.post('/friend', (req, res, next) => {
 //accept friend status
 //req.query.idToAccept
 router.put('/friend', (req, res, next) => {
-  console.log('here', req.query)
   let requesterId = req.user.id;
   friendModel.acceptFriend(requesterId, req.query.idToAccept)
     .then(() => friendModel.createFriend(requesterId, req.query.idToAccept))
