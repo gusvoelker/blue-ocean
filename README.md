@@ -6,7 +6,6 @@ Chat Chat is an educational learning website that allows teachers and language l
 
 ## Table of Contents
 - [Tech Stack](#tech-stack)
-- [User Persona & Story](#user-persona--story)
 - [Wireframes](#wireframes)
 - [Product Features](#product-features)
   - [Home](#home)
@@ -35,9 +34,6 @@ Chat Chat is an educational learning website that allows teachers and language l
 ![Socket](https://img.shields.io/badge/-Socket-000000?logo=socket.io&logoColor=white&style=for-the-badge)
 ![Figma](https://img.shields.io/badge/-Figma-B2E7E8?logo=figma&logoColor=black&style=for-the-badge)
 
-## User Persona & Story
-![](assets/BookFace_Persona2.png)
-![](assets/BookFace_Persona1.png)
 
 ## Wireframes
 ![](assets/demo/BookFace_wireframes.png)
