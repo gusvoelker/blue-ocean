@@ -1,7 +1,7 @@
 <div id="top"/>
 
-# BookFace
-BookFace is a social cataloging website that allows book lovers to connect, share books they love, and manage their collection of books with personalized bookshelves. This is the culmination of six engineers working closely over the course of one week to complete an MVP based on client's request.
+# Chat Chat
+Chat Chat is an educational learning website that allows teachers and language learners to connect, schedule meetings and practice their skills with one another. This is the culmination of eight engineers working closely over the course of one week to complete an MVP based on client's request.
 
 
 ## Table of Contents
@@ -25,19 +25,15 @@ BookFace is a social cataloging website that allows book lovers to connect, shar
 
 
 ## Tech Stack
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![React](https://img.shields.io/badge/-React-61DAFB?logo=react&logoColor=white&style=for-the-badge)
-![Vite](https://img.shields.io/badge/-Vite-BA55D3?logo=vite&logoColor=white&style=for-the-badge)
-![Firebase](https://img.shields.io/badge/-Firebase-FFD700?logo=firebase&logoColor=white&style=for-the-badge)
-![Express](https://img.shields.io/badge/-Express-DCDCDC?logo=express&logoColor=black&style=for-the-badge)
 ![Node](https://img.shields.io/badge/-Node-9ACD32?logo=node.js&logoColor=white&style=for-the-badge)
+![Express](https://img.shields.io/badge/-Express-DCDCDC?logo=express&logoColor=black&style=for-the-badge)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![Vite](https://img.shields.io/badge/-Vite-BA55D3?logo=vite&logoColor=white&style=for-the-badge)
 ![Axios](https://img.shields.io/badge/-Axios-671ddf?logo=axios&logoColor=black&style=for-the-badge)
-![Twilio](https://img.shields.io/badge/-Twilio-FF0000?logo=twilio&logoColor=white&style=for-the-badge)
 ![Socket](https://img.shields.io/badge/-Socket-000000?logo=socket.io&logoColor=white&style=for-the-badge)
-![Material-UI](https://img.shields.io/badge/-MUI-007FFF?logo=mui&logoColor=white&style=for-the-badge)
-![Chart.js](https://img.shields.io/badge/-Chartjs-FF6384?logo=chart.js&logoColor=white&style=for-the-badge)
-![Nivo](https://img.shields.io/badge/-Nivo-66CDAA?logo=nivo&logoColor=white&style=for-the-badge)
 ![Figma](https://img.shields.io/badge/-Figma-B2E7E8?logo=figma&logoColor=black&style=for-the-badge)
-![Zustand](https://img.shields.io/badge/-Zustand-FFb049?logo=zustand&logoColor=black&style=for-the-badge)
 
 ## User Persona & Story
 ![](assets/BookFace_Persona2.png)
