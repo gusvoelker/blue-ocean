@@ -23,13 +23,37 @@ const ratingsModel = require('../../models/ratingsModel.js');
   let result = await accountModel.createAccount(studentOneAccount);
   console.log(result);
   let studentTwoAccount = {
-    email: 'studentTwo@test.com',
-    passwordHash: '3iojfsoinfw',
-    firstName: 'Bryan',
-    lastName: 'Belson',
+    email: '3@test.com',
+    passwordHash: '3iojfsoinfwe',
+    firstName: 'John',
+    lastName: 'Smith',
     isTeacher: false
   }
   result = await accountModel.createAccount(studentTwoAccount);
+  let three = {
+    email: '4@test.com',
+    passwordHash: '3iojfsoinfwr',
+    firstName: 'Victoria',
+    lastName: 'Renolds',
+    isTeacher: false
+  }
+  result = await accountModel.createAccount(three);
+  let four = {
+    email: '4@test.com',
+    passwordHash: '3iojfsoinfw4',
+    firstName: 'Mathew',
+    lastName: 'Douglas',
+    isTeacher: false
+  }
+  result = await accountModel.createAccount(four);
+  let five = {
+    email: 'studentTwo@test.com5',
+    passwordHash: '3iojfsoinfw5',
+    firstName: 'Tabatha',
+    lastName: 'Hood',
+    isTeacher: false
+  }
+  result = await accountModel.createAccount(five);
   console.log(result);
 });
 
@@ -38,20 +62,44 @@ const ratingsModel = require('../../models/ratingsModel.js');
   let teacherOneAccount = {
     email: 'teacherOne@test.edu',
     passwordHash: '3iojfsoinfw',
-    firstName: 'Teacher',
-    lastName: 'Person',
+    firstName: 'Aaron',
+    lastName: 'Voelker',
     isTeacher: true
   }
   let result = await accountModel.createAccount(teacherOneAccount);
   console.log(result);
-  teacherTwoAccount = {
+  let teacherTwoAccount = {
     email: 'teacherTwo@test.edu',
-    passwordHash: '3iojfsoinfw',
-    firstName: 'Beacher',
-    lastName: 'Berson',
+    passwordHash: '3iojfsoinfwe',
+    firstName: 'John',
+    lastName: 'Edwards',
     isTeacher: true
   }
   result = await accountModel.createAccount(teacherTwoAccount);
+ let  three = {
+    email: '3@test.edu',
+    passwordHash: '3iojfsoinfwe3',
+    firstName: 'Olivia',
+    lastName: 'Moody',
+    isTeacher: true
+  }
+  result = await accountModel.createAccount(three);
+  let four = {
+    email: 'four@test.edu',
+    passwordHash: '3iojfsoinfwe4',
+    firstName: 'John',
+    lastName: 'Edwards',
+    isTeacher: true
+  }
+  result = await accountModel.createAccount(four);
+  let five = {
+    email: '5@test.edu',
+    passwordHash: '3iojfsoinfwe5',
+    firstName: 'Mike',
+    lastName: 'Tyson',
+    isTeacher: true
+  }
+  result = await accountModel.createAccount(five);
   console.log(result);
 });
 
@@ -91,7 +139,13 @@ const ratingsModel = require('../../models/ratingsModel.js');
 
 // INSERT LANGUAGE
 (async () => {
-  let result = await languageModel.insertLanguage('spanish');
+  let result = await languageModel.insertLanguage('English');
+  let result1 = await languageModel.insertLanguage('Spanish');
+  let result2 = await languageModel.insertLanguage('French');
+  let result3 = await languageModel.insertLanguage('German');
+  let result4 = await languageModel.insertLanguage('Italian');
+  let result5 = await languageModel.insertLanguage('Romanian');
+  let result6 = await languageModel.insertLanguage('Portuguese');
   console.log(result);
 });
 
@@ -105,16 +159,19 @@ const ratingsModel = require('../../models/ratingsModel.js');
 // INSERT TAUGHT, KNOWN, DESIRED LANGUAGES
 // Should throw an error if language or taughtLevel is invalid
 (async () => {
-  let teacherId = 1;
-  let userId = 2;
-  let taughtLevel = '5';
-  let language = 'english';
-  let result = await languageModel.insertTaughtLanguage(teacherId, taughtLevel, language);
-  console.log(result);
-  result = await languageModel.insertKnownLanguage(userId, language);
-  console.log(result);
-  result = await languageModel.insertDesiredLanguage(userId, language);
-  console.log(result);
+  let languages = ['English', 'Spanish', 'French', 'German', 'Italian', 'Romanian', 'Portuguese']
+  for (let i = 1; i < 6; i++) {
+    let teacherId = i + 5;
+    let userId = i;
+    let taughtLevel = '5';
+    let language = i;
+    let result = await languageModel.insertTaughtLanguageById(teacherId, language, taughtLevel);
+    console.log(result);
+    result = await languageModel.insertKnownLanguageById(userId, language);
+    console.log(result);
+    result = await languageModel.insertDesiredLanguageById(userId, language);
+    console.log(result);
+  }
 });
 
 // GET TAUGHT, KNOWN, DESIRED LANGUAGES
