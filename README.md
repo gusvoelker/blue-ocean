@@ -37,7 +37,7 @@ Chat Chat is an educational learning website that allows teachers and language l
 ## Product Features
 
 ### Profile
-![](assets/ChatChat_Profile.gif)
+<img src="assets/ChatChat_Profile.gif" width="100%"/>
 
 ### Login authentication with Firebase OAuth
 ![](assets/BookFace_OAuth.gif)
