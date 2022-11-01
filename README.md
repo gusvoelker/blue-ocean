@@ -7,7 +7,7 @@ Chat Chat is an educational learning website that allows teachers and language l
 ## Table of Contents
 - [Tech Stack](#tech-stack)
 - [Product Features](#product-features)
-  - [Home](#home)
+  - [Profile](#profile)
   - [Login authentication with Firebase OAuth](#login-authentication-with-firebase-oauth)
   - [Live search with smart filter](#live-search-with-smart-filter)
   - [MyBooks](#mybooks)
@@ -36,55 +36,55 @@ Chat Chat is an educational learning website that allows teachers and language l
 
 ## Product Features
 
-### Home
-![](assets/demo/BookFace_Home.gif)
+### Profile
+![](assets/ChatChat_Profile.gif)
 
 ### Login authentication with Firebase OAuth
-![](assets/demo/BookFace_OAuth.gif)
+![](assets/BookFace_OAuth.gif)
 
 ### Live search with smart filter
 
 > Users can perform sitewide search on books/bookclubs
 
-![](assets/demo/BookFace_Search.gif)
+![](assets/BookFace_Search.gif)
 ### MyBooks
 
 > Users can view their personalized bookshelves and joined bookclubs
 
-![](assets/demo/BookFace_MyBooks.gif)
+![](assets/BookFace_MyBooks.gif)
 
 ### Book detail page
 > Users can add book to their bookshelves and update reading status
 
-![](assets/demo/BookFace_BookDetails.gif)
+![](assets/BookFace_BookDetails.gif)
 
 ### Reading Stats
 > Users can generate a personalized reading statistics report
 
-![](assets/demo/BookFace_Stats.gif)
+![](assets/BookFace_Stats.gif)
 
 
 ### MyClubs
 
 > Users can explore and join bookclubs
 
-![](assets/demo/BookFace_Clubs.gif)
+![](assets/BookFace_Clubs.gif)
 
 ### Club detail page
 
 > Users can create an event and post messages
 
-![](assets/demo/BookFace_MyBookClub.gif)
+![](assets/BookFace_MyBookClub.gif)
 
 ### Live Chat
 > Users can chat with other club members
 
-![](assets/demo/BookFace_LiveChat.gif)
+![](assets/BookFace_LiveChat.gif)
 
 ### Video Chat
 > users can initiate a video call for club members to join
 
-![](assets/demo/BookFace_VideoChat.gif)
+![](assets/BookFace_VideoChat.gif)
 
 ## Getting Started
 
