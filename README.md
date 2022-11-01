@@ -6,7 +6,6 @@ Chat Chat is an educational learning website that allows teachers and language l
 
 ## Table of Contents
 - [Tech Stack](#tech-stack)
-- [Wireframes](#wireframes)
 - [Product Features](#product-features)
   - [Home](#home)
   - [Login authentication with Firebase OAuth](#login-authentication-with-firebase-oauth)
@@ -33,10 +32,6 @@ Chat Chat is an educational learning website that allows teachers and language l
 ![Axios](https://img.shields.io/badge/-Axios-671ddf?logo=axios&logoColor=black&style=for-the-badge)
 ![Socket](https://img.shields.io/badge/-Socket-000000?logo=socket.io&logoColor=white&style=for-the-badge)
 ![Figma](https://img.shields.io/badge/-Figma-B2E7E8?logo=figma&logoColor=black&style=for-the-badge)
-
-
-## Wireframes
-![](assets/demo/BookFace_wireframes.png)
 
 
 ## Product Features
