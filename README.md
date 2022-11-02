@@ -66,10 +66,8 @@ Chat Chat is an educational learning website that allows teachers and language l
 <img src="assets/Chat_Messaging.gif" width="100%"/>
 
 ### Live site translation
-> Users can generate a personalized reading statistics report
 
-![](assets/BookFace_Stats.gif)
-
+<img src="assets/Chat_Translated.gif" width="100%"/>
 
 ### Including live chat translation
 
