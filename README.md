@@ -47,10 +47,11 @@ Chat Chat is an educational learning website that allows teachers and language l
 
 > Users can perform sitewide search to connect with other users
 
-!<img src="assets/Chat_Friends.gif" width="100%"/>
-### MyBooks
+<img src="assets/Chat_Friends.gif" width="100%"/>
 
-> Users can view their personalized bookshelves and joined bookclubs
+### Class lists
+
+> Teachers can quickly add a csv to create a classlist
 
 ![](assets/BookFace_MyBooks.gif)
 
