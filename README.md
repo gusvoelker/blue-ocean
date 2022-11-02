@@ -71,30 +71,16 @@ Chat Chat is an educational learning website that allows teachers and language l
 
 <img src="assets/Chat_Translated_Chat.gif" width="100%"/>
 
-### Club detail page
-
-> Users can create an event and post messages
-
-![](assets/BookFace_MyBookClub.gif)
-
-### Live Chat
-> Users can chat with other club members
-
-![](assets/BookFace_LiveChat.gif)
-
 ### Video Chat
-> users can initiate a video call for club members to join
 
-![](assets/BookFace_VideoChat.gif)
-
-## Getting Started
+> Teachers can initiate a video call with their friends
 
 ## Contributors
 
 &nbsp;
 
-<a href="https://github.com/MarianTLibrarian/BookFace/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=MarianTLibrarian/BookFace" />
+<a href="https://github.com/RFE2207-Rivendell/blue-ocean/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=RFE2207-Rivendell/blue-ocean" />
 </a>
 
 &nbsp;
