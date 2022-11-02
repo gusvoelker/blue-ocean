@@ -53,7 +53,7 @@ Chat Chat is an educational learning website that allows teachers and language l
 
 > Teachers can quickly add a csv to create a classlist
 
-![](assets/BookFace_MyBooks.gif)
+<img src="assets/Chat_Classes.gif" width="100%"/>
 
 ### Book detail page
 > Users can add book to their bookshelves and update reading status
