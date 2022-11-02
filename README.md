@@ -63,17 +63,15 @@ Chat Chat is an educational learning website that allows teachers and language l
 
 ![](assets/BookFace_BookDetails.gif)
 
-### Reading Stats
+### Live site translation
 > Users can generate a personalized reading statistics report
 
 ![](assets/BookFace_Stats.gif)
 
 
-### MyClubs
+### Including live chat translation
 
-> Users can explore and join bookclubs
-
-![](assets/BookFace_Clubs.gif)
+<img src="assets/Chat_Translated_Chat.gif" width="100%"/>
 
 ### Club detail page
 
