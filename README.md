@@ -51,12 +51,15 @@ Chat Chat is an educational learning website that allows teachers and language l
 
 ### Class lists
 
-> Teachers can quickly add a csv to create a classlist
+> Teachers can quickly import a csv to create a classlist
 
 <img src="assets/Chat_Classes.gif" width="100%"/>
 
-### Book detail page
-> Users can add book to their bookshelves and update reading status
+### Meetings
+
+> Teachers can schedule meetings to video chat with existing friends
+
+<img src="assets/Chat_Calendar.gif" width="100%"/>
 
 ![](assets/BookFace_BookDetails.gif)
 
