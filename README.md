@@ -17,8 +17,6 @@ Chat Chat is an educational learning website that allows teachers and language l
   - [Live chat translation](#including-live-chat-translation)
   - [Live Chat](#live-chat)
   - [Video Chat](#video-chat)
-- [Getting Started](#getting-started)
-  - [Installation](#installation)
 - [Contributors](#contributors)
 
 
@@ -90,43 +88,6 @@ Chat Chat is an educational learning website that allows teachers and language l
 ![](assets/BookFace_VideoChat.gif)
 
 ## Getting Started
-
-### Installation
-
-From the root directory, run the following commands in your terminal.
-
-1. To install all dependencies
-
-```
-npm install
-```
-
-2. To start dev server: open http://localhost:3000 to view it in your browser
-
-```
-npm run dev
-```
-
-3. To build for production
-
-```
-npm run build
-```
-
-4. To locally preview production build
-```
-npm run preview
-```
-
-5. To connect to the server: use http://localhost:3030 to verify the server connection
-```
-npm run serve
-```
-
-6. To connect to socket for live chat
-```
-npm run socket
-```
 
 ## Contributors
 
