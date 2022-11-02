@@ -89,9 +89,9 @@ While all members worked as full stack engineers to develop features, we also ha
 
 |   |  |
 | ------------- | ------------- |
-| Product Managers  | [Haley Jung](https://github.com/haleyjung) &  [Addison Hernandez](https://github.com/addisonhernandez)  |
-| App Architects  | [Hailee Lu](https://github.com/HuijunLu) & [Katy Feng](https://github.com/katyfsy) |
-| UI Leads  |[Junpeng Chang](https://github.com/jp-chang) & [Joseph Sanfelippo](https://github.com/JosephSanfelippo) |
+| Product Manager  | [Greta Grover](https://github.com/grgrover) |
+| App Architect  | [Ryan Nelson](https://github.com/rnels) |
+| UI Lead  |[Nick Kozlarek](https://github.com/Nkozlare) |
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
