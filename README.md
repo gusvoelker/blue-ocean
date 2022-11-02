@@ -8,7 +8,7 @@ Chat Chat is an educational learning website that allows teachers and language l
 - [Tech Stack](#tech-stack)
 - [Product Features](#product-features)
   - [Profile](#profile)
-  - [Login authentication with Firebase OAuth](#login-authentication-with-firebase-oauth)
+  - [Distinct user authentication](#distinct-user-authentication)
   - [Live search with smart filter](#live-search-with-smart-filter)
   - [MyBooks](#mybooks)
   - [Book detail page](#book-detail-page)
