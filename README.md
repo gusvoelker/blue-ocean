@@ -45,9 +45,9 @@ Chat Chat is an educational learning website that allows teachers and language l
 
 ### Live search with smart filter
 
-> Users can perform sitewide search on books/bookclubs
+> Users can perform sitewide search to connect with other users
 
-![](assets/BookFace_Search.gif)
+!<img src="assets/Chat_Friends.gif" width="100%"/>
 ### MyBooks
 
 > Users can view their personalized bookshelves and joined bookclubs
